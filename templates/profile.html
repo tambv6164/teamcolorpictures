@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{{ artist_infor.fullname }}</title>
+</head>
+<body>
+    <h3>{{ artist_infor.fullname }}</h3>
+    <div>
+        <span>Finished Arts: {{ artist_infor.finished_arts }}</span>
+        <span>Working Arts: {{ artist_infor.working_arts }}</span>
+    </div>
+    <div>
+        <span>Top 100 Pics: {{ artist_infor.picsintop100 }}</span>
+        <span>Top 100 Artists: {{ artist_infor.positionintop100 }}</span>
+    </div>
+    <div>
+        <span>Like: {{ artist_infor.totallikes }}</span>
+    </div>
+
+    {% for pic in artist_finised_arts %}
+        <div>
+            <span>{{ pic.positionintop100 }}</span>
+            <span>{{ pic.picname }}</span>
+        </div>
+        <img src="{{ pic.piclink }}" alt="">
+        <p>Like: {{ pic.piclikes }}, Comment: {{ pic.piccomments }}</p>
+        <hr>
+    {% endfor %}
+</body>
+</html>

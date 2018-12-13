@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Top 100 Artists</title>
+</head>
+<body>
+    {% for artist in top100artists %}
+        <p>{{ artist.fullname }}</p>
+        <p>Position: {{ artist.position }}</p>
+        <p>Pics in Top 100: {{ artist.picsintop100 }}</p>
+        <p>Finished Arts: {{ artist.finishedarts }}</p>
+        <p>Total Likes: {{ artist.totallikes }}</p>
+        <img src="{{ artist.bestpic }}" alt="">
+        <hr>
+    {% endfor %}
+</body>
+</html>

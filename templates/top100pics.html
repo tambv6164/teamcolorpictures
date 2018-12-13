@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Top 100 Pics</title>
+</head>
+<body>
+    {% for pic in top100pics %}
+        <p>{{ pic.picname }}</p>
+        <img src="{{ pic.piclink }}" alt="">
+        <p>Artist: {{ pic.picartist }}, Like: {{ pic.piclikes }}</p>
+        <hr>
+    {% endfor %}
+</body>
+</html>
