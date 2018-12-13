@@ -1,0 +1,78 @@
+head, body{
+    text-align: center;
+    font-size: 150%;
+    font-family: 'Ubuntu', sans-serif;
+}
+#main{
+    margin-top: 100px;
+}
+#tieu_de{
+    margin-bottom: 30px;
+    padding: 2px;
+}
+#wrong{
+    margin-bottom: 30px;
+    padding: 2px;
+    color: red;
+    font-size: 70%;
+}
+#login{
+    margin: 15px 20px 40px 15px;
+}
+#forgot{
+    margin: 15px 15px 15px 20px;
+}
+#signup{
+    margin: 15px 15px 15px 15px;
+}
+.dang_nhap{
+    margin-bottom: 15px;
+}
+.dang_nhap input[type=text]{
+    width: 300px;
+    height: 50px;
+    text-align: center;
+    border: 2px solid;
+    border-radius: 25px;
+    font-family: 'Ubuntu';
+    font-size: 15px;
+}
+.nut{
+    font-family: 'Ubuntu';
+    height: 50px;
+    width: 200px;
+    background: #ffffff;
+    font-size: 70%;
+    border: 2px solid;
+    border-radius: 25px;
+}
+.tim_kiem{
+    margin-bottom: 15px;
+}
+.tim_kiem input[type=text]{
+    width: 700px;
+    height: 30px;
+    text-align: center;
+    border: 2px solid;
+    border-radius: 25px;
+    font-family: 'Ubuntu';
+    font-size: 15px;
+}
+.pic{
+    font-family: 'Ubuntu';
+    height: 200px;
+    width: 300px;
+    background: #ffffff;
+    font-size: 120%;
+    border: 2px solid;
+    border-radius: 25px;
+}
+.myarts{
+    font-family: 'Ubuntu';
+    height: 50px;
+    width: 200px;
+    background: chocolate;
+    font-size: 70%;
+    border: 2px solid;
+    border-radius: 25px;
+}
