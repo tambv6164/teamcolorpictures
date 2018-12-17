@@ -9,10 +9,10 @@
     <title>Top 100 Artists</title>
 </head>
 <body>
-    <button class="nut"><a href="homepage">Homepage</a></button>
-    <button class="nut"><a href="top100pics">Top 100 Pics</a></button>
+    <button class="nut"><a href="{{ url_for('home') }}">Homepage</a></button>
+    <button class="nut"><a href="{{ url_for('top100pics') }}">Top 100 Pics</a></button>
     <button class="nut">Top 100 Artists</h3>
-    <button class="nut"><a href="category">Start Coloring</a></button>
+    <button class="nut"><a href="{{ url_for('full_category') }}">Start Coloring</a></button>
     {% for artist in top100artists %}
         <p>Position: {{ artist.positionintop100 }}</p>
         <h4><a href="profile/{{artist.username}}">{{ artist.fullname }}</a></h4>
