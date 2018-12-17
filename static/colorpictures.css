@@ -3,6 +3,9 @@ head, body{
     font-size: 150%;
     font-family: 'Ubuntu', sans-serif;
 }
+a{
+    text-decoration: none;
+}
 #main{
     margin-top: 100px;
 }

@@ -13,7 +13,7 @@
     <button class="nut"><a href="{{ url_for('full_category') }}">Start Coloring</a></button>
 
     {% if 'token' in session %}
-        <button class="nut"><a href="me">My Arts</a></button>
+        <button class="nut"><a href="{{ url_for('profile', artist='me') }}">My Arts</a></button>
         <button class="nut"><a href="{{ url_for('logout') }}">Log out</a></button>
     {% endif %}
     

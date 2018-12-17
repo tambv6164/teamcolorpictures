@@ -6,19 +6,18 @@ from models.rawpicture import Rawpicture
 import mlab
 import base64
 
-
 mlab.connect()
-
 # def base64encode(url):
 #     return base64.b64encode(requests.get(url).content)
-
 
 def make_soup(url):
     thepage = urllib.request.urlopen(url)
     soupdata = BeautifulSoup(thepage,"html.parser")
     return soupdata
     
-soup = make_soup("http://www.coloring-book.info/coloring/coloring_page.php?id=7")
+# soup = make_soup("http://www.coloring-book.info/coloring/coloring_page.php?id=7")
+soup = make_soup("http://www.coloring-book.info/coloring/coloring_page.php?id=4")
+
 infor_list = soup.findAll('img')
 sourcelist = []
 for i in infor_list:
@@ -36,10 +35,10 @@ for img in sourcelist:
         else:
             break
     picname = tmp.replace(category,'').replace('.jpg', '').replace('/', '')
-    print(picname,image,category)
+#     print(picname,image,category)
 
     rawpic = Rawpicture(picname=picname, piclink=image, category=category)
     rawpic.save()
 
 
-    
+

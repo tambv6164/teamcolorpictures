@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
-    <link rel="stylesheet" href="../static/colorpictures.css" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='colorpictures.css')}}" type="text/css">
     <title>Color Pictures</title>
 </head>
 <body>
     <button class="nut"><a href="{{ url_for('home') }}">Homepage</a></button>
     {% if 'token' in session %}
-        <button class="nut"><a href="profile/me">My Arts</a></button>
+        <button class="nut"><a href="{{ url_for('profile', artist='me') }}">My Arts</a></button>
         <button class="nut"><a href="{{ url_for('logout') }}">Log out</a></button>
     {% else %}
         <button class="nut"><a href="{{ url_for('login') }}">Log in</a></button>
@@ -23,11 +23,11 @@
             <input type="text" placeholder="search">
         </div> -->
         <div>
-            <button class="pic">Get me a random pic</button>
-            <button class="pic">Animals</button>
-            <button class="pic">Nature</button>
+            <button class="pic"><a href="{{ url_for('new_picture') }}">Get me a random pic</a></button>
+            <button class="pic"><a href="{{ url_for('one_category', category='Adiboo') }}">Adiboo</a></button>
+            <button class="pic"><a href="{{ url_for('one_category', category='101 Dalmatians') }}">101 Dalmatians</a></button>
         </div>
-        <div>
+        <!-- <div>
             <p></p>
         </div>
         <div>
@@ -42,7 +42,7 @@
             <button class="pic">Things</button>
             <button class="pic">Anime</button>
             <button class="pic">Superheroes</button>
-        </div>      
+        </div>       -->
     </div>
     
 </body>

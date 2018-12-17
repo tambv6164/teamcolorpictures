@@ -5,7 +5,12 @@ from models.savepicture import Savepicture
 from models.comment import Comment
 from random import choice
 import mlab
+import base64
+import requests
 mlab.connect()
+
+def base64encode(url):
+    return base64.b64encode(requests.get(url).content)
 
 def func_top100pics():
     # Tìm tất cả những bức tranh đã hoàn thành:
@@ -287,22 +292,26 @@ def profile(artist):
     #   - Link ảnh để hiển thị: piclink
     #   - Số lượng like: piclikes
     #   - Số lượng comment: piccomments
-    
+
+# Lấy link của 1 random pic:
+pic_list = Rawpicture.objects()
+random_choice = choice(pic_list).piclink
+randompic = base64encode(random_choice)
+
 @app.route('/category') # Hiển thị trang Category tổng
 def full_category():
-    return render_template('category.html')
+    return render_template('category.html', randompic=randompic)
 
-# Bên dưới đang làm tiếp
-# @app.route('/category/<category>') # Hiển thị 1 trang category cụ thể
-# def one_category(category):
-#     pic_list = Rawpicture.objects(category__icontains=category)
-#     cap_category = category.title()
-#     return render_template('one_category.html', pic_list=pic_list, category=cap_category)
+@app.route('/category/<category>') # Hiển thị 1 trang category cụ thể
+def one_category(category):
+    pic_list = Rawpicture.objects(category__icontains=category)
+    cap_category = category.title()
+    return render_template('one_category.html', pic_list=pic_list, category=cap_category)
 
-# @app.route('/new_picture') # Hiển thị trang vẽ tranh của 1 bức tranh
-# def new_picture():
-#     piclink = '...'
-#     return render_template('new_picture.html', piclink=piclink)
+
+@app.route('/new_picture') # Hiển thị trang vẽ tranh của 1 bức tranh
+def new_picture():
+    return render_template('new_picture.html', piclink=randompic)
 
 # @app.route('/<picname>') # Hiển thị trang phóng to của 1 bức ảnh đã hoàn thành để có thể comment
 

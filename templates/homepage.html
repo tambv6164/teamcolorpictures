@@ -10,7 +10,7 @@
 </head>
 <body>
     {% if 'token' in session %}
-        <button class="nut"><a href="profile/me">My arts</a></button>
+        <button class="nut"><a href="{{ url_for('profile', artist='me') }}">My arts</a></button>
         <button class="nut"><a href="{{ url_for('logout') }}">Log out</a></button>
     {% endif %}
     <div id="main">

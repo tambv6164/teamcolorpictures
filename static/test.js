@@ -76,6 +76,7 @@ function floodFill(x, y, ctx) {
 // Draw a base64 image because this is a fiddle, and if we try with an image from URL we'll get tainted canvas error
 // Read more about here : http://ourcodeworld.com/articles/read/182/the-canvas-has-been-tainted-by-cross-origin-data-and-tainted-canvases-may-not-be-exported
 drawImageFromWebUrl(imageLinkB64);
+console.log(imageLinkB64);
 
 canvas.addEventListener("click",function(e){
     let pos = getPosition(this);
