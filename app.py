@@ -147,9 +147,9 @@ app.config['SECRET_KEY'] = 'teamcolorpictures'
 def home():
     return render_template('homepage.html')
 
-@app.route('/homepage') # Hiển thị trang chủ
-def homepage():
-    return redirect(url_for('home'))
+# @app.route('/homepage') # Hiển thị trang chủ
+# def homepage():
+#     return redirect(url_for('home'))
 
 @app.route('/signup', methods=['GET', 'POST']) # Đăng ký tài khoản
 def signup():
@@ -168,14 +168,14 @@ def signup():
         # email_check = User.objects(email=e).first()
         warning = ''
         if len(u) < 6:
-            warning = 'Username cần ít nhất 6 ký tự'
+            warning = 'Username cần ít nhất 6 ký tự!'
         if f == '' or u == '' or p == '': #or e == '':
-            warning = 'Vui lòng nhập đầy đủ thông tin'
+            warning = 'Vui lòng nhập đầy đủ thông tin!'
         elif ' ' in u or ' ' in p:
-            warning = 'Username hoặc password không được chứa dấu cách'
+            warning = 'Username hoặc password không được chứa dấu cách!'
         # Check xem có tồn tại username hoặc email đó chưa:
         elif user_check is not None:
-            warning = 'Username đã tồn tại'
+            warning = 'Username đã tồn tại!'
         # elif email_check is not None:
         #     warning = 'Email đã tồn tại'
         if warning != '':
@@ -200,14 +200,14 @@ def login():
         # Check xem có nhập username và password hay không và nhập đúng hay không:
         warning = ''
         if u == '':
-            warning = 'Bạn chưa nhập username'
+            warning = 'Bạn chưa nhập username!'
         elif user_check is None:
-            warning = 'Username không tồn tại'
+            warning = 'Username không tồn tại!'
         else:
             if p == '':
-                warning = 'Vui lòng nhập password'
+                warning = 'Vui lòng nhập password!'
             elif p != user_check.password:
-                warning = 'Password sai'
+                warning = 'Password sai!'
         if warning != '':
             return render_template('login.html', warning=warning)
         else:
@@ -219,7 +219,7 @@ def login():
 def logout():
     if 'token' in session:
         del session['token']
-    return redirect(url_for('homepage'))
+    return redirect(url_for('home'))
 
 @app.route('/top100pics') # Hiển thị 100 Pics đc nhiều like nhất
 def top100pics():
@@ -235,6 +235,7 @@ def top100artists():
 def profile(artist):
     if artist == 'me':
         artist = session['token']
+    
     # Chạy hàm func_artist_infor và trả về các thông tin của artist đó
     artist_infor = func_artist_infor(artist) 
     # Các bức tranh đã hoàn thành sắp xếp theo số lượng like:
