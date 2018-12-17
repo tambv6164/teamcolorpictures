@@ -4,30 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='colorpictures.css')}}" type="text/css">
     <title>{{ artist_infor.fullname }}</title>
 </head>
 <body>
+    <button class="nut">Homepage</button>
+    <button class="nut">Start Coloring</button>
+    {% if 'token' in session %}
+        <button class="nut"><a href="me">My Arts</a></button>
+        <button class="nut">Log out</button>
+    {% endif %}
+    
     <h3>{{ artist_infor.fullname }}</h3>
+    <hr>
+    <div>Finished Arts: {{ artist_infor.finished_arts }}</div>
+    <div>Working Arts: {{ artist_infor.working_arts }}</div>
+    <div>Like: {{ artist_infor.totallikes }}</div>
     <div>
-        <span>Finished Arts: {{ artist_infor.finished_arts }}</span>
-        <span>Working Arts: {{ artist_infor.working_arts }}</span>
+        <!-- <span>Top 100 Pics: {{ artist_infor.picsintop100 }}</span> -->
+        <!-- <span>Top 100 Artists: {{ artist_infor.positionintop100 }}</span> -->
     </div>
-    <div>
-        <span>Top 100 Pics: {{ artist_infor.picsintop100 }}</span>
-        <span>Top 100 Artists: {{ artist_infor.positionintop100 }}</span>
-    </div>
-    <div>
-        <span>Like: {{ artist_infor.totallikes }}</span>
-    </div>
-
+    <hr>
     {% for pic in artist_finised_arts %}
         <div>
-            <span>{{ pic.positionintop100 }}</span>
+            <!-- <span>{{ pic.positionintop100 }}</span> -->
             <span>{{ pic.picname }}</span>
         </div>
         <img src="{{ pic.piclink }}" alt="">
         <p>Like: {{ pic.piclikes }}, Comment: {{ pic.piccomments }}</p>
         <hr>
     {% endfor %}
+    
+    {% if 'token' in session %}
+        <h3>Working arts</h3>
+        {% for pic in working_list %}
+            <div>
+                <span>{{ pic.picname }}</span>
+            </div>
+            <img src="{{ pic.piclink }}" alt="">
+            <hr>
+        {% endfor %}
+        <button class="nut"><a href="">Start new art</a></button>
+    {% endif %}
 </body>
 </html>
