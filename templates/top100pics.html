@@ -9,10 +9,10 @@
     <title>Top 100 Pics</title>
 </head>
 <body>
-    <button class="nut"><a href="homepage">Homepage</a></button>
+    <button class="nut"><a href="{{ url_for('home') }}">Homepage</a></button>
     <button class="nut">Top 100 Pics</h3>
-    <button class="nut"><a href="top100artists">Top 100 Artists</a></button>
-    <button class="nut"><a href="category">Start Coloring</a></button>
+    <button class="nut"><a href="{{ url_for('top100artists') }}">Top 100 Artists</a></button>
+    <button class="nut"><a href="{{ url_for('full_category') }}">Start Coloring</a></button>
     {% for pic in top100pics %}
         <p>{{ pic.picpositionintop100 }}</p>
         <h4>{{ pic.picname }}</h4>
