@@ -15,20 +15,24 @@
             <p>-A colorfull world in your hand-</p>
         </div>
         <div id="bat_dau">
-            <button class="nut">Start</button>
+            <button class="nut" ><a href="category">Start</a></button>
         </div>
         <div id="top100">
-            <button id="pics" class="nut">Top 100 Pictures</button>
-            <button id="artists" class="nut">Top 100 Artists</button>
+            <button id="pics" class="nut"><a href="top100pics">Top 100 Pictures</a></button>
+            <button id="artists" class="nut"><a href="top100artists">Top 100 Artists</a></button>
         </div>
-        
-        <div class="tim_kiem">
+        <!-- <div class="tim_kiem">
             <input type="text" placeholder="Search pic/artist">
-        </div>
-        <div class="dang_nhap">
-            <button id="login" class="nut">Log in</button>
-            <button id="signup" class="nut">Sign up</button>
-        </div>       
+        </div> -->
+        {% if 'token' not in session %}
+            <div class="dang_nhap">
+                <button id="login" class="nut"><a href="login">Log in</a></button>
+                <button id="signup" class="nut"><a href="signup">Sign up</a></button>
+            </div>
+        {% else %}
+            <button class="nut"><a href="{{ session['token'] }}">My arts</a></button>
+        {% endif %}
+
     </div>
     
 </body>
