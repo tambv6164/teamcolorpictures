@@ -9,6 +9,10 @@
     <title>Color Pictures</title>
 </head>
 <body>
+    {% if 'token' in session %}
+        <button class="nut"><a href="profile/{{ session['token'] }}">My arts</a></button>
+        <button class="nut"><a href="logout">Log out</a></button>
+    {% endif %}
     <div id="main">
         <div id="tieu_de">
             <h1>Welcome to Color Pictures</h1>
@@ -29,11 +33,7 @@
                 <button id="login" class="nut"><a href="login">Log in</a></button>
                 <button id="signup" class="nut"><a href="signup">Sign up</a></button>
             </div>
-        {% else %}
-            <button class="nut"><a href="{{ session['token'] }}">My arts</a></button>
         {% endif %}
-
     </div>
-    
 </body>
 </html>
