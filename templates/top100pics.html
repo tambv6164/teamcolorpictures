@@ -8,6 +8,7 @@
 </head>
 <body>
     {% for pic in top100pics %}
+        <p>{{ pic.picpositionintop100 }}</p>
         <p>{{ pic.picname }}</p>
         <img src="{{ pic.piclink }}" alt="">
         <p>Artist: {{ pic.picartist }}, Like: {{ pic.piclikes }}</p>
