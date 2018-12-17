@@ -10,8 +10,8 @@
 </head>
 <body>
     {% if 'token' in session %}
-        <button class="nut"><a href="profile/{{ session['token'] }}">My arts</a></button>
-        <button class="nut"><a href="logout">Log out</a></button>
+        <button class="nut"><a href="profile/me">My arts</a></button>
+        <button class="nut"><a href="{{ url_for('logout') }}">Log out</a></button>
     {% endif %}
     <div id="main">
         <div id="tieu_de">
@@ -19,19 +19,19 @@
             <p>-A colorfull world in your hand-</p>
         </div>
         <div id="bat_dau">
-            <button class="nut" ><a href="category">Start</a></button>
+            <button class="nut" ><a href="{{ url_for('full_category') }}">Start</a></button>
         </div>
         <div id="top100">
-            <button id="pics" class="nut"><a href="top100pics">Top 100 Pictures</a></button>
-            <button id="artists" class="nut"><a href="top100artists">Top 100 Artists</a></button>
+            <button id="pics" class="nut"><a href="{{ url_for('top100pics') }}">Top 100 Pictures</a></button>
+            <button id="artists" class="nut"><a href="{{ url_for('top100artists') }}">Top 100 Artists</a></button>
         </div>
         <!-- <div class="tim_kiem">
             <input type="text" placeholder="Search pic/artist">
         </div> -->
         {% if 'token' not in session %}
             <div class="dang_nhap">
-                <button id="login" class="nut"><a href="login">Log in</a></button>
-                <button id="signup" class="nut"><a href="signup">Sign up</a></button>
+                <button id="login" class="nut"><a href="{{ url_for('login') }}">Log in</a></button>
+                <button id="signup" class="nut"><a href="{{ url_for('signup') }}">Sign up</a></button>
             </div>
         {% endif %}
     </div>
