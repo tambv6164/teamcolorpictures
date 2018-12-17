@@ -9,12 +9,16 @@
     <title>Color Pictures</title>
 </head>
 <body>
+    <button class="nut"><a href="homepage">Homepage</a></button>
+    {% if 'token' in session %}
+        <button class="nut"><a href="logout">Log out</a></button>
+    {% endif %}
     <div id="main">
         <div id="tieu_de">
-            <h3>Welcome Lonely Artist!</h3>
+            <h3>Xin chào {{ fullname }}!</h3>
         </div> 
         <div>
-            <button class="myarts">My arts</button>
+            <button class="myarts"><a href="profile/{{ u }}">My arts</a></button>
         </div>     
     </div>   
 </body>
