@@ -9,7 +9,7 @@
 <body>
     {% for artist in top100artists %}
         <p>{{ artist.fullname }}</p>
-        <p>Position: {{ artist.position }}</p>
+        <p>Position: {{ artist.positionintop100 }}</p>
         <p>Pics in Top 100: {{ artist.picsintop100 }}</p>
         <p>Finished Arts: {{ artist.finishedarts }}</p>
         <p>Total Likes: {{ artist.totallikes }}</p>
