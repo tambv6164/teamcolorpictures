@@ -9,13 +9,19 @@
     <title>Color Pictures</title>
 </head>
 <body>
+    <button class="nut"><a href="homepage">Homepage</a></button>
+    {% if 'token' in session %}
+        <button class="nut"><a href="me">My Arts</a></button>
+        <button class="nut"><a href="logout">Log out</a></button>
+    {% else %}
+        <button class="nut"><a href="login">Log in</a></button>
+        <button class="nut"><a href="signup">Sign up</a></button>
+    {% endif %}
     <div id="main">
-        <div id="tieu_de">
-            <p>Color pictures</p>
-        </div> 
-        <div class="tim_kiem">
+            <h3>Color pictures</h3>
+        <!-- <div class="tim_kiem">
             <input type="text" placeholder="search">
-        </div>
+        </div> -->
         <div>
             <button class="pic">Get me a random pic</button>
             <button class="pic">Animals</button>
@@ -35,7 +41,7 @@
         <div>
             <button class="pic">Things</button>
             <button class="pic">Anime</button>
-            <button class="pic">superheroes</button>
+            <button class="pic">Superheroes</button>
         </div>      
     </div>
     
