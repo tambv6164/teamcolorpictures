@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <title>New Pictures</title>
+</head>
+<body>
+    <div style="width:20%; display: flex; justify-content: space-between">
+        <div>
+            <canvas id="canvas" width="150" height="150"></canvas>
+            <!-- <div id="status"></div><br>
+            <div id="color" style="width:30px;height:30px;"></div> -->
+        </div>
+        <div>
+            <input id="colorPicker" type="color" name="favcolor" value="#ff0000">
+        </div>
+    </div>
+
+    <input id="linkB64" style="display:none" type="text" value="{{ piclink }}">
+    <script> imageLinkB64 = document.getElementById('linkB64').val(); </script>
+    <script src="../static/test.js"></script>
+</body>
+</html>
