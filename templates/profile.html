@@ -34,7 +34,9 @@
             <!-- <span>{{ pic.positionintop100 }}</span> -->
             <span>{{ pic.picname }}</span>
         </div>
-        <a href="{{ url_for('view', picid=pic.picid) }}"><img src="{{ pic.piclink }}" alt=""></a>
+        <a href="{{ url_for('view', picid=pic.picid) }}">
+            <img src="{{ pic.piclink }}" alt="" width="20%" height="20%">
+        </a>
         <p>Like: {{ pic.piclikes }}, Comment: {{ pic.piccomments }}</p>
         <hr>
     {% endfor %}
@@ -48,7 +50,7 @@
             <div>
                 <span>{{ pic.picname }}</span>
             </div>
-            <img src="{{ pic.piclink }}" alt="">
+            <img src="{{ pic.piclink }}" alt="" width="20%" height="20%">
             <hr>
         {% endfor %}
         <button class="nut"><a href="{{ url_for('full_category') }}">Start new art</a></button>

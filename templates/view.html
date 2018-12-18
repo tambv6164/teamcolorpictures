@@ -22,14 +22,15 @@
 
     <h4>{{ pic.picname }}</h4>
     <img src="{{ pic.piclink }}" alt="">
+    <hr>
     <p>Artist: <a href="{{ url_for('profile', artist=artist.username) }}">{{ artist.fullname }}</a></p>
     <p>Like: {{ pic.piclikes }}</p>
 
-    <!-- <form action="" method="POST" id="like">
+    <form action="" method="POST" id="like">
         <input style="display:none" name="like">
     </form>
-    <button type="submit" form="like" class="nut">Like</button> -->
-
+    <button type="submit" form="like" class="nut">Like</button>
+    <hr>
     <p>Comments:</p>
     {% if comment_list.first() == None %}
         <p>Chưa có bình luận. Đăng bình luận đầu tiên cho bức tranh này bạn nhé.</p>
@@ -37,7 +38,7 @@
     {% for comment in comment_list %}
         <p><a href="{{ url_for('profile', artist=comment.who_username) }}">{{ comment.who_fullname }}</a>: {{ comment.comment }}</p>
     {% endfor %}
-
+    <hr>
     <p>Write comment:</p>
     <p id='wrong'>{{ warning }}</p>
     <form action="" method="post" id="comment">

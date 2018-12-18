@@ -19,7 +19,9 @@
         <h4><a href="{{ url_for('profile', artist=artist.username) }}">{{ artist.fullname }}</a></h4>
         <p>Total Likes: {{ artist.totallikes }}</p>
         <p>Best pic:</p>
-        <a href="{{ url_for('view', picid=artist.bestpicid) }}"><img src="{{ artist.bestpic }}" alt=""></a>
+        <a href="{{ url_for('view', picid=artist.bestpicid) }}">
+            <img src="{{ artist.bestpic }}" alt="" width="20%" height="20%">
+        </a>
         <!-- <p>Pics in Top 100: {{ artist.picsintop100 }}</p> -->
         <!-- <p>Finished Arts: {{ artist.finishedarts }}</p> -->
         <hr>

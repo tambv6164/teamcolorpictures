@@ -2,6 +2,7 @@ head, body{
     text-align: center;
     font-size: 150%;
     font-family: 'Ubuntu', sans-serif;
+    width: 100%;
 }
 a{
     text-decoration: none;
@@ -28,6 +29,11 @@ a{
 #signup{
     margin: 15px 15px 15px 15px;
 }
+.flex_container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
 .dang_nhap{
     margin-bottom: 15px;
 }

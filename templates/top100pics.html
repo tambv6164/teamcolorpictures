@@ -14,14 +14,22 @@
     <button class="nut"><a href="{{ url_for('top100artists') }}">Top 100 Artists</a></button>
     <button class="nut"><a href="{{ url_for('full_category') }}">Start Coloring</a></button>
     
-    {% for pic in top100pics %}
-        <p>{{ pic.picpositionintop100 }}</p>
-        <h4>{{ pic.picname }}</h4>
-        <div><a href="{{ url_for('view', picid=pic.picid) }}"><img src="{{ pic.piclink }}" alt=""></a></div>
-        <span>Artist:<span>
-        <span><a href="{{ url_for('profile', artist=pic.username) }}"> {{ pic.picartist }}</a></span>
-        <span>Like: {{ pic.piclikes }}</span>
-        <hr>
-    {% endfor %}
+    <div class="flex_container">
+        {% for pic in top100pics %}
+        <div>
+            <p>{{ pic.picpositionintop100 }}</p>
+            <h4>{{ pic.picname }}</h4>
+            <div>
+                <a href="{{ url_for('view', picid=pic.picid) }}">
+                    <img src="{{ pic.piclink }}" alt="" width="20%" height="20%">
+                </a>
+            </div>
+            <span>Artist:<span>
+            <span><a href="{{ url_for('profile', artist=pic.username) }}"> {{ pic.picartist }}</a></span>
+            <span>Like: {{ pic.piclikes }}</span>
+            <hr>
+        </div>
+        {% endfor %}
+    </div>
 </body>
 </html>
