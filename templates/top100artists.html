@@ -13,12 +13,13 @@
     <button class="nut"><a href="{{ url_for('top100pics') }}">Top 100 Pics</a></button>
     <button class="nut">Top 100 Artists</h3>
     <button class="nut"><a href="{{ url_for('full_category') }}">Start Coloring</a></button>
+    
     {% for artist in top100artists %}
         <p>Position: {{ artist.positionintop100 }}</p>
-        <h4><a href="profile/{{artist.username}}">{{ artist.fullname }}</a></h4>
+        <h4><a href="{{ url_for('profile', artist=artist.username) }}">{{ artist.fullname }}</a></h4>
         <p>Total Likes: {{ artist.totallikes }}</p>
         <p>Best pic:</p>
-        <img src="{{ artist.bestpic }}" alt="">
+        <a href="{{ url_for('view', picid=artist.bestpicid) }}"><img src="{{ artist.bestpic }}" alt=""></a>
         <!-- <p>Pics in Top 100: {{ artist.picsintop100 }}</p> -->
         <!-- <p>Finished Arts: {{ artist.finishedarts }}</p> -->
         <hr>

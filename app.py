@@ -87,7 +87,8 @@ def func_top100artists():
                     # 'picsintop100': picsintop100,
                     'totallikes': artist.totallikes,
                     # 'finishedarts': len(finished_list),
-                    'bestpic': bestpic.piclink
+                    'bestpic': bestpic.piclink,
+                    'bestpicid': bestpic.id
                 }
                 top100artists.append(topartist)
     return top100artists
@@ -152,10 +153,6 @@ app.config['SECRET_KEY'] = 'teamcolorpictures'
 def home():
     return render_template('homepage.html')
 
-# @app.route('/homepage') # Hiển thị trang chủ
-# def homepage():
-#     return redirect(url_for('home'))
-
 @app.route('/signup', methods=['GET', 'POST']) # Đăng ký tài khoản
 def signup():
     if 'token' in session:
@@ -172,8 +169,6 @@ def signup():
         user_check = User.objects(username=u).first()        
         # email_check = User.objects(email=e).first()
         warning = ''
-        if len(u) < 6:
-            warning = 'Username cần ít nhất 6 ký tự!'
         if f == '' or u == '' or p == '': #or e == '':
             warning = 'Vui lòng nhập đầy đủ thông tin!'
         elif ' ' in u or ' ' in p:
@@ -238,9 +233,6 @@ def top100artists():
 
 @app.route('/profile/<artist>') # Hiển thị profile
 def profile(artist):
-    if artist == 'me':
-        artist = session['token']
-    
     # Chạy hàm func_artist_infor và trả về các thông tin của artist đó
     artist_infor = func_artist_infor(artist) 
     # Các bức tranh đã hoàn thành sắp xếp theo số lượng like:
@@ -263,20 +255,22 @@ def profile(artist):
                 #     if toppic['picid'] == pic.id:
                 #         positionintop100 = toppic['picpositionintop100']
                 # Tìm số lượng comment trong bức tranh đó:
-                comment_list = Comment.objects(picid=pic.id)
+                comments = len(Comment.objects(picid=pic.id))
                 # Đưa các thông tin của các bức vẽ vào list các bức vẽ của artist đó
                 toppic = {
                     # 'positionintop100': positionintop100,
                     'picname': pic.picname,
                     'piclink': pic.piclink,
-                    'piclikes': pic.piclikes, 
-                    'piccomments': len(comment_list)
+                    'piclikes': pic.piclikes,
+                    'picid': pic.id,
+                    'piccomments': comments
                 }
                 artist_finised_arts.append(toppic)
-    # Danh sách những bức đang vẽ
-    # artist_working_arts = []
-    # if session['token'] == artist:
-    working_list = Savepicture.objects(picartist=artist, picstatus='working')
+    # Danh sách những bức đang vẽ (chỉ nhìn thấy của chính mình nếu đăng nhập vào)
+    working_list = []
+    if 'token' in session:
+        if session['token'] == artist:
+            working_list = Savepicture.objects(picartist=artist, picstatus='working')
 
     return render_template('profile.html', artist_infor=artist_infor, artist_finised_arts=artist_finised_arts, working_list=working_list)
     # Các biến được dùng để hiển thị trên HTML:
@@ -295,12 +289,12 @@ def profile(artist):
 
 # Lấy link của 1 random pic:
 pic_list = Rawpicture.objects()
-random_choice = choice(pic_list).piclink
-randompic = base64encode(random_choice)
+random_picid = choice(pic_list).id
 
 @app.route('/category') # Hiển thị trang Category tổng
 def full_category():
-    return render_template('category.html', randompic=randompic)
+    # category_list = Rawpicture.objects() # Sau sẽ xử lý hiển thị tất cả các category trong html bằng vòng for
+    return render_template('category.html', random_picid=random_picid)
 
 @app.route('/category/<category>') # Hiển thị 1 trang category cụ thể
 def one_category(category):
@@ -308,13 +302,34 @@ def one_category(category):
     cap_category = category.title()
     return render_template('one_category.html', pic_list=pic_list, category=cap_category)
 
+@app.route('/new_picture/<picid>') # Hiển thị trang vẽ tranh của 1 bức tranh
+def new_picture(picid):
+    pic = Rawpicture.objects(id=picid).first()
+    piclinkb64 = base64encode(pic.piclink)
+    return render_template('new_picture.html', piclinkb64=piclinkb64)
 
-@app.route('/new_picture') # Hiển thị trang vẽ tranh của 1 bức tranh
-def new_picture():
-    return render_template('new_picture.html', piclink=randompic)
-
-# @app.route('/<picname>') # Hiển thị trang phóng to của 1 bức ảnh đã hoàn thành để có thể comment
-
+@app.route('/view/<picid>', methods=['GET', 'POST']) # Hiển thị 1 bức tranh đã hoàn thành để like và comment:
+def view(picid):
+    pic = Savepicture.objects(id=picid).first()
+    artist = User.objects(username=pic.picartist).first()
+    comment_list = Comment.objects(picid=picid)
+    if request.method == 'GET':
+        return render_template("view.html", pic=pic, artist=artist,comment_list=comment_list)
+    else:
+        form = request.form
+        comment = form['comment']
+        warning = ''
+        if 'token' in session:
+            user = User.objects(username=session['token']).first()
+            new_comment = Comment(comment=comment, who_fullname=user.fullname, who_username=user.username, picid=picid)
+            if comment == '':
+                warning = 'Bạn chưa viết gì nên không có gì để đăng!'
+            else:
+                new_comment.save()
+        else:
+            warning = 'Vui lòng đăng nhập để like & comment!'
+        return render_template('view.html', pic=pic, artist=artist, comment_list=comment_list, warning=warning)
+        
 
 if __name__ == '__main__':
   app.run(debug=True)

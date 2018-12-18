@@ -10,7 +10,8 @@
 </head>
 <body>
     <button class="nut"><a href="{{ url_for('home') }}">Homepage</a></button>
-    <button id=login class="nut"><a href="{{ url_for('login') }}">Log in</a></button>
+    <button class="nut"><a href="{{ url_for('full_category') }}">Start Coloring</a></button>
+    <button class="nut"><a href="{{ url_for('login') }}">Log in</a></button>
 
     <div id="main">
         <div id="tieu_de">
@@ -22,7 +23,7 @@
                 <input type="text" placeholder="fullname" name="fullname">
             </div>
             <div class="dang_nhap">
-                <input type="text" placeholder="username (ít nhất 6 ký tự)(không chứa dấu cách)" name="username">
+                <input type="text" placeholder="username (không chứa dấu cách)" name="username">
             </div>
             <div class="dang_nhap">
                 <input type="text" placeholder="password (không chứa dấu cách)" name='password'>

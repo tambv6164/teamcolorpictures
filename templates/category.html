@@ -10,8 +10,9 @@
 </head>
 <body>
     <button class="nut"><a href="{{ url_for('home') }}">Homepage</a></button>
+    
     {% if 'token' in session %}
-        <button class="nut"><a href="{{ url_for('profile', artist='me') }}">My Arts</a></button>
+        <button class="nut"><a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a></button>
         <button class="nut"><a href="{{ url_for('logout') }}">Log out</a></button>
     {% else %}
         <button class="nut"><a href="{{ url_for('login') }}">Log in</a></button>
@@ -23,7 +24,7 @@
             <input type="text" placeholder="search">
         </div> -->
         <div>
-            <button class="pic"><a href="{{ url_for('new_picture') }}">Get me a random pic</a></button>
+            <button class="pic"><a href="{{ url_for('new_picture', picid=random_picid) }}">Get me a random pic</a></button>
             <button class="pic"><a href="{{ url_for('one_category', category='Adiboo') }}">Adiboo</a></button>
             <button class="pic"><a href="{{ url_for('one_category', category='101 Dalmatians') }}">101 Dalmatians</a></button>
         </div>

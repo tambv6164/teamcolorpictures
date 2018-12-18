@@ -9,10 +9,16 @@
     <title>Color Pictures</title>
 </head>
 <body>
+    <button class="nut"><a href="{{ url_for('home') }}">Homepage</a></button>
+    
     {% if 'token' in session %}
-        <button class="nut"><a href="{{ url_for('profile', artist='me') }}">My arts</a></button>
+        <button class="nut"><a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a></button>
         <button class="nut"><a href="{{ url_for('logout') }}">Log out</a></button>
+    {% else %}
+        <button class="nut"><a href="{{ url_for('login') }}">Log in</a></button>
+        <button class="nut"><a href="{{ url_for('signup') }}">Sign up</a></button>
     {% endif %}
+
     <div id="main">
         <div id="tieu_de">
             <h1>Welcome to Color Pictures</h1>
@@ -28,12 +34,6 @@
         <!-- <div class="tim_kiem">
             <input type="text" placeholder="Search pic/artist">
         </div> -->
-        {% if 'token' not in session %}
-            <div class="dang_nhap">
-                <button id="login" class="nut"><a href="{{ url_for('login') }}">Log in</a></button>
-                <button id="signup" class="nut"><a href="{{ url_for('signup') }}">Sign up</a></button>
-            </div>
-        {% endif %}
     </div>
 </body>
 </html>

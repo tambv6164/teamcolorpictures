@@ -18,7 +18,7 @@
             <h3>Xin chào {{ fullname }}!</h3>
         </div> 
         <div>
-            <button class="myarts"><a href="profile/{{ u }}">My arts</a></button>
+            <button class="nut"><a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a></button>
         </div>     
     </div>   
 </body>

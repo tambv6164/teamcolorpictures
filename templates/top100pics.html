@@ -13,12 +13,13 @@
     <button class="nut">Top 100 Pics</h3>
     <button class="nut"><a href="{{ url_for('top100artists') }}">Top 100 Artists</a></button>
     <button class="nut"><a href="{{ url_for('full_category') }}">Start Coloring</a></button>
+    
     {% for pic in top100pics %}
         <p>{{ pic.picpositionintop100 }}</p>
         <h4>{{ pic.picname }}</h4>
-        <div><img src="{{ pic.piclink }}" alt=""></div>
+        <div><a href="{{ url_for('view', picid=pic.picid) }}"><img src="{{ pic.piclink }}" alt=""></a></div>
         <span>Artist:<span>
-        <span><a href="profile/{{pic.username}}"> {{ pic.picartist }}</a></span>
+        <span><a href="{{ url_for('profile', artist=pic.username) }}"> {{ pic.picartist }}</a></span>
         <span>Like: {{ pic.piclikes }}</span>
         <hr>
     {% endfor %}

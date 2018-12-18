@@ -13,14 +13,16 @@
     <button class="nut"><a href="{{ url_for('full_category') }}">Start Coloring</a></button>
 
     {% if 'token' in session %}
-        <button class="nut"><a href="{{ url_for('profile', artist='me') }}">My Arts</a></button>
+        <button class="nut"><a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a></button>
         <button class="nut"><a href="{{ url_for('logout') }}">Log out</a></button>
+    {% else %}
+        <button class="nut"><a href="{{ url_for('login') }}">Log in</a></button>
+        <button class="nut"><a href="{{ url_for('signup') }}">Sign up</a></button>
     {% endif %}
     
     <h3>{{ artist_infor.fullname }}</h3>
     <hr>
     <div>Finished Arts: {{ artist_infor.finished_arts }}</div>
-    <div>Working Arts: {{ artist_infor.working_arts }}</div>
     <div>Like: {{ artist_infor.totallikes }}</div>
     <div>
         <!-- <span>Top 100 Pics: {{ artist_infor.picsintop100 }}</span> -->
@@ -32,13 +34,16 @@
             <!-- <span>{{ pic.positionintop100 }}</span> -->
             <span>{{ pic.picname }}</span>
         </div>
-        <img src="{{ pic.piclink }}" alt="">
+        <a href="{{ url_for('view', picid=pic.picid) }}"><img src="{{ pic.piclink }}" alt=""></a>
         <p>Like: {{ pic.piclikes }}, Comment: {{ pic.piccomments }}</p>
         <hr>
     {% endfor %}
     
-    {% if 'token' in session %}
+    {% if working_list != [] %}
         <h3>Working arts</h3>
+        <hr>
+        <div>Working Arts: {{ artist_infor.working_arts }}</div>
+        <hr>
         {% for pic in working_list %}
             <div>
                 <span>{{ pic.picname }}</span>
