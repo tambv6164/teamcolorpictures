@@ -10,7 +10,10 @@ import requests
 mlab.connect()
 
 def base64encode(url):
-    return base64.b64encode(requests.get(url).content)
+    link1 = base64.b64encode(requests.get(url).content)
+    link2 = str(link1)
+    link = link2.replace("b'","data:image/jpeg;base64,").replace("'","")
+    return link
 
 def func_top100pics():
     # Tìm tất cả những bức tranh đã hoàn thành:
