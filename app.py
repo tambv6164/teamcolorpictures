@@ -1,20 +1,27 @@
 from flask import Flask, request, render_template, session, redirect, url_for
+# import các Class
 from models.user import User
 from models.rawpicture import Rawpicture
 from models.savepicture import Savepicture
 from models.comment import Comment
+from models.like import Like
+# import một số hàm chức năng sẽ dùng
 from random import choice
-import mlab
 import base64
 import requests
+# Kết nối với database
+import mlab
 mlab.connect()
 
+
+# Hàm chuyển link ảnh sang định dạng base64
 def base64encode(url):
     link1 = base64.b64encode(requests.get(url).content)
     link2 = str(link1)
     link = link2.replace("b'","data:image/jpeg;base64,").replace("'","")
     return link
 
+# Hàm tạo list 100 bức tranh nhiều like nhất
 def func_top100pics():
     # Tìm tất cả những bức tranh đã hoàn thành:
     finished_list = Savepicture.objects(picstatus='finished', piclikes__ne=0)
@@ -50,6 +57,7 @@ def func_top100pics():
     # 3. Số lượng like: piclikes
     # 4. Tác giả: picartist  
 
+# Hàm tạo list 100 artist nhiều like nhất
 def func_top100artists():
     # Tìm tất cả các artist:
     artist_list = User.objects(totallikes__ne=0)
@@ -103,6 +111,7 @@ def func_top100artists():
     # 5. Số bức vẽ đã hoàn thành: finishedarts
     # 6. Link bức vẽ được nhiều like nhất để hiển thị: bestpic
 
+# Hàm tạo list thông tin của 1 artist bất kỳ
 def func_artist_infor(artist):
     # Fullname của artist:
     artist_fullname = User.objects(username=artist).first().fullname
@@ -149,6 +158,7 @@ def func_artist_infor(artist):
     #   - Bỏ: Số bức tranh trong top 100: picsintop100 (bằng 0 là không có bức nào)
     #   - Bỏ: Thứ hạng của artist: positionintop100 (bằng 0 là không được vào top)
 
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'teamcolorpictures'
 
@@ -156,7 +166,7 @@ app.config['SECRET_KEY'] = 'teamcolorpictures'
 def home():
     return render_template('homepage.html')
 
-@app.route('/signup', methods=['GET', 'POST']) # Đăng ký tài khoản
+@app.route('/signup', methods=['GET', 'POST']) # Trang đăng ký tài khoản
 def signup():
     if 'token' in session:
         return render_template('homepage.html')
@@ -189,7 +199,7 @@ def signup():
             # Đăng ký xong thì trả về giao diện trang Welcome
             return render_template('welcome.html', fullname=f, u=u)
 
-@app.route('/login', methods=['GET', 'POST']) # Đăng nhập
+@app.route('/login', methods=['GET', 'POST']) # Trang đăng nhập
 def login():
     if 'token' in session:
         return render_template('homepage.html')
@@ -257,8 +267,8 @@ def profile(artist):
                 # for toppic in top100pics:
                 #     if toppic['picid'] == pic.id:
                 #         positionintop100 = toppic['picpositionintop100']
-                # Tìm số lượng comment trong bức tranh đó:
-                comments = len(Comment.objects(picid=pic.id))
+                # # Tìm số lượng comment trong bức tranh đó:
+                # comments = len(Comment.objects(picid=pic.id))
                 # Đưa các thông tin của các bức vẽ vào list các bức vẽ của artist đó
                 toppic = {
                     # 'positionintop100': positionintop100,
@@ -266,7 +276,7 @@ def profile(artist):
                     'piclink': pic.piclink,
                     'piclikes': pic.piclikes,
                     'picid': pic.id,
-                    'piccomments': comments
+                    'piccomments': pic.piccomments
                 }
                 artist_finised_arts.append(toppic)
     # Danh sách những bức đang vẽ (chỉ nhìn thấy của chính mình nếu đăng nhập vào)
@@ -290,12 +300,11 @@ def profile(artist):
     #   - Số lượng like: piclikes
     #   - Số lượng comment: piccomments
 
-# Lấy link của 1 random pic:
-pic_list = Rawpicture.objects()
-random_picid = choice(pic_list).id
-
 @app.route('/category') # Hiển thị trang Category tổng
 def full_category():
+    # Lấy id của 1 random pic, sử dụng trong mục Get me a random pic:
+    pic_list = Rawpicture.objects()
+    random_picid = choice(pic_list).id
     # category_list = Rawpicture.objects() # Sau sẽ xử lý hiển thị tất cả các category trong html bằng vòng for
     return render_template('category.html', random_picid=random_picid)
 
@@ -305,34 +314,66 @@ def one_category(category):
     cap_category = category.title()
     return render_template('one_category.html', pic_list=pic_list, category=cap_category)
 
-@app.route('/new_picture/<picid>') # Hiển thị trang vẽ tranh của 1 bức tranh
+@app.route('/new_picture/<picid>') # Hiển thị trang vẽ tranh của 1 bức tranh theo id của bức tranh đó
 def new_picture(picid):
     pic = Rawpicture.objects(id=picid).first()
     piclinkb64 = base64encode(pic.piclink)
     return render_template('new_picture.html', piclinkb64=piclinkb64)
 
-@app.route('/view/<picid>', methods=['GET', 'POST']) # Hiển thị 1 bức tranh đã hoàn thành để like và comment:
+@app.route('/view/<picid>', methods=['GET', 'POST']) # Hiển thị 1 bức tranh đã hoàn thành để like và comment theo id của bức tranh đó
 def view(picid):
     pic = Savepicture.objects(id=picid).first()
+    piclikes = pic.piclikes
     artist = User.objects(username=pic.picartist).first()
     comment_list = Comment.objects(picid=picid)
+    warning = ''
+    likebutton = 'Like'
     if request.method == 'GET':
-        return render_template("view.html", pic=pic, artist=artist,comment_list=comment_list)
-    else:
-        form = request.form
-        comment = form['comment']
-        warning = ''
         if 'token' in session:
-            user = User.objects(username=session['token']).first()
-            new_comment = Comment(comment=comment, who_fullname=user.fullname, who_username=user.username, picid=picid)
-            if comment == '':
-                warning = 'Bạn chưa viết gì nên không có gì để đăng!'
+            like_check = Like.objects(who_username=session['token'], picid=picid).first()
+            if  like_check is None :
+                likebutton = 'Like'
             else:
-                new_comment.save()
+                likebutton = 'Dislike'
         else:
+            likebutton = 'Like'
+        return render_template("view.html", pic=pic, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton)
+    else:
+        if 'token' not in session:
             warning = 'Vui lòng đăng nhập để like & comment!'
-        return render_template('view.html', pic=pic, artist=artist, comment_list=comment_list, warning=warning)
-        
+        else:
+            form = request.form
+            # Xử lý form comment:
+            if 'comment' in form:
+                comment = form['comment']
+                user = User.objects(username=session['token']).first()
+                new_comment = Comment(comment=comment, who_fullname=user.fullname, who_username=user.username, picid=picid)
+                if comment == '':
+                    warning = 'Bạn chưa viết gì nên không có gì để đăng!'
+                else:
+                    pic.update(set__piccomments=pic.piccomments + 1)
+                    new_comment.save()
+            # Xử lý form like:
+            if 'like' in form:
+                like_check = Like.objects(who_username=session['token'], picid=picid).first()
+                if  like_check is None:
+                    piclikes = pic.piclikes + 1
+                    # Update like vào số like của bức tranh và của user vẽ bức tranh đó:
+                    pic.update(set__piclikes=pic.piclikes + 1)
+                    artist.update(set__totallikes=artist.totallikes + 1)
+                    # Lưu like vào data:
+                    new_like = Like(who_username=session['token'], picid=picid)
+                    new_like.save()
+                    likebutton = 'Dislike'
+                else:
+                    piclikes = pic.piclikes - 1
+                    # Update like vào số like của bức tranh và của user vẽ bức tranh đó:
+                    pic.update(set__piclikes=pic.piclikes - 1)
+                    artist.update(set__totallikes=artist.totallikes - 1)
+                    # Xóa like khỏi database
+                    like_check.delete()
+                    likebutton == 'Like'
+        return render_template('view.html', pic=pic, piclikes=piclikes, artist=artist, comment_list=comment_list, warning=warning, likebutton=likebutton)
 
 if __name__ == '__main__':
   app.run(debug=True)

@@ -29,11 +29,6 @@ a{
 #signup{
     margin: 15px 15px 15px 15px;
 }
-.flex_container {
-    display: flex;
-    flex-wrap: wrap;
-}
-
 .dang_nhap{
     margin-bottom: 15px;
 }

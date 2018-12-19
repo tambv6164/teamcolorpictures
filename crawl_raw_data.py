@@ -4,44 +4,32 @@ import requests
 from bs4 import BeautifulSoup
 from models.rawpicture import Rawpicture
 import mlab
-import base64
 
 mlab.connect()
-def base64encode(url):
-    return base64.b64encode(requests.get(url).content)
 
-# def make_soup(url):
-#     thepage = urllib.request.urlopen(url)
-#     soupdata = BeautifulSoup(thepage,"html.parser")
-#     return soupdata
-    
-# # soup = make_soup("http://www.coloring-book.info/coloring/coloring_page.php?id=7")
-# soup = make_soup("http://www.coloring-book.info/coloring/coloring_page.php?id=4")
+def make_soup(url):
+    thepage = urllib.request.urlopen(url)
+    soupdata = BeautifulSoup(thepage,"html.parser")
+    return soupdata
 
-# infor_list = soup.findAll('img')
-# sourcelist = []
-# for i in infor_list:
-#     if '.jpg' in i.get('src'):
-#         sourcelist.append(i)
-# for img in sourcelist:
-#     temp = img.get('src')
-#     tmp = temp.replace("_m","").replace("/thumbs","")
-#     image = "http://www.coloring-book.info/coloring/" + tmp if "http" not in tmp else tmp
-# #     image = base64encode(image)
-#     category = ''
-#     for i in tmp:
-#         if i != "/":
-#             category += i
-#         else:
-#             break
-#     picname = tmp.replace(category,'').replace('.jpg', '').replace('/', '')
-# #     print(picname,image,category)
+# soup = make_soup("http://www.coloring-book.info/coloring/coloring_page.php?id=7")
+soup = make_soup("http://www.coloring-book.info/coloring/coloring_page.php?id=4")
 
-#     rawpic = Rawpicture(picname=picname, piclink=image, category=category)
-#     rawpic.save()
-
-a = base64encode('https://www.thesprucecrafts.com/thmb/2NIVutcOoYrjW2FYhU5zREWN7DI=/642x640/filters:no_upscale():max_bytes(150000):strip_icc()/mom-579bef0b3df78c327690f12a.jpg')
-b = str(a)
-c = b.replace("b'","data:image/jpg;base64,").replace("'","")
-print(c)
-
+infor_list = soup.findAll('img')
+sourcelist = []
+for i in infor_list:
+    if '.jpg' in i.get('src'):
+        sourcelist.append(i)
+for img in sourcelist:
+    temp = img.get('src')
+    tmp = temp.replace("_m","").replace("/thumbs","")
+    image = "http://www.coloring-book.info/coloring/" + tmp if "http" not in tmp else tmp
+    category = ''
+    for i in tmp:
+        if i != "/":
+            category += i
+        else:
+            break
+    picname = tmp.replace(category,'').replace('.jpg', '').replace('/', '')
+    rawpic = Rawpicture(picname=picname, piclink=image, category=category)
+    rawpic.save()
