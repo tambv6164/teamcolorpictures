@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, session, redirect, url_for
+from flask import Flask, request, render_template, session, redirect, url_for, jsonify
 # import các Class
 from models.user import User
 from models.rawpicture import Rawpicture
@@ -78,6 +78,7 @@ def func_top100artists():
                 User.objects(username=artist.username).first().update(set__positionintop100=i+1)
                 # Số tranh đã hoàn thành:
                 finished_list = Savepicture.objects(picartist=artist.username, picstatus='finished')
+                # # Phần dưới này comment lại để web chạy nhanh hơn:
                 # # Số tranh trong top 100 pics:
                 # picsintop100 = 0
                 # top100pics = func_top100pics()
@@ -106,7 +107,7 @@ def func_top100artists():
     # Các biến dùng để hiển thị trên HTML:
     # 1. Thứ hạng của artist: positionintop100
     # 2. Tên đầy đủ của artist: fullname
-    # 3. Số lượng pic nằm trong top100pics: picsintop100
+    # 3. Bỏ: Số lượng pic nằm trong top100pics: picsintop100
     # 4. Tổng like: totallikes
     # 5. Số bức vẽ đã hoàn thành: finishedarts
     # 6. Link bức vẽ được nhiều like nhất để hiển thị: bestpic
@@ -126,6 +127,7 @@ def func_artist_infor(artist):
     totallikes = 0
     for art in finished_list:
         totallikes += art.piclikes
+    # # Phần dưới này comment lại để web chạy nhanh hơn:
     # # Tổng số bức tranh trong top 100 pics:
     # picsintop100 = 0
     # top100pics = func_top100pics()
@@ -177,6 +179,8 @@ def signup():
         f = form['fullname']
         u = form['username']
         p = form['password']
+        # # Tạm bỏ email cùng các phần liên quan bên dưới. 
+        # # Khi nào cần thì bật lại vì trên database vẫn để email với giá trị default.
         # e = form['email']
         new_user = User(fullname=f, username=u, password=p) #, email=e)
         user_check = User.objects(username=u).first()        
@@ -329,6 +333,7 @@ def view(picid):
     warning = ''
     likebutton = 'Like'
     if request.method == 'GET':
+        # Kiểm tra user có đăng nhập hay không để hiển thị nút like tương ứng:
         if 'token' in session:
             like_check = Like.objects(who_username=session['token'], picid=picid).first()
             if  like_check is None :
@@ -351,6 +356,7 @@ def view(picid):
                 if comment == '':
                     warning = 'Bạn chưa viết gì nên không có gì để đăng!'
                 else:
+                    # Update số comment vào số comment của bức tranh trên database:
                     pic.update(set__piccomments=pic.piccomments + 1)
                     new_comment.save()
             # Xử lý form like:

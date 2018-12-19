@@ -22,21 +22,26 @@
     {% endif %}
     
     <hr>
-    <div style="width:20%; display: flex; justify-content: space-between">
+    <div style="display: flex; justify-content: space-around">
         <div>
             <canvas id="canvas" width="567" height="794"></canvas>
-            <!-- <div id="status"></div><br>
-            <div id="color" style="width:30px;height:30px;"></div> -->
         </div>
         <div>
-            <input id="colorPicker" type="color" name="favcolor" value="#ff0000">
+            <div>
+                <span>Pick your color here: </span>
+                <input id="colorPicker" type="color" name="favcolor" value="#ff0000">
+            </div>
+            <div>
+                <button class="nut">Save</button>
+            </div>
         </div>
     </div>
-
+    
     <input id="linkB64" style="display:none" type="text" value="{{ piclinkb64 }}">
     <script>
         imageLinkB64 = document.getElementById('linkB64').value;
     </script>
     <script src="../static/test.js"></script>
+
 </body>
 </html>
