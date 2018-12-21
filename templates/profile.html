@@ -22,7 +22,7 @@
     
     <h3>{{ artist_infor.fullname }}</h3>
     <hr>
-    <div>Finished Arts: {{ artist_infor.finished_arts }}</div>
+    <div>Finished Arts: {{ finished_arts }}</div>
     <div>Like: {{ artist_infor.totallikes }}</div>
     <hr>
     
@@ -38,7 +38,7 @@
     {% if working_list != [] %}
         <h3>Working arts</h3>
         <hr>
-        <div>Working Arts: {{ artist_infor.working_arts }}</div>
+        <div>Working Arts: {{ working_arts }}</div>
         <hr>
         {% for pic in working_list %}
             <p>{{ pic.picname }}</p>
@@ -48,7 +48,10 @@
                 </a>
             </div>
             <button class="nut"><a href="{{ url_for('keep_continue', picid=pic.id) }}">Continue</a></button>
-            <button class="nut">Finish</button>
+            <form style="display:none" id="update" method="POST">
+                <input style="display:none" type="text" name="picid" id="inputid" value="{{ pic.id }}">
+            </form>
+            <button type="submit" form="update" class="nut">Finish</button>
             <hr>
         {% endfor %}
         <button class="nut"><a href="{{ url_for('full_category') }}">Start new art</a></button>
