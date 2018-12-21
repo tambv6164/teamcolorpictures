@@ -14,24 +14,27 @@
     <title>Top 100 Artists</title>
 </head>
 <body>
-    <button class="nut"><a href="{{ url_for('home') }}">Homepage</a></button>
-    <button class="nut"><a href="{{ url_for('top100pics') }}">Top 100 Pics</a></button>
-    <button class="nut"><a href="{{ url_for('roomoffame') }}">Room of Fame</a></button>
-    <button class="nut"><a href="{{ url_for('full_category') }}">Start Coloring</a></button>
+    <button class="nut"><a href="{{ url_for('home') }}" style="font-family: Ubuntu">Homepage</a></button>
+    <button class="nut"><a href="{{ url_for('top100pics') }}" style="font-family: Ubuntu">Top 100 Pics</a></button>
+    <button class="nut"><a href="{{ url_for('roomoffame') }}" style="font-family: Ubuntu">Room of Fame</a></button>
+    <button class="nut"><a href="{{ url_for('full_category') }}" style="font-family: Ubuntu">Start Coloring</a></button>
     
     <h3>Top 100 Artists</h3>
     <hr>
     <p>{{ notice }}</p>
-    
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+        <div class="carousel-inner"> 
             {% for artist in top100artists %}
-            <div>
+            <div class="item" id="{{ artist.positionintop100 }}">
                 <p>{{ artist.positionintop100 }}</p>
                 <h4><a href="{{ url_for('profile', artist=artist.username) }}">{{ artist.fullname }}</a></h4>
                 <p>Total Likes: {{ artist.totallikes }}</p>
                 <p>Best pic:</p>
-                <a href="{{ url_for('view', picid=artist.bestpicid) }}">
-                    <img src="{{ artist.bestpiclink }}" alt="" width="20%" height="20%">
-                </a>
+                <div>
+                    <a href="{{ url_for('view', picid=artist.bestpicid) }}">
+                        <img src="{{ artist.bestpiclink }}" alt="" width="20%" height="20%">
+                    </a>
+                </div>
                 <hr>
             </div>
             {% endfor %}

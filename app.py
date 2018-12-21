@@ -101,34 +101,23 @@ def logout():
 def top100pics():
     notice = ''
     # Tìm những bức tranh có like khác 0:
-    finished_list = Savepicture.objects(picstatus='finished', piclikes__ne=0)
+    finished_list = Savepicture.objects(picstatus='finished', piclikes__ne=0).order_by('-piclikes')
     if len(finished_list) == 0:
         notice = 'Danh sách trống'
-    # Tìm 100 bức có số like lớn nhất và lưu số likes đó vào 1 list:
-    likes_list = []
-    for pic in finished_list:
-        likes_list.append(pic.piclikes)
-    likes_list.sort(reverse=True) # sắp xếp theo thứ tự giảm dần
-    if len(likes_list) > 100:
-        likes_list = likes_list[:101]
-    likes_list = list(dict.fromkeys(likes_list)) # loại bỏ các giá trị trùng nhau
-    # Tạo Top 100 bằng cách tìm ngược likes trong list trên ở database ảnh:
     top100pics = []
-    for i, v in enumerate(likes_list):
-        for pic in finished_list:
-            if pic.piclikes == v:
-                picpositionintop100 = i + 1
-                # Đưa các thông tin của pic đó vào list top 100 pics:
-                toppic = {
-                    'picpositionintop100': picpositionintop100,
-                    'picname': pic.picname,
-                    'piclink': pic.piclink,
-                    'piclikes': pic.piclikes, 
-                    'picartistfullname': pic.picartistfullname,
-                    'picartist': pic.picartist,
-                    'picid': pic.id
-                }
-                top100pics.append(toppic)
+    for i, v in enumerate(finished_list):
+        picpositionintop100 = i + 1
+        # Đưa các thông tin của pic đó vào list top 100 pics:
+        toppic = {
+            'picpositionintop100': picpositionintop100,
+            'picname': v.picname,
+            'piclink': v.piclink,
+            'piclikes': v.piclikes, 
+            'picartistfullname': v.picartistfullname,
+            'picartist': v.picartist,
+            'picid': v.id
+        }
+        top100pics.append(toppic)
     return render_template('top100pics.html', notice=notice, top100pics=top100pics)
 
 @app.route('/top100artists') # Hiển thị 100 Artists đc nhiều like nhất
@@ -237,7 +226,7 @@ def view(picid):
 
 @app.route('/category') # Hiển thị trang Category tổng
 def full_category():
-    # Lấy id của 1 random pic, sử dụng trong mục Get me a random pic:
+    # Lấy id của 1 random pic, sử dụng trong mục Get me a random pic:   
     pic_list = Rawpicture.objects()
     random_picid = choice(pic_list).id
     # category_list = Rawpicture.objects() # Sau sẽ xử lý hiển thị tất cả các category trong html bằng vòng for
