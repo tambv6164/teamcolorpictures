@@ -27,16 +27,11 @@
             </div>
             <div><button onclick="clearCanvas()" class="nut" id="resetcanvas">Reset</button></div>
             <div>
-                <button class="nut" onclick="displayForm()">Save</button>
-                <form style="display:none" action="" method="post" id="submitform">
-                    <div><label for="">Name your art:</label></div>
-                    <div><input type="text" class="nut" id="inputname" name="picname"></div>
+                <form action="" method="post" id="submitform">
                     <input style="display:none" type="text" id="inputlink" name="piclink">
                     <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
-                    <input style="display:none" type="text" id="inputpicartist" name="picartist">
-                    <div><button id="saveworking" class="nut" type="button" onclick="saveWorking()">Save as Working Art</button></div>
-                    <div><button id="savefinished" class="nut" type="button" onclick="saveFinished()">Save as Finished Art</button></div>
-                    <p id="setnamewarning" style="display:none; color:red">Bạn chưa đặt tên!</p>
+                    <div><button id="saveworking" class="nut" type="button" onclick="saveWorking()">Save</button></div>
+                    <div><button id="savefinished" class="nut" type="button" onclick="saveFinished()">Finish Art</button></div>
                 </form>
             </div>
         </div>
@@ -56,57 +51,27 @@
         imageLinkB64 = document.getElementById('linkB64').value;
     </script>
     <script>
-        function displayForm() {
-          var x = document.getElementById("submitform");
-          if (x.style.display === "none") {
-            x.style.display = "block";
-          } else {
-            x.style.display = "none";
-          }
-        }
-    </script>
-    <script>
         function saveWorking() {
-            var name = document.getElementById("inputname").value;
-            var warning = document.getElementById("setnamewarning");
             var savebutton = document.getElementById("saveworking");
-            if (name == "") {
-            warning.style.display = "block";
-            savebutton.type = "button";
-            } else {
-            warning.style.display = "none";
             savebutton.type = "submit";
-            var token = document.getElementById("token").value;
             var canvas = document.getElementById('canvas');
             var context = canvas.getContext("2d");
             var dataURL = canvas.toDataURL();
             document.getElementById('inputlink').value = dataURL;
             document.getElementById('inputpicstatus').value = "working";
-            document.getElementById('inputpicartist').value = token;
-            }
         }
     </script>
     <script>
-            function saveFinished() {
-                var name = document.getElementById("inputname").value;
-                var warning = document.getElementById("setnamewarning");
-                var savebutton = document.getElementById("savefinished");
-                if (name == "") {
-                warning.style.display = "block";
-                savebutton.type = "button";
-                } else {
-                warning.style.display = "none";
-                savebutton.type = "submit";
-                var token = document.getElementById("token").value;
-                var canvas = document.getElementById('canvas');
-                var context = canvas.getContext("2d");
-                var dataURL = canvas.toDataURL();
-                document.getElementById('inputlink').value = dataURL;
-                document.getElementById('inputpicstatus').value = "finished";
-                document.getElementById('inputpicartist').value = token;
-                }
-            }
-        </script>
+        function saveFinished() {
+            var savebutton = document.getElementById("savefinished");
+            savebutton.type = "submit";
+            var canvas = document.getElementById('canvas');
+            var context = canvas.getContext("2d");
+            var dataURL = canvas.toDataURL();
+            document.getElementById('inputlink').value = dataURL;
+            document.getElementById('inputpicstatus').value = "finished";
+        }
+    </script>
     <script>
         document.getElementById('resetcanvas').onclick = function clearCanvas() {
             drawImageFromWebUrl(imageLinkB64)

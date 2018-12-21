@@ -281,7 +281,7 @@ def profile(artist):
 
 @app.route('/new_picture/<picid>', methods=['GET', 'POST']) # Hiển thị trang vẽ tranh của 1 bức tranh theo id của bức tranh đó
 def new_picture(picid):
-    pic = Savepicture.objects(id=picid).first()
+    pic = Rawpicture.objects(id=picid).first()
     piclinkb64 = base64encode(pic.piclink)
     token = ''
     aftersave = ''
@@ -296,10 +296,17 @@ def new_picture(picid):
         picname = form['picname']
         piclink = form['piclink']
         picstatus = form['picstatus']
-        picartist = form['picartist']
+        picartist = token
         picartistfullname = User.objects(username=token).first().fullname
         newlink = Savepicture(piclink=piclink, picname=picname, picstatus=picstatus, picartist=picartist, picartistfullname=picartistfullname)
         newlink.save()
+        # Update database của user tương ứng:
+        working_arts = User.objects(username=token).first().working_arts
+        finished_arts = User.objects(username=token).first().finished_arts
+        if picstatus == 'working':
+            User.objects(username=token).first().update(set__working_arts=working_arts+1)
+        elif picstatus == 'finished':
+            User.objects(username=token).first().update(set__finished_arts=finished_arts+1)
         return render_template('new_picture.html', piclinkb64=piclink, aftersave=aftersave)
 
 @app.route('/keep_continue/<picid>', methods=['GET', 'POST']) # Trang vẽ tiếp 1 bức đang vẽ dở
@@ -318,8 +325,19 @@ def keep_continue(picid):
             return render_template('keep_continue.html', piclinkb64=piclinkb64, token=token, aftersave=aftersave)
         elif request.method == 'POST':
             aftersave = 'yes'
+            form = request.form
+            piclink = form['piclink']
+            picstatus = form['picstatus']
+            # Update:
+            working_arts = User.objects(username=token).first().working_arts
+            finished_arts = User.objects(username=token).first().finished_arts
+            if picstatus == 'working':
+                pic.update(set__piclink=piclink)
+            elif picstatus == 'finished':
+                pic.update(set__piclink=piclink, set__picstatus=picstatus)
+                User.objects(username=token).first().update(set__finished_arts=finished_arts+1)
+                User.objects(username=token).first().update(set__working_arts=working_arts-1)
             return render_template('keep_continue.html', piclinkb64=piclink, aftersave=aftersave)
-
 
 if __name__ == '__main__':
   app.run(debug=True)
