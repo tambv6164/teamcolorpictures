@@ -26,9 +26,9 @@
     <div>Like: {{ artist_infor.totallikes }}</div>
     <hr>
     
-    {% for pic in artist_finised_arts %}
+    {% for pic in finished_list %}
         <p>{{ pic.picname }}</p>
-        <a href="{{ url_for('view', picid=pic.picid) }}">
+        <a href="{{ url_for('view', picid=pic.id) }}">
             <img src="{{ pic.piclink }}" alt="" width="20%" height="20%">
         </a>
         <p>Like: {{ pic.piclikes }}, Comment: {{ pic.piccomments }}</p>
