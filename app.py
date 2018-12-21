@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template, session, redirect, url_for, jsonify
+from flask import Flask, request, render_template, session, redirect, url_for, json, jsonify
 # import các Class
 from models.user import User
 from models.rawpicture import Rawpicture
@@ -13,153 +13,12 @@ import requests
 import mlab
 mlab.connect()
 
-
 # Hàm chuyển link ảnh sang định dạng base64
 def base64encode(url):
     link1 = base64.b64encode(requests.get(url).content)
     link2 = str(link1)
     link = link2.replace("b'","data:image/jpeg;base64,").replace("'","")
     return link
-
-# Hàm tạo list 100 bức tranh nhiều like nhất
-def func_top100pics():
-    # Tìm tất cả những bức tranh đã hoàn thành:
-    finished_list = Savepicture.objects(picstatus='finished', piclikes__ne=0)
-    # Tìm 100 bức có số like lớn nhất và lưu số likes đó vào 1 list:
-    likes_list = []
-    for pic in finished_list:
-        likes_list.append(pic.piclikes)
-    likes_list.sort(reverse=True) # sắp xếp theo thứ tự giảm dần
-    if len(likes_list) > 100:
-        likes_list = likes_list[:101]
-    likes_list = list(dict.fromkeys(likes_list)) # loại bỏ các giá trị trùng nhau
-    # Tạo Top 100 bằng cách tìm ngược likes trong list trên ở database ảnh:
-    top100pics = []
-    for i, v in enumerate(likes_list):
-        for pic in finished_list:
-            if pic.piclikes == v:
-                Savepicture.objects(id=pic.id).first().update(set__picpositionintop100=i+1)
-                artist = User.objects(username=pic.picartist).first()
-                toppic = {
-                    'picpositionintop100': pic.picpositionintop100,
-                    'picname': pic.picname,
-                    'piclink': pic.piclink,
-                    'piclikes': pic.piclikes, 
-                    'picartist': artist.fullname,
-                    'username': artist.username,
-                    'picid': pic.id
-                }
-                top100pics.append(toppic)
-    return top100pics
-    # Các biến được dùng để hiển thị trên HTML:
-    # 1. Tên bức tranh: picname
-    # 2. Link ảnh để hiển thị ảnh: piclink
-    # 3. Số lượng like: piclikes
-    # 4. Tác giả: picartist  
-
-# Hàm tạo list 100 artist nhiều like nhất
-def func_top100artists():
-    # Tìm tất cả các artist:
-    artist_list = User.objects(totallikes__ne=0)
-    # Tìm 100 artist có likes lớn nhất và lưu số like đó vào 1 list:
-    likes_list = []
-    for artist in artist_list:
-        likes_list.append(artist.totallikes)
-    likes_list.sort(reverse=True) # sắp xếp theo thứ tự giảm dần
-    if len(likes_list) > 100:
-        likes_list = likes_list[:101]
-    likes_list = list(dict.fromkeys(likes_list)) # loại bỏ các giá trị trùng nhau
-    # Tạo top 100 Artist bằng cách tìm ngược likes trong database user:
-    top100artists = []
-    for i, v in enumerate(likes_list):
-        for artist in artist_list:
-            if artist.totallikes == v:
-                # Update Position trong top 100:
-                User.objects(username=artist.username).first().update(set__positionintop100=i+1)
-                # Số tranh đã hoàn thành:
-                finished_list = Savepicture.objects(picartist=artist.username, picstatus='finished')
-                # # Phần dưới này comment lại để web chạy nhanh hơn:
-                # # Số tranh trong top 100 pics:
-                # picsintop100 = 0
-                # top100pics = func_top100pics()
-                # for pic in top100pics:
-                #     if pic['picartist'] == artist.username:
-                #         picsintop100 += 1
-                # User.objects(username=artist.username).first().update(set__picsintop100=picsintop100)
-                # Tìm bức tranh có nhiều like nhất của artist đó:
-                likes = []
-                for pic in finished_list:
-                    likes.append(pic.piclikes)
-                bestpic = Savepicture.objects(picartist=artist.username, picstatus='finished', piclikes=max(likes)).first()
-                # Đưa các thông tin của artist đó vào list top 100 artist:
-                topartist = {
-                    'positionintop100': artist.positionintop100,
-                    'fullname': artist.fullname,
-                    'username': artist.username,
-                    # 'picsintop100': picsintop100,
-                    'totallikes': artist.totallikes,
-                    # 'finishedarts': len(finished_list),
-                    'bestpic': bestpic.piclink,
-                    'bestpicid': bestpic.id
-                }
-                top100artists.append(topartist)
-    return top100artists
-    # Các biến dùng để hiển thị trên HTML:
-    # 1. Thứ hạng của artist: positionintop100
-    # 2. Tên đầy đủ của artist: fullname
-    # 3. Bỏ: Số lượng pic nằm trong top100pics: picsintop100
-    # 4. Tổng like: totallikes
-    # 5. Số bức vẽ đã hoàn thành: finishedarts
-    # 6. Link bức vẽ được nhiều like nhất để hiển thị: bestpic
-
-# Hàm tạo list thông tin của 1 artist bất kỳ
-def func_artist_infor(artist):
-    # Fullname của artist:
-    artist_fullname = User.objects(username=artist).first().fullname
-    # Số bức tranh đã hoàn thành:
-    finished_list = Savepicture.objects(picartist=artist, picstatus='finished')
-    finished_arts = len(finished_list)
-    # Số bức tranh đang làm dở:
-    working_list = Savepicture.objects(picartist=artist, picstatus='working')
-    working_arts = len(working_list)
-    # Tính tổng like của artist: 
-    ##### Liệu có cách nào tự động kết nối data user vs data picture để tự tính tổng like?
-    totallikes = 0
-    for art in finished_list:
-        totallikes += art.piclikes
-    # # Phần dưới này comment lại để web chạy nhanh hơn:
-    # # Tổng số bức tranh trong top 100 pics:
-    # picsintop100 = 0
-    # top100pics = func_top100pics()
-    # for pic in top100pics:
-    #     if pic['picartist'] == artist:
-    #         picsintop100 += 1
-    # User.objects(username=artist).first().update(set__picsintop100=picsintop100)
-    # # Tìm thứ hạng trong top 100:    
-    # positionintop100 = 0
-    # top100artists = func_top100artists()
-    # for a in top100artists:
-    #     if a['username'] == artist:
-    #         positionintop100 = a['positionintop100']
-    # Tạo 1 dictionary lưu thông tin của artist:
-    artist_infor = {
-        'fullname': artist_fullname,
-        'username': artist,
-        'finished_arts': finished_arts,
-        'working_arts': working_arts,
-        'totallikes': totallikes,
-        # 'picsintop100': picsintop100,
-        # 'positionintop100': positionintop100
-    }
-    return artist_infor
-    # Thông tin của artist: 
-    #   - Tên đầy đủ của artist: fullname
-    #   - Số bức tranh đã hoàn thành: finished_arts
-    #   - Số bức tranh đang vẽ: working_arts
-    #   - Tổng số likes của artist đó: totallikes
-    #   - Bỏ: Số bức tranh trong top 100: picsintop100 (bằng 0 là không có bức nào)
-    #   - Bỏ: Thứ hạng của artist: positionintop100 (bằng 0 là không được vào top)
-
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'teamcolorpictures'
@@ -240,89 +99,84 @@ def logout():
 
 @app.route('/top100pics') # Hiển thị 100 Pics đc nhiều like nhất
 def top100pics():
-    top100pics = func_top100pics()
-    return render_template('top100pics.html', top100pics=top100pics)
+    notice = ''
+    # Tìm những bức tranh có like khác 0:
+    finished_list = Savepicture.objects(picstatus='finished', piclikes__ne=0)
+    if len(finished_list) == 0:
+        notice = 'Danh sách trống'
+    # Tìm 100 bức có số like lớn nhất và lưu số likes đó vào 1 list:
+    likes_list = []
+    for pic in finished_list:
+        likes_list.append(pic.piclikes)
+    likes_list.sort(reverse=True) # sắp xếp theo thứ tự giảm dần
+    if len(likes_list) > 100:
+        likes_list = likes_list[:101]
+    likes_list = list(dict.fromkeys(likes_list)) # loại bỏ các giá trị trùng nhau
+    # Tạo Top 100 bằng cách tìm ngược likes trong list trên ở database ảnh:
+    top100pics = []
+    for i, v in enumerate(likes_list):
+        for pic in finished_list:
+            if pic.piclikes == v:
+                picpositionintop100 = i + 1
+                # Đưa các thông tin của pic đó vào list top 100 pics:
+                toppic = {
+                    'picpositionintop100': picpositionintop100,
+                    'picname': pic.picname,
+                    'piclink': pic.piclink,
+                    'piclikes': pic.piclikes, 
+                    'picartistfullname': pic.picartistfullname,
+                    'picartist': pic.picartist,
+                    'picid': pic.id
+                }
+                top100pics.append(toppic)
+    return render_template('top100pics.html', notice=notice, top100pics=top100pics)
 
 @app.route('/top100artists') # Hiển thị 100 Artists đc nhiều like nhất
 def top100artists():
-    top100artists = func_top100artists()
-    return render_template('top100artists.html', top100artists=top100artists)
-
-@app.route('/profile/<artist>') # Hiển thị profile
-def profile(artist):
-    # Chạy hàm func_artist_infor và trả về các thông tin của artist đó
-    artist_infor = func_artist_infor(artist) 
-    # Các bức tranh đã hoàn thành sắp xếp theo số lượng like:
-    # Tạo 1 list gồm số like của các bức tranh của artist đó
+    notice = ''
+    # Tìm tất cả các artist:
+    artist_list = User.objects(totallikes__ne=0)
+    if len(artist_list) == 0:
+        notice = 'Danh sách trống'
+    # Tìm 100 artist có likes lớn nhất và lưu số like đó vào 1 list:
     likes_list = []
-    finished_list = Savepicture.objects(picartist=artist, picstatus='finished')
-    for pic in finished_list:
-        likes_list.append(pic.piclikes)
-    likes_list.sort(reverse=True)
+    for artist in artist_list:
+        likes_list.append(artist.totallikes)
+    likes_list.sort(reverse=True) # sắp xếp theo thứ tự giảm dần
+    if len(likes_list) > 100:
+        likes_list = likes_list[:101]
     likes_list = list(dict.fromkeys(likes_list)) # loại bỏ các giá trị trùng nhau
-    # Tạo 1 list các bức tranh sắp xếp theo số lượng like để sau đó hiển thị trên trang profile của artist
-    artist_finised_arts = []
-    for i in likes_list:
-        for pic in finished_list:
-            if pic.piclikes == i:
-                # # Tìm thứ hạng của pic đó trong top 100 pics nếu có:
-                # top100pics = func_top100pics()
-                # positionintop100 = 0
-                # for toppic in top100pics:
-                #     if toppic['picid'] == pic.id:
-                #         positionintop100 = toppic['picpositionintop100']
-                # # Tìm số lượng comment trong bức tranh đó:
-                # comments = len(Comment.objects(picid=pic.id))
-                # Đưa các thông tin của các bức vẽ vào list các bức vẽ của artist đó
-                toppic = {
-                    # 'positionintop100': positionintop100,
-                    'picname': pic.picname,
-                    'piclink': pic.piclink,
-                    'piclikes': pic.piclikes,
-                    'picid': pic.id,
-                    'piccomments': pic.piccomments
+    # Tạo top 100 Artist bằng cách tìm ngược likes trong database user:
+    top100artists = []
+    for i, v in enumerate(likes_list):
+        for artist in artist_list:
+            if artist.totallikes == v:
+                positionintop100 = i + 1
+                # Tìm bức tranh có nhiều like nhất của artist đó:
+                finished_list = Savepicture.objects(picartist=artist.username, picstatus='finished')
+                likes = []
+                for pic in finished_list:
+                    likes.append(pic.piclikes)
+                bestpic = Savepicture.objects(picartist=artist.username, picstatus='finished', piclikes=max(likes)).first()
+                # Đưa các thông tin của artist đó vào list top 100 artist:
+                topartist = {
+                    'positionintop100': positionintop100,
+                    'fullname': artist.fullname,
+                    'username': artist.username,
+                    'totallikes': artist.totallikes,
+                    'bestpiclink': bestpic.piclink,
+                    'bestpicid': bestpic.id
                 }
-                artist_finised_arts.append(toppic)
-    # Danh sách những bức đang vẽ (chỉ nhìn thấy của chính mình nếu đăng nhập vào)
-    working_list = []
-    if 'token' in session:
-        if session['token'] == artist:
-            working_list = Savepicture.objects(picartist=artist, picstatus='working')
+                top100artists.append(topartist)
+    return render_template('top100artists.html', notice=notice, top100artists=top100artists)
 
-    return render_template('profile.html', artist_infor=artist_infor, artist_finised_arts=artist_finised_arts, working_list=working_list)
-    # Các biến được dùng để hiển thị trên HTML:
-    # 1. Thông tin của artist:  
-    #   - Tên đầy đủ của artist: artist_fullname
-    #   - Số bức tranh đã hoàn thành: finished_arts
-    #   - Số bức tranh đang vẽ: working_arts. (Cái này chỉ hiện ra nếu ở trang profile của mình, còn của người khác chỉ hiện finished_arts thôi)
-    #   - Bỏ: Số bức tranh trong top 100: picsintop100 (bằng 0 là không có bức nào)
-    #   - Bỏ: Thứ hạng trong 100 artist: positionintop100 (bằng 0 là không nằm trong danh sách)
-    # 2. Thông tin từng bức vẽ đã hoàn thành, bao gồm:
-    #   - Bỏ: Thứ hạng trong top 100 pics nếu bức đó lọt vào: positionintop100
-    #   - Tên bức tranh: picname
-    #   - Link ảnh để hiển thị: piclink
-    #   - Số lượng like: piclikes
-    #   - Số lượng comment: piccomments
-
-@app.route('/category') # Hiển thị trang Category tổng
-def full_category():
-    # Lấy id của 1 random pic, sử dụng trong mục Get me a random pic:
-    pic_list = Rawpicture.objects()
-    random_picid = choice(pic_list).id
-    # category_list = Rawpicture.objects() # Sau sẽ xử lý hiển thị tất cả các category trong html bằng vòng for
-    return render_template('category.html', random_picid=random_picid)
-
-@app.route('/category/<category>') # Hiển thị 1 trang category cụ thể
-def one_category(category):
-    pic_list = Rawpicture.objects(category__icontains=category)
-    cap_category = category.title()
-    return render_template('one_category.html', pic_list=pic_list, category=cap_category)
-
-@app.route('/new_picture/<picid>') # Hiển thị trang vẽ tranh của 1 bức tranh theo id của bức tranh đó
-def new_picture(picid):
-    pic = Rawpicture.objects(id=picid).first()
-    piclinkb64 = base64encode(pic.piclink)
-    return render_template('new_picture.html', piclinkb64=piclinkb64)
+@app.route('/roomoffame') # Hiển thị tất cả những bức ảnh finished để cộng đồng vào xem và like
+def roomoffame():
+    notice = ''
+    piclist = Savepicture.objects(picstatus='finished')
+    if len(piclist) == 0:
+        notice = 'Danh sách trống'
+    return render_template('roomoffame.html', notice=notice, piclist=piclist)
 
 @app.route('/view/<picid>', methods=['GET', 'POST']) # Hiển thị 1 bức tranh đã hoàn thành để like và comment theo id của bức tranh đó
 def view(picid):
@@ -380,6 +234,92 @@ def view(picid):
                     like_check.delete()
                     likebutton == 'Like'
         return render_template('view.html', pic=pic, piclikes=piclikes, artist=artist, comment_list=comment_list, warning=warning, likebutton=likebutton)
+
+@app.route('/category') # Hiển thị trang Category tổng
+def full_category():
+    # Lấy id của 1 random pic, sử dụng trong mục Get me a random pic:
+    pic_list = Rawpicture.objects()
+    random_picid = choice(pic_list).id
+    # category_list = Rawpicture.objects() # Sau sẽ xử lý hiển thị tất cả các category trong html bằng vòng for
+    return render_template('category.html', random_picid=random_picid)
+
+@app.route('/category/<category>') # Hiển thị 1 trang category cụ thể
+def one_category(category):
+    pic_list = Rawpicture.objects(category__icontains=category)
+    cap_category = category.title()
+    return render_template('one_category.html', pic_list=pic_list, category=cap_category)
+
+@app.route('/profile/<artist>') # Hiển thị profile
+def profile(artist):
+    artist_infor = User.objects(username=artist).first()
+    # Các bức tranh đã hoàn thành sắp xếp theo số lượng like:
+    likes_list = []
+    finished_list = Savepicture.objects(picartist=artist, picstatus='finished')
+    for pic in finished_list:
+        likes_list.append(pic.piclikes)
+    likes_list.sort(reverse=True)
+    likes_list = list(dict.fromkeys(likes_list)) # loại bỏ các giá trị trùng nhau
+    # List tranh đã hoàn thành xếp theo số like:
+    artist_finised_arts = []
+    for i in likes_list:
+        for pic in finished_list:
+            if pic.piclikes == i:
+                toppic = {
+                    'picname': pic.picname,
+                    'piclink': pic.piclink,
+                    'piclikes': pic.piclikes,
+                    'picid': pic.id,
+                    'piccomments': pic.piccomments
+                }
+                artist_finised_arts.append(toppic)
+    # List tranh chưa hoàn thành (chỉ người đăng nhập thấy của riêng họ)
+    working_list = []
+    if 'token' in session:
+        if session['token'] == artist:
+            working_list = Savepicture.objects(picartist=artist, picstatus='working')
+    return render_template('profile.html', artist_infor=artist_infor, artist_finised_arts=artist_finised_arts, working_list=working_list)
+
+@app.route('/new_picture/<picid>', methods=['GET', 'POST']) # Hiển thị trang vẽ tranh của 1 bức tranh theo id của bức tranh đó
+def new_picture(picid):
+    pic = Savepicture.objects(id=picid).first()
+    piclinkb64 = base64encode(pic.piclink)
+    token = ''
+    aftersave = ''
+    if 'token' in session:
+        token = session['token']
+    if request.method == 'GET':
+        aftersave = 'no'
+        return render_template('new_picture.html', piclinkb64=piclinkb64, token=token, aftersave=aftersave)
+    elif request.method == 'POST':
+        aftersave = 'yes'
+        form = request.form
+        picname = form['picname']
+        piclink = form['piclink']
+        picstatus = form['picstatus']
+        picartist = form['picartist']
+        picartistfullname = User.objects(username=token).first().fullname
+        newlink = Savepicture(piclink=piclink, picname=picname, picstatus=picstatus, picartist=picartist, picartistfullname=picartistfullname)
+        newlink.save()
+        return render_template('new_picture.html', piclinkb64=piclink, aftersave=aftersave)
+
+@app.route('/keep_continue/<picid>', methods=['GET', 'POST']) # Trang vẽ tiếp 1 bức đang vẽ dở
+def keep_continue(picid):
+    token = ''
+    warning = 'Bạn chưa đăng nhập!'
+    if 'token' not in session:
+        return render_template('login.html', warning=warning)
+    else:
+        token = session['token']
+        pic = Savepicture.objects(id=picid).first()
+        piclinkb64 = pic.piclink
+        aftersave = ''
+        if request.method == 'GET':
+            aftersave = 'no'
+            return render_template('keep_continue.html', piclinkb64=piclinkb64, token=token, aftersave=aftersave)
+        elif request.method == 'POST':
+            aftersave = 'yes'
+            return render_template('keep_continue.html', piclinkb64=piclink, aftersave=aftersave)
+
 
 if __name__ == '__main__':
   app.run(debug=True)

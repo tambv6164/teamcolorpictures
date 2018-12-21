@@ -29,6 +29,13 @@ a{
 #signup{
     margin: 15px 15px 15px 15px;
 }
+.img{
+    display: Inline-block;
+    width: 30%;
+}
+.img img{
+    width: 100%;
+}
 .dang_nhap{
     margin-bottom: 15px;
 }

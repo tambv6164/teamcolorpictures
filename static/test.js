@@ -39,13 +39,10 @@ function hexToRgb(hex) {
 
 function drawImageFromWebUrl(sourceurl){
       let img = new Image();
-
       img.addEventListener("load", function () {
           // The image can be drawn from any source
           canvas.getContext("2d").drawImage(img, 0, 0, img.width,    img.height, 0, 0, canvas.width, canvas.height);
-          
       });
-
       img.setAttribute("src", sourceurl);
 }
 
@@ -76,7 +73,6 @@ function floodFill(x, y, ctx) {
 // Draw a base64 image because this is a fiddle, and if we try with an image from URL we'll get tainted canvas error
 // Read more about here : http://ourcodeworld.com/articles/read/182/the-canvas-has-been-tainted-by-cross-origin-data-and-tainted-canvases-may-not-be-exported
 drawImageFromWebUrl(imageLinkB64);
-console.log(imageLinkB64);
 
 canvas.addEventListener("click",function(e){
     let pos = getPosition(this);

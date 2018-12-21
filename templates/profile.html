@@ -24,16 +24,10 @@
     <hr>
     <div>Finished Arts: {{ artist_infor.finished_arts }}</div>
     <div>Like: {{ artist_infor.totallikes }}</div>
-    <div>
-        <!-- <span>Top 100 Pics: {{ artist_infor.picsintop100 }}</span> -->
-        <!-- <span>Top 100 Artists: {{ artist_infor.positionintop100 }}</span> -->
-    </div>
     <hr>
+    
     {% for pic in artist_finised_arts %}
-        <div>
-            <!-- <span>{{ pic.positionintop100 }}</span> -->
-            <span>{{ pic.picname }}</span>
-        </div>
+        <p>{{ pic.picname }}</p>
         <a href="{{ url_for('view', picid=pic.picid) }}">
             <img src="{{ pic.piclink }}" alt="" width="20%" height="20%">
         </a>
@@ -47,10 +41,14 @@
         <div>Working Arts: {{ artist_infor.working_arts }}</div>
         <hr>
         {% for pic in working_list %}
+            <p>{{ pic.picname }}</p>
             <div>
-                <span>{{ pic.picname }}</span>
+                <a href="{{ url_for('keep_continue', picid=pic.id) }}">
+                    <img src="{{ pic.piclink }}" alt="" width="20%" height="20%">
+                </a>
             </div>
-            <img src="{{ pic.piclink }}" alt="" width="20%" height="20%">
+            <button class="nut"><a href="{{ url_for('keep_continue', picid=pic.id) }}">Continue</a></button>
+            <button class="nut">Finish</button>
             <hr>
         {% endfor %}
         <button class="nut"><a href="{{ url_for('full_category') }}">Start new art</a></button>

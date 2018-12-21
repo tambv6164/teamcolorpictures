@@ -21,15 +21,19 @@
     {% endif %}
 
     <h3>{{ category }}</h3>
-
-    {% for pic in pic_list %}
-        <div>
-            <a href="{{ url_for('new_picture', picid=pic.id) }}">
-                <img src="{{ pic.piclink }}" alt="" width="20%" height="20%">
-            </a>
-        </div>
-            <button class="nut"><a href="{{ url_for('new_picture', picid=pic.id) }}">Choose</a></button>
-        <hr>
-    {% endfor %}
+    <hr>
+    <div class="img">
+        {% for pic in pic_list %}
+            <div>
+                <div>
+                    <a href="{{ url_for('new_picture', picid=pic.id) }}">
+                        <img src="{{ pic.piclink }}" alt="">
+                    </a>
+                </div>
+                    <button class="nut"><a href="{{ url_for('new_picture', picid=pic.id) }}">Choose</a></button>
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
 </body>
 </html>

@@ -12,14 +12,8 @@
 <body>
     <button class="nut"><a href="{{ url_for('home') }}">Homepage</a></button>
     <button class="nut"><a href="{{ url_for('full_category') }}">Category</a></button>
-
-    {% if 'token' in session %}
-        <button class="nut"><a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a></button>
-        <button class="nut"><a href="{{ url_for('logout') }}">Log out</a></button>
-    {% else %}
-        <button class="nut"><a href="{{ url_for('login') }}">Log in</a></button>
-        <button class="nut"><a href="{{ url_for('signup') }}">Sign up</a></button>
-    {% endif %}
+    <button class="nut"><a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a></button>
+    <button class="nut"><a href="{{ url_for('logout') }}">Log out</a></button>
     
     <hr>
 
@@ -34,10 +28,6 @@
             <div><button onclick="clearCanvas()" class="nut" id="resetcanvas">Reset</button></div>
             <div>
                 <button class="nut" onclick="displayForm()">Save</button>
-                <div style="display:none" id="loginwarning">
-                    <p style="color:red">Bạn chưa đăng nhập!</p>
-                    <button class="nut"><a href="{{ url_for('login') }}" target="_blank">Log in</a></button>
-                </div>
                 <form style="display:none" action="" method="post" id="submitform">
                     <div><label for="">Name your art:</label></div>
                     <div><input type="text" class="nut" id="inputname" name="picname"></div>
@@ -68,14 +58,10 @@
     <script>
         function displayForm() {
           var x = document.getElementById("submitform");
-          var y = document.getElementById("loginwarning");
-          var token = document.getElementById("token").value;
-          if (token == "") {
-            x.style.display = "none";
-            y.style.display = "block";
-          } else {
+          if (x.style.display === "none") {
             x.style.display = "block";
-            y.style.display = "none";
+          } else {
+            x.style.display = "none";
           }
         }
     </script>
