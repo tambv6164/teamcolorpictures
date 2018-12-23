@@ -17,7 +17,7 @@
             <a href="{{ url_for('home') }}" class="btn btn-3">Homepage</a>
             
             {% if 'token' in session %}
-                <a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a>
+                <a href="{{ url_for('profile', artist=session['token']) }}" class="btn btn-3">My Arts</a>
                 <a href="{{ url_for('logout') }}" class="btn btn-3">Log out</a>
             {% else %}
                 <a href="{{ url_for('login') }}" class="btn btn-3">Log in</a>
@@ -26,10 +26,18 @@
             
             <div id="main">
                 <h3>Color pictures</h3>
-                <div>
-                    <a href="{{ url_for('new_picture', picid=random_picid) }}" class="btn btn-1">Get me a random pic</a>
-                    <a href="{{ url_for('one_category', category='Adiboo') }}" class="btn btn-1">Adiboo</a>
-                    <a href="{{ url_for('one_category', category='101 Dalmatians') }}" class="btn btn-1">101 Dalmatians</a>
+                <div class="img">
+                    <div class="abc">
+                        <a href="{{ url_for('new_picture', picid=random_picid) }}" class="btn btn-1">Random pic</a>
+                    </div>
+                    <div class="abc">
+                        <a href="{{ url_for('one_category', category='Adiboo') }}" class="btn btn-1">Adiboo</a>
+                    </div>
+                    <div class="abc">
+                        <a href="{{ url_for('one_category', category='101 Dalmatians') }}" class="btn btn-1">101 Dalmatians</a>
+                    </div>
+                    
+
                 </div>
             </div>
         </div>    

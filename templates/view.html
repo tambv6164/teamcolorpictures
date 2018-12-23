@@ -9,7 +9,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     
-    <title>{{ pic.picname }}</title>
+    <title>{{ picname }}</title>
 </head>
 <body>
    <section class="buttons">
@@ -25,7 +25,24 @@
                 <a href="{{ url_for('signup') }}" class="btn btn-3">Sign up</a>
             {% endif %}
 
-            <h4 style="font-size:30px">{{ pic.picname }}</h4>
+            <h4 style="font-size:30px; color:cornsilk">{{ picname }}</h4>
+            <div>
+            <button class="btn btn-3" onclick="displayNamebox()">Change name</button>
+            <form style="display:none" action="" method="POST" id="namebox">
+                <input class="btn btn-1" type="text" placeholder="Enter new name" name="picname">
+                <button class="btn btn-3" type="submit" form="namebox">Save</button>
+            </form>
+            </div>
+            <script>
+            function displayNamebox() {
+                var x = document.getElementById("namebox");
+                if (x.style.display === "none") {
+                    x.style.display = "block";
+                } else {
+                    x.style.display = "none";
+                }
+            }
+            </script>
             <img src="{{ pic.piclink }}" alt="" style="height:270px; width:270px">
             <div>
                 <a href="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" class="btn btn-3">Color this raw picture</a>
@@ -38,7 +55,7 @@
             <form action="" method="POST" id="like">
                 <input style="display:none" name="like">
             </form>
-            <button id="likebutton" type="button" form="like" class="nut" onclick="Like()">{{ likebutton }}</button>
+            <button id="likebutton" type="button" form="like" class="a_demo_one" onclick="Like()">{{ likebutton }}</button>
             <hr>
             <script>
             function Like() {

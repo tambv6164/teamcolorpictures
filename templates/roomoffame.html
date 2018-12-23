@@ -33,7 +33,7 @@
                 </div>
                 <span>Artist:<span>
                 <span><a href="{{ url_for('profile', artist=pic.picartist) }}"> {{ pic.picartistfullname }}</a></span>
-                <span>Like: {{ pic.piclikes }}</span>
+                <p>Like: {{ pic.piclikes }}, Comment: {{ pic.piccomments }}</p>
                 <hr>
             </div>
             {% endfor %}

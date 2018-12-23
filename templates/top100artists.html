@@ -27,8 +27,8 @@
                 <div class="carousel-inner"> 
                     {% for artist in top100artists %}
                     <div class="item" id="{{ artist.positionintop100 }}">
-                        <p>{{ artist.positionintop100 }}</p>
-                        <h4><a href="{{ url_for('profile', artist=artist.username) }}">{{ artist.fullname }}</a></h4>
+                        <p style="color:white;">{{ artist.positionintop100 }}</p>
+                        <h4><a href="{{ url_for('profile', artist=artist.username) }}" style="font-size:25px; color:blue">{{ artist.fullname }}</a></h4>
                         <p style="color:white">Total Likes: {{ artist.totallikes }}</p>
                         <p style="color:white">Best pic:</p>
                         <div>

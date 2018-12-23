@@ -156,6 +156,7 @@ def roomoffame():
 @app.route('/view/<picid>', methods=['GET', 'POST']) # Hiển thị 1 bức tranh đã hoàn thành để like và comment theo id của bức tranh đó
 def view(picid):
     pic = Savepicture.objects(id=picid).first()
+    picname = pic.picname
     piclikes = pic.piclikes
     artist = User.objects(username=pic.picartist).first()
     comment_list = Comment.objects(picid=picid)
@@ -163,7 +164,6 @@ def view(picid):
     likebutton = 'Like'
     if 'token' not in session:
         warning = 'show'
-        # likebutton = 'Like'
     if request.method == 'GET':
         if 'token' in session:
             like_check = Like.objects(who_username=session['token'], picid=picid).first()
@@ -171,10 +171,16 @@ def view(picid):
                 likebutton = 'Like'
             else:
                 likebutton = 'Dislike'
-        return render_template("view.html", pic=pic, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning)
+        return render_template("view.html", pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning)
     elif request.method == 'POST':
         form = request.form
         like_check = Like.objects(who_username=session['token'], picid=picid).first()
+        # Xử lý đổi tên:
+        if 'picname' in form:
+            newname = form['picname']
+            if newname != '':
+                picname = newname
+                pic.update(set__picname=newname)
         # Xử lý form comment:
         if 'comment' in form:
             if  like_check is None :
@@ -205,7 +211,7 @@ def view(picid):
                 # Xóa like khỏi database
                 like_check.delete()
                 likebutton == 'Like' # chuyển thành nút like
-        return render_template('view.html', pic=pic, piclikes=piclikes, artist=artist, comment_list=comment_list, warning=warning, likebutton=likebutton)
+        return render_template('view.html', pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, warning=warning, likebutton=likebutton)
 
 @app.route('/category') # Hiển thị trang Category tổng
 def full_category():

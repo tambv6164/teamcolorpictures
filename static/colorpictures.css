@@ -222,6 +222,7 @@ h3 {
 }
 body{
 background-image: url(http://lh5.ggpht.com/-RDmXP_Gv4uQ/VkAmXyx5mhI/AAAAAAAABLo/_GjzY-RySZ8/d/hinh_nen_kenh72_com_2016_%2B%25281%2529.png);
+background-repeat: no-repeat;
 }
 .btn{
 margin: 15px 15px 15px 15px;
@@ -308,10 +309,6 @@ stroke-width: 5;
 stroke-dasharray: 15, 310;
 stroke-dashoffset: 48;
 transition: all 1.35s cubic-bezier(0.19, 1, 0.22, 1);
-}
-.thong_bao{
-color: white;
-font-size: 20px;
 }
 p {
 font-size: 20px;
