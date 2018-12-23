@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
+    <link rel="stylesheet" href="../static/colorpictures.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <title>{{ pic.picname }}</title>
+</head>
+<body>
+    <section class="buttons">
+        <div class="container">
+            <a href="{{ url_for('home') }}" class="btn btn-3">Homepage</a>
+            <a href="{{ url_for('full_category') }}" class="btn btn-3">Category</a>
+
+            {% if 'token' in session %}
+                <a href="{{ url_for('profile', artist=session['token']) }}" class="btn btn-3">My Arts</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-3">Log out</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-3">Log in</a>
+                <a href="{{ url_for('signup') }}" class="btn btn-3">Sign up</a>
+            {% endif %}
+    
+            <hr>
+            <div style="display: flex; justify-content: space-around">
+                <div>
+                    <img src="{{ pic.piclink }}" alt="">
+                </div>
+                <div>
+                    <p>Saved art successfull!</p>
+                    {% if pic.picstatus == 'working' %}
+                    <div>
+                        <a href="{{ url_for('keep_continue', picid=pic.id) }}" class="btn btn-2">Continue</a>
+                    </div>
+                    {% endif %}
+                    <div>
+                        <a href="{{ url_for('profile', artist=session['token']) }}" class="btn btn-2">Go to my Arts</a>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('full_category') }}" class="btn btn-2">Start New</a>
+                    </div>
+                </div>
+            </div>
+            <hr>
+        </div>
+    </section>
+</body>
+</html>

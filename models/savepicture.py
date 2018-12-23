@@ -8,3 +8,4 @@ class Savepicture(Document):
     picartistfullname = StringField()
     piclikes = IntField(default=0) 
     piccomments = IntField(default=0) 
+    picrawid = StringField() # id của bức ảnh gốc đã tạo nên bức này

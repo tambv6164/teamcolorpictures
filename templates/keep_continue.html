@@ -7,48 +7,73 @@
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <link rel="stylesheet" href="../static/colorpictures.css" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <title>New Pictures</title>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <title>{{ pic.picname }}</title>
 </head>
 <body>
-    <button class="nut"><a href="{{ url_for('home') }}">Homepage</a></button>
-    <button class="nut"><a href="{{ url_for('full_category') }}">Category</a></button>
-    <button class="nut"><a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a></button>
-    <button class="nut"><a href="{{ url_for('logout') }}">Log out</a></button>
+    <section class="buttons">
+        <div class="container">
+            <a href="{{ url_for('home') }}" class="btn btn-3">Homepage</a>
+            <a href="{{ url_for('full_category') }}" class="btn btn-3">Category</a>
+            <a href="{{ url_for('profile', artist=session['token']) }}" class="btn btn-3">My Arts</a>
+            <a href="{{ url_for('logout') }}" class="btn btn-3">Log out</a>
     
-    <hr>
+            <hr>
 
-    <div style="display: flex; justify-content: space-around">
-        <div><canvas id="canvas" width="567" height="794"></canvas></div>
-        {% if aftersave == 'no' %}
-        <div>
-            <div>
-                <span>Pick your color here: </span>
-                <input id="colorPicker" type="color" name="favcolor" value="#ff0000">
-            </div>
-            <div><button onclick="clearCanvas()" class="nut" id="resetcanvas">Reset</button></div>
-            <div>
-                <form action="" method="post" id="submitform">
-                    <input style="display:none" type="text" id="inputlink" name="piclink">
-                    <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
-                    <div><button id="saveworking" class="nut" type="button" onclick="saveWorking()">Save</button></div>
-                    <div><button id="savefinished" class="nut" type="button" onclick="saveFinished()">Finish Art</button></div>
-                </form>
+            <div style="display: flex; justify-content: space-around">
+                <div>
+                    <canvas id="canvas" width="567" height="794"></canvas>
+                </div>
+                <div>
+                    <div>
+                        <p>Pick your color first: </p>
+                        <input id="colorPicker" type="color" name="favcolor" value="#ff0000">
+                    </div>
+                    <div>
+                        <button class="btn btn-1" id="resetcanvas" onclick="clearCanvas()">Reset</button>
+                    </div>
+                    <div>
+                        <button class="btn btn-1" onclick="displayNamebox()">Change name</button>
+                    </div>
+                    <div style="display:none" id="namebox">
+                        <input class="btn btn-1" type="text" placeholder="Enter new name" id="newname" name="picname">
+                    </div>
+                    <div>
+                        <form action="" method="post" id="submitform">
+                            <input style="display:none" type="text" id="inputname" name="picname">
+                            <input style="display:none" type="text" id="inputlink" name="piclink">
+                            <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
+                            <div>
+                                <button id="saveworking" class="btn btn-1" type="button" onclick="saveWorking()">Save</button>
+                            </div>
+                            <div>
+                                <button id="savefinished" class="btn btn-1" type="button" onclick="saveFinished()">Finish Art</button>
+                            </div>
+                        </form>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" class="btn btn-1">Color this raw picture</a>
+                    </div>
+                </div>
             </div>
         </div>
-        {% elif aftersave == 'yes' %}
-        <div>
-            <p>Saved art successfull!</p>
-            <button class="nut"><a href="{{ url_for('profile', artist=session['token']) }}">Go to My Arts</a></button>
-            <button class="nut"><a href="{{ url_for('full_category') }}">Start New</a></button>
-        </div>
-        {% endif %}
-    </div>
-
+    </section>
+    
     <input id="token" style="display:none" type="text" value="{{ token }}">
     <input id="linkB64" style="display:none" type="text" value="{{ piclinkb64 }}">
-    
     <script>
         imageLinkB64 = document.getElementById('linkB64').value;
+    </script>
+    <script>
+    function displayNamebox() {
+        var x = document.getElementById("namebox");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+        } else {
+            x.style.display = "none";
+        }
+    }
     </script>
     <script>
         function saveWorking() {
@@ -59,6 +84,8 @@
             var dataURL = canvas.toDataURL();
             document.getElementById('inputlink').value = dataURL;
             document.getElementById('inputpicstatus').value = "working";
+            var name = document.getElementById('newname').value;
+            document.getElementById('inputname').value = name;
         }
     </script>
     <script>
@@ -70,6 +97,8 @@
             var dataURL = canvas.toDataURL();
             document.getElementById('inputlink').value = dataURL;
             document.getElementById('inputpicstatus').value = "finished";
+            var name = document.getElementById('newname').value;
+            document.getElementById('inputname').value = name;
         }
     </script>
     <script>

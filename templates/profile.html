@@ -6,55 +6,84 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='colorpictures.css')}}" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
     <title>{{ artist_infor.fullname }}</title>
 </head>
 <body>
-    <button class="nut"><a href="{{ url_for('home') }}">Homepage</a></button>
-    <button class="nut"><a href="{{ url_for('full_category') }}">Start Coloring</a></button>
+    <section class="buttons">
+        <div class="container">
+            <a href="{{ url_for('home') }}" class="btn btn-3">Homepage</a>
+            <a href="{{ url_for('full_category') }}" class="btn btn-3">Start Coloring</a>
 
-    {% if 'token' in session %}
-        <button class="nut"><a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a></button>
-        <button class="nut"><a href="{{ url_for('logout') }}">Log out</a></button>
-    {% else %}
-        <button class="nut"><a href="{{ url_for('login') }}">Log in</a></button>
-        <button class="nut"><a href="{{ url_for('signup') }}">Sign up</a></button>
-    {% endif %}
+            {% if 'token' in session %}
+                <a href="{{ url_for('profile', artist=session['token']) }}" class="btn btn-3">My Arts</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-3">Log out</a>
+            {% else %}
+                <a href="{{ url_for('login') }}" class="btn btn-3">Log in</a>
+                <a href="{{ url_for('signup') }}" class="btn btn-3">Sign up</a>
+            {% endif %}
     
-    <h3>{{ artist_infor.fullname }}</h3>
-    <hr>
-    <div>Finished Arts: {{ finished_arts }}</div>
-    <div>Like: {{ artist_infor.totallikes }}</div>
-    <hr>
-    
-    {% for pic in finished_list %}
-        <p>{{ pic.picname }}</p>
-        <a href="{{ url_for('view', picid=pic.id) }}">
-            <img src="{{ pic.piclink }}" alt="" width="20%" height="20%">
-        </a>
-        <p>Like: {{ pic.piclikes }}, Comment: {{ pic.piccomments }}</p>
-        <hr>
-    {% endfor %}
-    
-    {% if working_list != [] %}
-        <h3>Working arts</h3>
-        <hr>
-        <div>Working Arts: {{ working_arts }}</div>
-        <hr>
-        {% for pic in working_list %}
-            <p>{{ pic.picname }}</p>
-            <div>
-                <a href="{{ url_for('keep_continue', picid=pic.id) }}">
-                    <img src="{{ pic.piclink }}" alt="" width="20%" height="20%">
-                </a>
-            </div>
-            <button class="nut"><a href="{{ url_for('keep_continue', picid=pic.id) }}">Continue</a></button>
-            <form style="display:none" id="update" method="POST">
-                <input style="display:none" type="text" name="picid" id="inputid" value="{{ pic.id }}">
-            </form>
-            <button type="submit" form="update" class="nut">Finish</button>
+            <h2 style="font-size:45px; color:white">{{ artist_infor.fullname }}</h2>
             <hr>
-        {% endfor %}
-        <button class="nut"><a href="{{ url_for('full_category') }}">Start new art</a></button>
-    {% endif %}
+            <div style="font-size:22px">Finished Arts: {{ finished_arts }}</div>
+            <div style="font-size:22px">Like: {{ totallikes }}</div>
+            <hr>
+
+            {% for fpic in finished_list %}
+                <p style="font-size:22px">{{ fpic.picname }}</p>
+                <a href="{{ url_for('view', picid=fpic.id) }}">
+                    <img src="{{ fpic.piclink }}" alt="" width="20%" height="20%">
+                </a>
+                <p style="font-size:22px">Like: {{ fpic.piclikes }}, Comment: {{ fpic.piccomments }}</p>
+
+                {% if display == 'yes' %}
+                <form action="" method="post" id="df{{ fpic.id }}">
+                    <input style="display:none" type="text" name="df{{ fpic.id }}" value="{{ fpic.id }}">
+                </form>
+                <button type="submit" form="df{{ fpic.id }}" class="btn btn-5" >Delete</button>
+                {% endif %}
+
+                <hr>
+            {% endfor %}
+            
+            {% if display == 'yes' %}
+                <h2 style="font-size:45px; color:white">Working arts</h2>
+                <hr>
+                <div style="font-size:22px">Working Arts: {{ working_arts }}</div>
+                <hr>
+                {% for wpic in working_list %}
+                    <p style="font-size:22px">{{ wpic.picname }}</p>
+                    <div>
+                        <a href="{{ url_for('keep_continue', picid=wpic.id) }}">
+                            <img src="{{ wpic.piclink }}" alt="" width="20%" height="20%">
+                        </a>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('keep_continue', picid=wpic.id) }}" class="btn btn-5">Continue</a>
+                    </div>
+                    <div>
+                        <form action="" method="post" id="up{{ wpic.id }}">
+                            <input style="display:none" type="text" name="up{{ wpic.id }}" value="{{ wpic.id }}">
+                        </form>
+                        <button type="submit" form="up{{ wpic.id }}" class="btn btn-5">Finish</button>
+                    </div>
+                    <div>
+                        <form action="" method="post" id="dw{{ wpic.id }}">
+                            <input style="display:none" type="text" name="dw{{ wpic.id }}" value="{{ wpic.id }}">
+                        </form>
+                        <button type="submit" form="dw{{ wpic.id }}" class="btn btn-5">Delete</button>
+                    </div>
+                    <hr>
+                {% endfor %}
+                <a href="{{ url_for('full_category') }}" class="btn btn-3">Start new art</a>
+            {% endif %}
+        </div>
+    </section>
+    <!-- Code Snow -->
+    <style type="text/css"> .snow-container { position: fixed; width: 100%; max-width: 100%; z-index: 99999; pointer-events: none; overflow: hidden; top: 0; height: 100%; } .snow { display: block; position: absolute; z-index: 2; top: 0; right: 0; bottom: 0; left: 0; pointer-events: none; -webkit-transform: translate3d(0,-100%,0); transform: translate3d(0,-100%,0); -webkit-animation: snow linear infinite; animation: snow linear infinite; } .snow.foreground { background-image: url("https://itexpress.vn/API/files/img/snow-medium.png"); -webkit-animation-duration: 15s; animation-duration: 10s; } .snow.foreground.layered { -webkit-animation-delay: 7.5s; animation-delay: 7.5s; } .snow.middleground { background-image: url(https://itexpress.vn/API/files/img/snow-medium.png); -webkit-animation-duration: 20s; animation-duration: 15s; } .snow.middleground.layered { -webkit-animation-delay: 10s; animation-delay: 10s; } .snow.background { background-image: url(https://itexpress.vn/API/files/img/snow-medium.png); -webkit-animation-duration: 25s; animation-duration: 20s; } .snow.background.layered { -webkit-animation-delay: 12.5s; animation-delay: 12.5s; } @-webkit-keyframes snow { 0% { -webkit-transform: translate3d(0,-100%,0); transform: translate3d(0,-100%,0); } 100% { -webkit-transform: translate3d(5%,100%,0); transform: translate3d(5%,100%,0); } } @keyframes snow { 0% { -webkit-transform: translate3d(0,-100%,0); transform: translate3d(0,-100%,0); } 100% { -webkit-transform: translate3d(5%,100%,0); transform: translate3d(5%,100%,0); } } </style> <div class='snow-container'> <div class='snow foreground'></div> <div class='snow foreground layered'></div> <div class='snow middleground'></div> <div class='snow middleground layered'></div> <div class='snow background'></div> <div class='snow background layered'></div></div>
+    <!-- End Code Snow -->
+    <script type="text/javascript" src="https://itexpress.vn/API/files/it.snow.js"></script>
 </body>
 </html>

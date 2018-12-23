@@ -105,12 +105,12 @@ def top100pics():
     finished_list = Savepicture.objects(picstatus='finished', piclikes__ne=0).order_by('-piclikes')
     if len(finished_list) == 0:
         notice = 'Danh sách trống'
-    top100pics = []
     for i, v in enumerate(finished_list):
-        picpositionintop100 = i + 1
+        if i == 100:
+            break
         # Đưa các thông tin của pic đó vào list top 100 pics:
         toppic = {
-            'picpositionintop100': picpositionintop100,
+            'picpositionintop100': i + 1,
             'picname': v.picname,
             'piclink': v.piclink,
             'piclikes': v.piclikes, 
@@ -148,7 +148,7 @@ def top100artists():
 @app.route('/roomoffame') # Hiển thị tất cả những bức ảnh finished để cộng đồng vào xem và like
 def roomoffame():
     notice = ''
-    piclist = Savepicture.objects(picstatus='finished')
+    piclist = Savepicture.objects(picstatus='finished').order_by('piclikes')
     if len(piclist) == 0:
         notice = 'Danh sách trống'
     return render_template('roomoffame.html', notice=notice, piclist=piclist)
@@ -159,60 +159,57 @@ def view(picid):
     piclikes = pic.piclikes
     artist = User.objects(username=pic.picartist).first()
     comment_list = Comment.objects(picid=picid)
-    warning = ''
+    warning = 'hide'
     likebutton = 'Like'
+    if 'token' not in session:
+        warning = 'show'
+        # likebutton = 'Like'
     if request.method == 'GET':
-        # Kiểm tra user có đăng nhập hay không để hiển thị nút like tương ứng:
         if 'token' in session:
             like_check = Like.objects(who_username=session['token'], picid=picid).first()
             if  like_check is None :
                 likebutton = 'Like'
             else:
                 likebutton = 'Dislike'
-        else:
-            likebutton = 'Like'
-        return render_template("view.html", pic=pic, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton)
-    else:
-        if 'token' not in session:
-            warning = 'Vui lòng đăng nhập để like & comment!'
-        else:
-            form = request.form
-            # Xử lý form comment:
-            if 'comment' in form:
-                comment = form['comment']
-                user = User.objects(username=session['token']).first()
-                new_comment = Comment(comment=comment, who_fullname=user.fullname, who_username=user.username, picid=picid)
-                if comment == '':
-                    warning = 'Bạn chưa viết gì nên không có gì để đăng!'
-                else:
-                    # Update số comment vào số comment của bức tranh trên database:
-                    pic.update(set__piccomments=pic.piccomments + 1)
-                    new_comment.save()
-            # Xử lý form like:
-            if 'like' in form:
-                like_check = Like.objects(who_username=session['token'], picid=picid).first()
-                if  like_check is None:
-                    piclikes = pic.piclikes + 1
-                    # Update like vào số like của bức tranh và của user vẽ bức tranh đó:
-                    pic.update(set__piclikes=pic.piclikes + 1)
-                    artist.update(set__totallikes=artist.totallikes + 1)
-                    # Lưu like vào data:
-                    new_like = Like(who_username=session['token'], picid=picid)
-                    new_like.save()
-                    likebutton = 'Dislike'
-                else:
-                    piclikes = pic.piclikes - 1
-                    # Update like vào số like của bức tranh và của user vẽ bức tranh đó:
-                    pic.update(set__piclikes=pic.piclikes - 1)
-                    artist.update(set__totallikes=artist.totallikes - 1)
-                    # Xóa like khỏi database
-                    like_check.delete()
-                    likebutton == 'Like'
+        return render_template("view.html", pic=pic, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning)
+    elif request.method == 'POST':
+        form = request.form
+        like_check = Like.objects(who_username=session['token'], picid=picid).first()
+        # Xử lý form comment:
+        if 'comment' in form:
+            if  like_check is None :
+                likebutton = 'Like'
+            else:
+                likebutton = 'Dislike'
+            comment = form['comment']
+            user = User.objects(username=session['token']).first()
+            new_comment = Comment(comment=comment, who_fullname=user.fullname, who_username=user.username, picid=picid)
+            pic.update(set__piccomments=pic.piccomments + 1)
+            new_comment.save()
+        # Xử lý form like:
+        if 'like' in form:
+            if  like_check is None:
+                piclikes = pic.piclikes + 1
+                # Update like vào số like của bức tranh và của user vẽ bức tranh đó:
+                pic.update(set__piclikes=pic.piclikes + 1)
+                artist.update(set__totallikes=artist.totallikes + 1)
+                # Lưu like vào data:
+                new_like = Like(who_username=session['token'], picid=picid)
+                new_like.save()
+                likebutton = 'Dislike' # chuyển thành nút dislike
+            else:
+                piclikes = pic.piclikes - 1
+                # Update like vào số like của bức tranh và của user vẽ bức tranh đó:
+                pic.update(set__piclikes=pic.piclikes - 1)
+                artist.update(set__totallikes=artist.totallikes - 1)
+                # Xóa like khỏi database
+                like_check.delete()
+                likebutton == 'Like' # chuyển thành nút like
         return render_template('view.html', pic=pic, piclikes=piclikes, artist=artist, comment_list=comment_list, warning=warning, likebutton=likebutton)
 
 @app.route('/category') # Hiển thị trang Category tổng
 def full_category():
-    # Lấy id của 1 random pic, sử dụng trong mục Get me a random pic:   
+    # Lấy id của 1 random pic, sử dụng trong mục Get me a random pic:
     pic_list = Rawpicture.objects()
     random_picid = choice(pic_list).id
     # category_list = Rawpicture.objects() # Sau sẽ xử lý hiển thị tất cả các category trong html bằng vòng for
@@ -227,44 +224,68 @@ def one_category(category):
 @app.route('/profile/<artist>', methods=['GET', 'POST']) # Hiển thị profile
 def profile(artist):
     artist_infor = User.objects(username=artist).first()
-    working_arts = User.objects(username=artist).first().working_arts
-    finished_arts = User.objects(username=artist).first().finished_arts
-    # Các bức tranh đã hoàn thành sắp xếp theo số lượng like:
-    finished_list = Savepicture.objects(picartist=artist, picstatus='finished').order_by('-piclikes')
-    working_list = []
+    working_arts = artist_infor.working_arts
+    finished_arts = artist_infor.finished_arts
+    totallikes = artist_infor.totallikes
+    finished_list = Savepicture.objects(picartist=artist, picstatus='finished') # .order_by('-piclikes')
+    working_list = Savepicture.objects(picartist=artist, picstatus='working')
+    display = 'no'
     if 'token' in session:
         if session['token'] == artist:
-            working_list = Savepicture.objects(picartist=artist, picstatus='working')
-    if request.method == 'POST':
+            display = 'yes'
+    if request.method == 'GET':
+        return render_template('profile.html', display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list)
+    elif request.method == 'POST':
         form = request.form
-        picid = form['picid']
-        # Update database:
-        Savepicture.objects(id=picid).first().update(set__picstatus="finished")
-        User.objects(username=artist).first().update(set__finished_arts=finished_arts+1)
-        User.objects(username=artist).first().update(set__working_arts=working_arts-1)
-    return render_template('profile.html', artist_infor=artist_infor, finished_arts=finished_arts, working_arts=working_arts, finished_list=finished_list, working_list=working_list)
+        for fpic in finished_list:
+            df = 'df' + str(fpic.id)
+            if df in form:
+                f_picid = form[df]
+                pic = Savepicture.objects(id=f_picid).first()
+                pic.delete()
+                finished_arts = artist_infor.finished_arts - 1
+                totallikes = artist_infor.totallikes - pic.piclikes
+                artist_infor.update(set__finished_arts=artist_infor.finished_arts - 1, set__totallikes=artist_infor.totallikes - pic.piclikes)
+        for wpic in working_list:
+            up = 'up' + str(wpic.id)
+            dw = 'dw' + str(wpic.id)
+            if up in form:
+                u_picid = form[up]
+                Savepicture.objects(id=u_picid).first().update(set__picstatus="finished")
+                working_arts = artist_infor.working_arts - 1
+                artist_infor.update(set__working_arts=artist_infor.working_arts - 1)
+                finished_arts = artist_infor.finished_arts + 1
+                artist_infor.update(set__finished_arts = artist_infor.finished_arts + 1)
+            if dw in form:
+                w_picid = form[dw]
+                Savepicture.objects(id=w_picid).first().delete()
+                working_arts = artist_infor.working_arts - 1
+                artist_infor.update(set__working_arts=artist_infor.working_arts - 1)
+        
+        finished_list = Savepicture.objects(picartist=artist, picstatus='finished') # .order_by('-piclikes')
+        working_list = Savepicture.objects(picartist=artist, picstatus='working')
+        return render_template('profile.html', display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list)
 
 @app.route('/new_picture/<picid>', methods=['GET', 'POST']) # Hiển thị trang vẽ tranh của 1 bức tranh theo id của bức tranh đó
 def new_picture(picid):
     pic = Rawpicture.objects(id=picid).first()
     piclinkb64 = base64encode(pic.piclink)
     token = ''
-    aftersave = ''
     if 'token' in session:
         token = session['token']
     if request.method == 'GET':
-        aftersave = 'no'
-        return render_template('new_picture.html', piclinkb64=piclinkb64, token=token, aftersave=aftersave)
+        return render_template('new_picture.html', piclinkb64=piclinkb64, token=token)
     elif request.method == 'POST':
-        aftersave = 'yes'
         form = request.form
         picname = form['picname']
         piclink = form['piclink']
         picstatus = form['picstatus']
         picartist = token
         picartistfullname = User.objects(username=token).first().fullname
-        newlink = Savepicture(piclink=piclink, picname=picname, picstatus=picstatus, picartist=picartist, picartistfullname=picartistfullname)
+        newlink = Savepicture(piclink=piclink, picname=picname, picstatus=picstatus, picartist=picartist, picartistfullname=picartistfullname, picrawid=picid)
         newlink.save()
+        newid = Savepicture.objects(piclink=piclink).first().id
+
         # Update database của user tương ứng:
         working_arts = User.objects(username=token).first().working_arts
         finished_arts = User.objects(username=token).first().finished_arts
@@ -272,7 +293,7 @@ def new_picture(picid):
             User.objects(username=token).first().update(set__working_arts=working_arts+1)
         elif picstatus == 'finished':
             User.objects(username=token).first().update(set__finished_arts=finished_arts+1)
-        return render_template('new_picture.html', piclinkb64=piclink, aftersave=aftersave)
+        return redirect(url_for('saved', picid=newid))
 
 @app.route('/keep_continue/<picid>', methods=['GET', 'POST']) # Trang vẽ tiếp 1 bức đang vẽ dở
 def keep_continue(picid):
@@ -284,16 +305,16 @@ def keep_continue(picid):
         token = session['token']
         pic = Savepicture.objects(id=picid).first()
         piclinkb64 = pic.piclink
-        aftersave = ''
         if request.method == 'GET':
-            aftersave = 'no'
-            return render_template('keep_continue.html', piclinkb64=piclinkb64, token=token, aftersave=aftersave)
+            return render_template('keep_continue.html', pic=pic, piclinkb64=piclinkb64, token=token)
         elif request.method == 'POST':
-            aftersave = 'yes'
             form = request.form
+            picname = form['picname']
             piclink = form['piclink']
             picstatus = form['picstatus']
             # Update:
+            if picname != '':
+                pic.update(set__picname=picname)
             working_arts = User.objects(username=token).first().working_arts
             finished_arts = User.objects(username=token).first().finished_arts
             if picstatus == 'working':
@@ -302,7 +323,12 @@ def keep_continue(picid):
                 pic.update(set__piclink=piclink, set__picstatus=picstatus)
                 User.objects(username=token).first().update(set__finished_arts=finished_arts+1)
                 User.objects(username=token).first().update(set__working_arts=working_arts-1)
-            return render_template('keep_continue.html', piclinkb64=piclink, aftersave=aftersave)
+            return redirect(url_for('saved', picid=picid))
+
+@app.route("/saved/<picid>") # Hiển thị trang lưu ảnh thành công
+def saved(picid):
+    pic = Savepicture.objects(id=picid).first()
+    return render_template('saved.html', pic=pic)
 
 if __name__ == '__main__':
   app.run(debug=True)
