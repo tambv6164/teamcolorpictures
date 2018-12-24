@@ -27,15 +27,20 @@
             <div id="main">
                 <h4 style="font-size: 40px; color: white">Category</h3>
                 <div class="img">
-                    <div class="abc">
-                        <a href="{{ url_for('new_picture', picid=random_picid) }}" class="btn btn-1">Random pic</a>
+                    <div class="abcd">
+                        <a href="{{ url_for('new_picture', picid=random_pic.id) }}" class="btn btn-1">Random pic</a>
+                        <a href="{{ url_for('new_picture', picid=random_pic.id) }}">
+                            <img src="{{ random_pic.piclink }}" alt="" width="20%" height="20%">
+                        </a>
                     </div>
-                    <div class="abc">
-                        <a href="{{ url_for('one_category', category='Adiboo') }}" class="btn btn-1">Adiboo</a>
+                    {% for c in category_list %}
+                    <div class="abcd">
+                        <a href="{{ url_for('one_category', category=c.category) }}" class="btn btn-1">{{ c.name }}</a>
+                        <a href="{{ url_for('one_category', category=c.category) }}">
+                            <img src="{{ c.label }}" alt="" width="20%" height="20%">
+                        </a>
                     </div>
-                    <div class="abc">
-                        <a href="{{ url_for('one_category', category='101 Dalmatians') }}" class="btn btn-1">101 Dalmatians</a>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>    

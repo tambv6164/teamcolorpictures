@@ -225,14 +225,19 @@ def view(picid):
 def full_category():
     # Lấy id của 1 random pic, sử dụng trong mục Get me a random pic:
     pic_list = Rawpicture.objects()
-    random_picid = choice(pic_list).id
-    # category_list = Rawpicture.objects() # Sau sẽ xử lý hiển thị tất cả các category trong html bằng vòng for
-    return render_template('category.html', random_picid=random_picid)
+    random_pic = choice(pic_list)
+    categories = ['Aladdin', 'Christmas', 'Cinderella', 'Angry-Birds', 'Dragon Ball Z', 'Ben-10', 'Adiboo', '101 Dalmatians']
+    category_list = []
+    for c in categories:
+        piclink = Rawpicture.objects(category__icontains=c).first().piclink
+        category = {'category': c, 'name': c.replace('-',' ').title(), 'label': piclink}
+        category_list.append(category)
+    return render_template('category.html', random_pic=random_pic, category_list=category_list)
 
 @app.route('/category/<category>') # Hiển thị 1 trang category cụ thể
 def one_category(category):
     pic_list = Rawpicture.objects(category__icontains=category)
-    cap_category = category.title()
+    cap_category = category.replace('-',' ').title()
     return render_template('one_category.html', pic_list=pic_list, category=cap_category)
 
 @app.route('/profile/<artist>', methods=['GET', 'POST']) # Hiển thị profile
