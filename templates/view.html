@@ -30,7 +30,9 @@
             <div>
             <button class="btn btn-3" onclick="displayNamebox()">Change name</button>
             <form style="display:none" action="" method="POST" id="namebox">
-                <input class="btn btn-1" type="text" placeholder="Enter new name" name="picname">
+            <div class="dang_nhap">
+                <input type="text" placeholder="Enter new name" name="picname">
+            </div>
                 <button class="btn btn-3" type="submit" form="namebox">Save</button>
             </form>
             </div>
@@ -45,7 +47,7 @@
                 }
             }
             </script>
-            <img src="{{ pic.piclink }}" alt="" style="height:270px; width:270px">
+            <img src="{{ pic.piclink }}" alt="">
             <div>
                 <a href="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" class="btn btn-3">Color this raw picture</a>
             </div>
