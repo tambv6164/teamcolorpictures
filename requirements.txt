@@ -1,23 +1,10 @@
-# ----------------------
-# Flask
-# ----------------------
 flask
 flask-restful
 flask-socketio
-
-# ----------------------
-# Database
-# ----------------------
 mongoengine
-
-# ----------------------
-# Production Server
-# ----------------------
 eventlet
 gunicorn
-
-# ----------------------
-# Others
-# ----------------------
 addict
 shortuuid
+base64
+requests
