@@ -27,17 +27,17 @@
                 </div>
                 <div>
                     <div>
-                        <p>Pick your color first: </p>
+                        <p style="color:white">Pick your color first: </p>
                         <input id="colorPicker" type="color" name="favcolor" value="#ff0000">
                     </div>
                     <div>
-                        <button class="btn btn-1" id="resetcanvas" onclick="clearCanvas()">Reset</button>
+                        <button class="btn btn-3" id="resetcanvas" onclick="clearCanvas()">Reset</button>
                     </div>
                     <div>
-                        <button class="btn btn-1" onclick="displayNamebox()">Change name</button>
+                        <button class="btn btn-3" onclick="displayNamebox()">Change name</button>
                     </div>
                     <div style="display:none" id="namebox">
-                        <input class="btn btn-1" type="text" placeholder="Enter new name" id="newname" name="picname">
+                        <input class="someinput" type="text" placeholder="Enter new name" id="newname" name="picname">
                     </div>
                     <div>
                         <form action="" method="post" id="submitform">
@@ -45,15 +45,15 @@
                             <input style="display:none" type="text" id="inputlink" name="piclink">
                             <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
                             <div>
-                                <button id="saveworking" class="btn btn-1" type="button" onclick="saveWorking()">Save</button>
+                                <button id="saveworking" class="btn btn-3" type="button" onclick="saveWorking()">Save</button>
                             </div>
                             <div>
-                                <button id="savefinished" class="btn btn-1" type="button" onclick="saveFinished()">Finish Art</button>
+                                <button id="savefinished" class="btn btn-3" type="button" onclick="saveFinished()">Finish Art</button>
                             </div>
                         </form>
                     </div>
                     <div>
-                        <a href="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" class="btn btn-1">Color this raw picture</a>
+                        <a href="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" class="btn btn-3">Color this raw picture</a>
                     </div>
                 </div>
             </div>

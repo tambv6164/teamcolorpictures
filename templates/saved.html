@@ -31,17 +31,17 @@
                     <img src="{{ pic.piclink }}" alt="">
                 </div>
                 <div>
-                    <p>Saved art successfull!</p>
+                    <p style="color:white">Saved art successfull!</p>
                     {% if pic.picstatus == 'working' %}
                     <div>
-                        <a href="{{ url_for('keep_continue', picid=pic.id) }}" class="btn btn-2">Continue</a>
+                        <a href="{{ url_for('keep_continue', picid=pic.id) }}" class="btn btn-3">Continue</a>
                     </div>
                     {% endif %}
                     <div>
-                        <a href="{{ url_for('profile', artist=session['token']) }}" class="btn btn-2">Go to my Arts</a>
+                        <a href="{{ url_for('profile', artist=session['token']) }}" class="btn btn-3">Go to my Arts</a>
                     </div>
                     <div>
-                        <a href="{{ url_for('full_category') }}" class="btn btn-2">Start New</a>
+                        <a href="{{ url_for('full_category') }}" class="btn btn-3">Start New</a>
                     </div>
                 </div>
             </div>

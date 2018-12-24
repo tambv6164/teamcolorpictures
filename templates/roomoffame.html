@@ -19,24 +19,28 @@
             <a href="{{ url_for('top100artists') }}" class="btn btn-3">Top 100 Artists</a>
             <a href="{{ url_for('full_category') }}" class="btn btn-3">Start Coloring</a>
 
-            <h1 style="color:white">Room of Fame</h1>
+            <h2 style="color:white; font-size: 40px">Room of Fame</h2>
             <hr>
             <p>{{ notice }}</p>
 
-            {% for pic in piclist %}
-            <div>
-                <h2 style="font-size: 40px;">{{ pic.picname }}</h2>
-                <div>
-                    <a href="{{ url_for('view', picid=pic.id) }}">
-                        <img src="{{ pic.piclink }}" alt="" width="20%" height="20%">
-                    </a>
-                </div>
-                <span>Artist:<span>
-                <span><a href="{{ url_for('profile', artist=pic.picartist) }}"> {{ pic.picartistfullname }}</a></span>
-                <p>Like: {{ pic.piclikes }}, Comment: {{ pic.piccomments }}</p>
-                <hr>
+            <div class="img">
+                {% for pic in piclist %}
+                    <div class="abc">
+                        <h2 style="font-size: 30px; color:white">{{ pic.picname }}</h2>
+                        <div>
+                            <a href="{{ url_for('view', picid=pic.id) }}">
+                                <img src="{{ pic.piclink }}" alt="">
+                            </a>
+                        </div>
+                        <div>
+                            <p>Artist: <a style="text-decoration: none; color: black" href="{{ url_for('profile', artist=pic.picartist) }}"> {{ pic.picartistfullname }}</a></p>
+                        </div>
+                        <p>Like: {{ pic.piclikes }}, Comment: {{ pic.piccomments }}</p>
+                        <hr>
+                    </div>
+                {% endfor %}
             </div>
-            {% endfor %}
+
         </div>
     </section>
      <!-- Code Snow -->

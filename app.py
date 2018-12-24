@@ -165,6 +165,13 @@ def view(picid):
     display = 'no'
     if 'token' not in session:
         warning = 'show'
+        display = 'no'
+    else:
+        warning = 'hide'
+        if session['token'] == artist.username:
+            display = 'yes'
+        else: 
+            display = 'no'
     if request.method == 'GET':
         if 'token' in session:
             like_check = Like.objects(who_username=session['token'], picid=picid).first()
@@ -172,8 +179,6 @@ def view(picid):
                 likebutton = 'Like'
             else:
                 likebutton = 'Dislike'
-            if session['token'] == artist:
-                display = 'yes'
         return render_template("view.html", display=display, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning)
     elif request.method == 'POST':
         form = request.form

@@ -24,8 +24,9 @@
                 <a href="{{ url_for('login') }}" class="btn btn-3">Log in</a>
                 <a href="{{ url_for('signup') }}" class="btn btn-3">Sign up</a>
             {% endif %}
+            
+            <h2 style="color:white; font-size: 40px">{{ category }}</h2>
 
-            <h3>{{ category }}</h3>
             <hr>
             <div class="img">
                 {% for pic in pic_list %}

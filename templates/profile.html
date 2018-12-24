@@ -27,58 +27,65 @@
     
             <h2 style="font-size:45px; color:white">{{ artist_infor.fullname }}</h2>
             <hr>
-            <div style="font-size:22px">Finished Arts: {{ finished_arts }}</div>
-            <div style="font-size:22px">Like: {{ totallikes }}</div>
+            <div style="font-size:22px; color: white">Finished Arts: {{ finished_arts }}</div>
+            <div style="font-size:22px; color:white">Total Likes: {{ totallikes }}</div>
             <hr>
 
+            <div class="img">
             {% for fpic in finished_list %}
-                <p style="font-size:22px">{{ fpic.picname }}</p>
-                <a href="{{ url_for('view', picid=fpic.id) }}">
-                    <img src="{{ fpic.piclink }}" alt="" width="20%" height="20%">
-                </a>
-                <p style="font-size:22px">Like: {{ fpic.piclikes }}, Comment: {{ fpic.piccomments }}</p>
+                <div class="abc">
+                    <p style="font-size:22px; color: white">{{ fpic.picname }}</p>
+                    <a href="{{ url_for('view', picid=fpic.id) }}">
+                        <img src="{{ fpic.piclink }}" alt="" width="20%" height="20%">
+                    </a>
+                    <p style="font-size:22px; color: white">Like: {{ fpic.piclikes }}, Comment: {{ fpic.piccomments }}</p>
 
-                {% if display == 'yes' %}
-                <form action="" method="post" id="df{{ fpic.id }}">
-                    <input style="display:none" type="text" name="df{{ fpic.id }}" value="{{ fpic.id }}">
-                </form>
-                <button type="submit" form="df{{ fpic.id }}" class="btn btn-5" >Delete</button>
-                {% endif %}
-
-                <hr>
+                    {% if display == 'yes' %}
+                    <form action="" method="post" id="df{{ fpic.id }}">
+                        <input style="display:none" type="text" name="df{{ fpic.id }}" value="{{ fpic.id }}">
+                    </form>
+                    <button type="submit" form="df{{ fpic.id }}" class="btn btn-3" >Delete</button>
+                    {% endif %}
+                </div>
             {% endfor %}
-            
+            </div>
+            <hr>
             {% if display == 'yes' %}
                 <h2 style="font-size:45px; color:white">Working arts</h2>
                 <hr>
-                <div style="font-size:22px">Working Arts: {{ working_arts }}</div>
+                <div style="font-size:22px; color: white">Working Arts: {{ working_arts }}</div>
                 <hr>
-                {% for wpic in working_list %}
-                    <p style="font-size:22px">{{ wpic.picname }}</p>
-                    <div>
-                        <a href="{{ url_for('keep_continue', picid=wpic.id) }}">
-                            <img src="{{ wpic.piclink }}" alt="" width="20%" height="20%">
-                        </a>
-                    </div>
-                    <div>
-                        <a href="{{ url_for('keep_continue', picid=wpic.id) }}" class="btn btn-5">Continue</a>
-                    </div>
-                    <div>
-                        <form action="" method="post" id="up{{ wpic.id }}">
-                            <input style="display:none" type="text" name="up{{ wpic.id }}" value="{{ wpic.id }}">
-                        </form>
-                        <button type="submit" form="up{{ wpic.id }}" class="btn btn-5">Finish</button>
-                    </div>
-                    <div>
-                        <form action="" method="post" id="dw{{ wpic.id }}">
-                            <input style="display:none" type="text" name="dw{{ wpic.id }}" value="{{ wpic.id }}">
-                        </form>
-                        <button type="submit" form="dw{{ wpic.id }}" class="btn btn-5">Delete</button>
-                    </div>
-                    <hr>
-                {% endfor %}
+                <div class="img">
+                    {% for wpic in working_list %}
+                        <div class="abc">
+                            <p style="font-size:22px; color: white">{{ wpic.picname }}</p>
+                            <div>
+                                <a href="{{ url_for('keep_continue', picid=wpic.id) }}">
+                                    <img src="{{ wpic.piclink }}" alt="" width="20%" height="20%">
+                                </a>
+                            </div>
+                            <div>
+                                <a href="{{ url_for('keep_continue', picid=wpic.id) }}" class="btn btn-3">Continue</a>
+                            </div>
+                            <div>
+                                <form action="" method="post" id="up{{ wpic.id }}">
+                                    <input style="display:none" type="text" name="up{{ wpic.id }}" value="{{ wpic.id }}">
+                                </form>
+                                <button type="submit" form="up{{ wpic.id }}" class="btn btn-3">Finish</button>
+                            </div>
+                            <div>
+                                <form action="" method="post" id="dw{{ wpic.id }}">
+                                    <input style="display:none" type="text" name="dw{{ wpic.id }}" value="{{ wpic.id }}">
+                                </form>
+                                <button type="submit" form="dw{{ wpic.id }}" class="btn btn-3">Delete</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <hr>
                 <a href="{{ url_for('full_category') }}" class="btn btn-3">Start new art</a>
             {% endif %}
+
         </div>
     </section>
     <!-- Code Snow -->

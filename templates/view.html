@@ -27,32 +27,32 @@
 
             <h4 style="font-size:30px; color:cornsilk">{{ picname }}</h4>
             {% if display == 'yes' %}
-            <div>
-            <button class="btn btn-3" onclick="displayNamebox()">Change name</button>
+                <div>
+                    <button class="btn btn-3" onclick="displayNamebox()">Change name</button>
+                </div>
+            {% endif %}
             <form style="display:none" action="" method="POST" id="namebox">
-            <div class="dang_nhap">
-                <input type="text" placeholder="Enter new name" name="picname">
-            </div>
+                <div>
+                    <input class="someinput" type="text" placeholder="Enter new name" name="picname">
+                </div>
                 <button class="btn btn-3" type="submit" form="namebox">Save</button>
             </form>
-            </div>
-            {% endif %}
             <script>
-            function displayNamebox() {
-                var x = document.getElementById("namebox");
-                if (x.style.display === "none") {
-                    x.style.display = "block";
-                } else {
-                    x.style.display = "none";
+                function displayNamebox() {
+                    var x = document.getElementById("namebox");
+                    if (x.style.display === "none") {
+                        x.style.display = "block";
+                    } else {
+                        x.style.display = "none";
+                    }
                 }
-            }
             </script>
             <img src="{{ pic.piclink }}" alt="">
             <div>
                 <a href="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" class="btn btn-3">Color this raw picture</a>
             </div>
             <hr>
-            <p>Artist: <a href="{{ url_for('profile', artist=artist.username) }}">{{ artist.fullname }}</a></p>
+            <p>Artist: <a style="text-decoration: none; color: black" href="{{ url_for('profile', artist=artist.username) }}">{{ artist.fullname }}</a></p>
             <p>Like: {{ piclikes }}</p>
 
             <input id="warning" type="text" style="display:none" value="{{ warning }}">

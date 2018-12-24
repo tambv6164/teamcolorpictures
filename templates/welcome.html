@@ -24,7 +24,7 @@
                 <a href="{{ url_for('logout') }}" class="btn btn-3">Log out</a>
             {% endif %}
             <div id="tieu_de">
-                <h1>Xin chào {{ fullname }}!</h1>
+                <h3 style="font-size: 40px; color:white">Xin chào {{ fullname }}!</h3>
             </div> 
             <div>
                 <a href="{{ url_for('profile', artist=session['token']) }}" class="btn btn-1">My Arts</a>
