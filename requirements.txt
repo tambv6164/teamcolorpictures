@@ -6,5 +6,4 @@ eventlet
 gunicorn
 addict
 shortuuid
-base64
 requests
