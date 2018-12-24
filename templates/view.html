@@ -26,6 +26,7 @@
             {% endif %}
 
             <h4 style="font-size:30px; color:cornsilk">{{ picname }}</h4>
+            {% if display == 'yes' %}
             <div>
             <button class="btn btn-3" onclick="displayNamebox()">Change name</button>
             <form style="display:none" action="" method="POST" id="namebox">
@@ -33,6 +34,7 @@
                 <button class="btn btn-3" type="submit" form="namebox">Save</button>
             </form>
             </div>
+            {% endif %}
             <script>
             function displayNamebox() {
                 var x = document.getElementById("namebox");

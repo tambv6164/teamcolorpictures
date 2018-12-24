@@ -162,6 +162,7 @@ def view(picid):
     comment_list = Comment.objects(picid=picid)
     warning = 'hide'
     likebutton = 'Like'
+    display = 'no'
     if 'token' not in session:
         warning = 'show'
     if request.method == 'GET':
@@ -171,7 +172,9 @@ def view(picid):
                 likebutton = 'Like'
             else:
                 likebutton = 'Dislike'
-        return render_template("view.html", pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning)
+            if session['token'] == artist:
+                display = 'yes'
+        return render_template("view.html", display=display, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning)
     elif request.method == 'POST':
         form = request.form
         like_check = Like.objects(who_username=session['token'], picid=picid).first()
@@ -211,7 +214,7 @@ def view(picid):
                 # Xóa like khỏi database
                 like_check.delete()
                 likebutton == 'Like' # chuyển thành nút like
-        return render_template('view.html', pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, warning=warning, likebutton=likebutton)
+        return render_template('view.html', display=display, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, warning=warning, likebutton=likebutton)
 
 @app.route('/category') # Hiển thị trang Category tổng
 def full_category():
