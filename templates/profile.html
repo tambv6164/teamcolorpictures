@@ -11,22 +11,35 @@
     <title>{{ artist_infor.fullname }}</title>
 </head>
 <body>
-    <a href="{{ url_for('home') }}">Homepage</a>
-    <a href="{{ url_for('full_category') }}">Start Coloring</a>
-
+    <form action="{{ url_for('home') }}" style="display:inline;">
+        <input type="submit" value="Homepage">
+    </form>
+    <form action="{{ url_for('full_category') }}" style="display:inline;">
+        <input type="submit" value="Start Coloring">
+    </form>
     {% if 'token' in session %}
-        <a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a>
-        <a href="{{ url_for('logout') }}">Log out</a>
+        <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+            <input type="submit" value="My Arts">
+        </form>
+        <form action="{{ url_for('logout') }}" style="display:inline;">
+            <input type="submit" value="Log out">
+        </form>
     {% else %}
-        <a href="{{ url_for('login') }}">Log in</a>
-        <a href="{{ url_for('signup') }}">Sign up</a>
+        <form action="{{ url_for('login') }}" style="display:inline;">
+            <input type="submit" value="Log in">
+        </form>
+        <form action="{{ url_for('signup') }}" style="display:inline;">
+            <input type="submit" value="Sign up">
+        </form>
     {% endif %}
-
+    <hr>
 
     <h2>{{ artist_infor.fullname }}</h2>
     {% if display == 'yes' %}
         <div>
-            <a href="{{ url_for('change_infor', artist=artist_infor.username) }}">Chage My Infor</a>
+            <form action="{{ url_for('change_infor', artist=artist_infor.username) }}" method="get">
+                <input type="submit" value="Chage My Infor">
+            </form>
         </div>
     {% endif %}
     <hr>
@@ -68,7 +81,9 @@
                     </a>
                 </div>
                 <div>
-                    <a href="{{ url_for('keep_continue', picid=wpic.id) }}">Continue</a>
+                    <form action="{{ url_for('keep_continue', picid=wpic.id) }}" method="get">
+                        <input type="submit" value="Continue">
+                    </form>
                 </div>
                 <div>
                     <form action="" method="post" id="up{{ wpic.id }}">
@@ -85,7 +100,9 @@
             </div>
         {% endfor %}
         <hr>
-        <a href="{{ url_for('full_category') }}">Start new art</a>
+        <form action="{{ url_for('full_category') }}" method="get">
+            <input type="submit" value="Start new art">
+        </form>
     {% endif %}
 </body>
 </html>

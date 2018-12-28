@@ -11,17 +11,27 @@
     <title>New Pictures</title>
 </head>
 <body>
-    <a href="{{ url_for('home') }}">Homepage</a>
-    <a href="{{ url_for('full_category') }}">Category</a>
-
+    <form action="{{ url_for('home') }}" style="display:inline;">
+        <input type="submit" value="Homepage">
+    </form>
+    <form action="{{ url_for('full_category') }}" style="display:inline;">
+        <input type="submit" value="Category">
+    </form>
     {% if 'token' in session %}
-        <a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a>
-        <a href="{{ url_for('logout') }}">Log out</a>
+        <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+            <input type="submit" value="My Arts">
+        </form>
+        <form action="{{ url_for('logout') }}" style="display:inline;">
+            <input type="submit" value="Log out">
+        </form>
     {% else %}
-        <a href="{{ url_for('login') }}">Log in</a>
-        <a href="{{ url_for('signup') }}">Sign up</a>
+        <form action="{{ url_for('login') }}" style="display:inline;">
+            <input type="submit" value="Log in">
+        </form>
+        <form action="{{ url_for('signup') }}" style="display:inline;">
+            <input type="submit" value="Sign up">
+        </form>
     {% endif %}
-
     <hr>
 
     <div style="display: flex; justify-content: space-around">
@@ -42,7 +52,9 @@
                 </div>
                 <div style="display:none" id="loginwarning">
                     <p>Bạn chưa đăng nhập!</p>
-                    <a href="{{ url_for('login') }}" target="_blank">Log in</a></button>
+                    <form action="{{ url_for('login') }}" target="_blank">
+                        <input type="submit" value="Log in">
+                    </form>
                 </div>
                 <form style="display:none" action="" method="post" id="submitform">
                     <input style="display:none" type="text" id="inputlink" name="piclink">
@@ -52,7 +64,7 @@
                         <p>Name your art:</p>
                     </div>
                     <div class="dang_nhap">
-                        <input class="someinput" type="text" placeholder="Enter name" id="inputname" name="picname">
+                        <input class="someinput" type="text" placeholder="Enter name" id="inputname" name="picname" onfocus="this.placeholder=''" onblur="this.placeholder='Enter name'">
                     </div>
                     <p id="setnamewarning" style="display:none">Bạn chưa đặt tên!</p>
                     <div>

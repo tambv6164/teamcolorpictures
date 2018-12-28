@@ -11,17 +11,29 @@
     <title>Not Allow</title>
 </head>
 <body>
-    <a href="{{ url_for('home') }}">Homepage</a>
-    <a href="{{ url_for('full_category') }}">Start Coloring</a>
-
+    <form action="{{ url_for('home') }}" style="display:inline;">
+        <input type="submit" value="Homepage">
+    </form>
+    <form action="{{ url_for('full_category') }}" style="display:inline;">
+        <input type="submit" value="Category">
+    </form>
     {% if 'token' in session %}
-        <a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a>
-        <a href="{{ url_for('logout') }}">Log out</a>
+        <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+            <input type="submit" value="My Arts">
+        </form>
+        <form action="{{ url_for('logout') }}" style="display:inline;">
+            <input type="submit" value="Log out">
+        </form>
     {% else %}
-        <a href="{{ url_for('login') }}">Log in</a>
-        <a href="{{ url_for('signup') }}">Sign up</a>
+        <form action="{{ url_for('login') }}" style="display:inline;">
+            <input type="submit" value="Log in">
+        </form>
+        <form action="{{ url_for('signup') }}" style="display:inline;">
+            <input type="submit" value="Sign up">
+        </form>
     {% endif %}
-
+    <hr>
+    
     <p>Bạn không được quyền truy cập vào trang này!</p>
     
 </body>

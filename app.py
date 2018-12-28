@@ -387,11 +387,18 @@ def change_infor(artist):
                 artist_infor = User.objects(username=artist).first()
                 if new_fullname != '' or new_username != '' or new_password != '':
                     notice = 'Bạn đã thay đổi thông tin thành công!'
+                if new_fullname == '' and new_username == '' and new_password == '':
+                    notice = 'Bạn đã không thay đổi thông tin gì!'
                 return render_template('change_infor.html', fullname=artist_infor.fullname, password=artist_infor.password, notice=notice)
 
 @app.route("/notallow") # Hiển thị khi người dùng truy cập 1 trang không được phép
 def not_allow():
     return render_template('not_allow.html')
+
+@app.route("/search") # Trang tìm kiếm
+def search():
+    
+    return render_template('search.html')
 
 if __name__ == '__main__':
   app.run(debug=True)

@@ -11,18 +11,28 @@
     <title>Color Pictures</title>
 </head>
 <body>
-    <a href="{{ url_for('home') }}">Homepage</a>
-    <a href="{{ url_for('full_category') }}">Start Coloring</a>
+    <form action="{{ url_for('home') }}" style="display:inline;">
+        <input type="submit" value="Homepage">
+    </form>
+    <form action="{{ url_for('search') }}" style="display:inline;">
+        <input type="submit" value="Search">
+    </form>
+    <form action="{{ url_for('full_category') }}" style="display:inline;">
+        <input type="submit" value="Star Coloring">
+    </form>
     {% if 'token' in session %}
-        <a href="{{ url_for('logout') }}">Log out</a>
+        <form action="{{ url_for('logout') }}" style="display:inline;">
+            <input type="submit" value="Log out">
+        </form>
     {% endif %}
+    <hr>
     
     <div>
-        <h3>Xin chào {{ fullname }}!</h3>
+        <h2>Xin chào {{ fullname }}!</h2>
     </div> 
-    <div>
-        <a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a>
-    </div>     
+    <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+        <input type="submit" value="My Arts">
+    </form>    
 
 </body>
 </html>

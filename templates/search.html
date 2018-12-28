@@ -4,18 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link rel="stylesheet" href="../static/colorpictures.css" type="text/css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-    
-    <title>Color Pictures</title>
+    <title>Document</title>
 </head>
 <body>
     <form action="{{ url_for('home') }}" style="display:inline;">
         <input type="submit" value="Homepage">
     </form>
-    <form action="{{ url_for('search') }}" style="display:inline;">
-        <input type="submit" value="Search">
+    <form action="{{ url_for('full_category') }}" style="display:inline;">
+        <input type="submit" value="Category">
     </form>
     {% if 'token' in session %}
         <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
@@ -33,23 +29,24 @@
         </form>
     {% endif %}
     <hr>
+    
+    <h2>Search</h2>
 
-    <div>
-        <h1>Color Pictures</h1>
-        <p>-A colorfull world in your hand-</p>
-    </div>
-    <form action="{{ url_for('full_category') }}">
-        <input type="submit" value="Start">
+    <form action="" method="post">
+        <div>
+            <input name="searchword" type="text" size="70" placeholder="e.g. aladdin, ben 10 ..." onfocus="this.placeholder=''" onblur="this.placeholder='e.g. aladdin, ben 10 ...'">
+        </div>
+        <div>
+            <label for="">Select field: </label>
+            <input name="field1" type="checkbox" value="raw_picture"> Raw Pictures
+            <input name="field2" type="checkbox" value="finished_art"> Finished Art
+            <input name="field3" type="checkbox" value="artist"> Artist
+            </div>
+        <button>Find</button>
     </form>
-    <form action="{{ url_for('top100pics') }}">
-        <input type="submit" value="Top 100 Pictures">
-    </form>
-    <form action="{{ url_for('top100artists') }}">
-        <input type="submit" value="Top 100 Artists">
-    </form>
-    <form action="{{ url_for('room_of_fame') }}">
-        <input type="submit" value="Room of Fame">
-    </form>
+    <hr>
+    <h2>Result:</h2>
+    <!-- <hr> -->
 
 </body>
 </html>

@@ -11,22 +11,29 @@
     <title>Color Pictures</title>
 </head>
 <body>
-    <a href="{{ url_for('home') }}">Homepage</a>
-    <a href="{{ url_for('full_category') }}">Start Coloring</a>
-    <a href="{{ url_for('login') }}">Log in</a>
-
+    <form action="{{ url_for('home') }}" style="display:inline;">
+        <input type="submit" value="Homepage">
+    </form>
+    <form action="{{ url_for('full_category') }}" style="display:inline;">
+        <input type="submit" value="Start Coloring">
+    </form>
+    <form action="{{ url_for('login') }}" style="display:inline;">
+        <input type="submit" value="Log in">
+    </form>
+    <hr>
+    
     <h2>Sign up</h2>
     <p>{{ warning }}</p>
 
     <form method="POST">
         <div>
-            <input type="text" placeholder="fullname" name="fullname">
+            <input type="text" size="30" placeholder="fullname" name="fullname" onfocus="this.placeholder=''" onblur="this.placeholder='fullname'">
         </div>
         <div>
-            <input type="text" placeholder="username (không chứa dấu cách)" name="username">
+            <input type="text" size="30" placeholder="username (không chứa dấu cách)" name="username" onfocus="this.placeholder=''" onblur="this.placeholder='username (không chứa dấu cách)'">
         </div>
         <div>
-            <input type="password" placeholder="password (không chứa dấu cách)" name='password'>
+            <input type="password" size="30" placeholder="password (không chứa dấu cách)" name='password' onfocus="this.placeholder=''" onblur="this.placeholder='password (không chứa dấu cách)'">
         </div>
         <div>
             <button>Sign up</button>

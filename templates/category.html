@@ -11,26 +11,44 @@
     <title>Category</title>
 </head>
 <body>
-    <a href="{{ url_for('home') }}">Homepage</a>
+    <form action="{{ url_for('home') }}" style="display:inline;">
+        <input type="submit" value="Homepage">
+    </form>
+    <form action="{{ url_for('search') }}" style="display:inline;">
+        <input type="submit" value="Search">
+    </form>
     {% if 'token' in session %}
-        <a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a>
-        <a href="{{ url_for('logout') }}">Log out</a>
+        <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+            <input type="submit" value="My Arts">
+        </form>
+        <form action="{{ url_for('logout') }}" style="display:inline;">
+            <input type="submit" value="Log out">
+        </form>
     {% else %}
-        <a href="{{ url_for('login') }}">Log in</a>
-        <a href="{{ url_for('signup') }}">Sign up</a>
+        <form action="{{ url_for('login') }}" style="display:inline;">
+            <input type="submit" value="Log in">
+        </form>
+        <form action="{{ url_for('signup') }}" style="display:inline;">
+            <input type="submit" value="Sign up">
+        </form>
     {% endif %}
+    <hr>
     
-    <h3>Category</h3>
+    <h2>Category</h2>
     <div class="img">
         <div class="abcd">
-            <a href="{{ url_for('new_picture', picid=random_pic.id) }}">Random pic</a>
+            <form action="{{ url_for('new_picture', picid=random_pic.id) }}" method="get">
+                <input type="submit" value="Random pic">
+            </form>
             <a href="{{ url_for('new_picture', picid=random_pic.id) }}">
                 <img src="{{ random_pic.piclink }}" alt="" width="20%" height="20%">
             </a>
         </div>
         {% for c in category_list %}
         <div class="abcd">
-            <a href="{{ url_for('one_category', category=c.category) }}">{{ c.name }}</a>
+            <form action="{{ url_for('one_category', category=c.category) }}" method="get">
+                <input type="submit" value="{{ c.name }}">
+            </form>
             <a href="{{ url_for('one_category', category=c.category) }}">
                 <img src="{{ c.label }}" alt="" width="20%" height="20%">
             </a>

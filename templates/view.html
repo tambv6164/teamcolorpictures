@@ -11,86 +11,98 @@
     <title>{{ picname }}</title>
 </head>
 <body>
-            <a href="{{ url_for('home') }}">Homepage</a>
-            <a href="{{ url_for('full_category') }}">Start Coloring</a>
+    <form action="{{ url_for('home') }}" style="display:inline;">
+        <input type="submit" value="Homepage">
+    </form>
+    <form action="{{ url_for('full_category') }}" style="display:inline;">
+        <input type="submit" value="Star Coloring">
+    </form>
+    {% if 'token' in session %}
+        <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+            <input type="submit" value="My Arts">
+        </form>
+        <form action="{{ url_for('logout') }}" style="display:inline;">
+            <input type="submit" value="Log out">
+        </form>
+    {% else %}
+        <form action="{{ url_for('login') }}" style="display:inline;">
+            <input type="submit" value="Log in">
+        </form>
+        <form action="{{ url_for('signup') }}" style="display:inline;">
+            <input type="submit" value="Sign up">
+        </form>
+    {% endif %}
+    <hr>
 
-            {% if 'token' in session %}
-                <a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a>
-                <a href="{{ url_for('logout') }}">Log out</a>
-            {% else %}
-                <a href="{{ url_for('login') }}">Log in</a>
-                <a href="{{ url_for('signup') }}">Sign up</a>
-            {% endif %}
-
-            <h4>{{ picname }}</h4>
-            {% if display == 'yes' %}
-                <div>
-                    <button onclick="displayNamebox()">Change name</button>
-                </div>
-            {% endif %}
-            <form style="display:none" action="" method="POST" id="namebox">
-                <div>
-                    <input class="someinput" type="text" placeholder="Enter new name" name="picname">
-                </div>
-                <button type="submit" form="namebox">Save</button>
-            </form>
-            <script>
-                function displayNamebox() {
-                    var x = document.getElementById("namebox");
-                    if (x.style.display === "none") {
-                        x.style.display = "block";
-                    } else {
-                        x.style.display = "none";
-                    }
-                }
-            </script>
-            <img src="{{ pic.piclink }}" alt="">
-            <div>
-                <a href="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank">Color this raw picture</a>
-            </div>
-            <hr>
-            <p>Artist: <a href="{{ url_for('profile', artist=artist.username) }}">{{ artist.fullname }}</a></p>
-            <p>Like: {{ piclikes }}</p>
-
-            <input id="warning" type="text" style="display:none" value="{{ warning }}">
-            <form action="" method="POST" id="like">
-                <input style="display:none" name="like">
-            </form>
-            <button id="likebutton" type="button" form="like" onclick="Like()">{{ likebutton }}</button>
-            <hr>
-            <script>
-            function Like() {
-                var warning = document.getElementById("warning").value;
-                var loginalert = document.getElementById("loginalert");
-                var likebutton = document.getElementById("likebutton");
-                if (warning == "show") {
-                    loginalert.style.display = "block";
-                    likebutton.type = "button";
-                } else {
-                    loginalert.style.display = "none";
-                    likebutton.type = "submit";
-                }
-            } 
-            </script>
-            <p>Comments:</p>
-            {% if comment_list.first() == None %}
-                <p>Chưa có bình luận. Đăng bình luận đầu tiên cho bức tranh này bạn nhé.</p>
-            {% endif %}
-            {% for comment in comment_list %}
-                <p><a href="{{ url_for('profile', artist=comment.who_username) }}">{{ comment.who_fullname }}</a>: {{ comment.comment }}</p>
-            {% endfor %}
-            <hr>
-
-            <p id="loginalert" style="display:none">Vui lòng đăng nhập để like và comment</p>
-            <p id="emptyalert" style="display:none">Bạn chưa viết gì nên không có gì để đăng</p>
-
-            <p>Write comment:</p>
-            <form action="" method="post" id="comment">
-                <input id="cmtid" type="text" name='comment'>
-            </form>
-            <button id="cmtbutton" type="button" form="comment" onclick="Cmt()">Post</button>
+    <h4>{{ picname }}</h4>
+    {% if display == 'yes' %}
+        <div>
+            <button onclick="displayNamebox()">Change name</button>
         </div>
-    </section>
+    {% endif %}
+    <form style="display:none" action="" method="POST" id="namebox">
+        <div>
+            <input class="someinput" type="text" placeholder="Enter new name" name="picname" onfocus="this.placeholder=''" onblur="this.placeholder='Enter new name'">
+        </div>
+        <button type="submit" form="namebox">Save</button>
+    </form>
+    <script>
+        function displayNamebox() {
+            var x = document.getElementById("namebox");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+    <img src="{{ pic.piclink }}" alt="">
+    <div>
+        <form action="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" method="get">
+            <input type="submit" value="Color this raw picture">
+        </form>
+    </div>
+    <hr>
+    <p>Artist: <a href="{{ url_for('profile', artist=artist.username) }}">{{ artist.fullname }}</a></p>
+    <p>Like: {{ piclikes }}</p>
+
+    <input id="warning" type="text" style="display:none" value="{{ warning }}">
+    <form action="" method="POST" id="like">
+        <input style="display:none" name="like">
+    </form>
+    <button id="likebutton" type="button" form="like" onclick="Like()">{{ likebutton }}</button>
+    <hr>
+    <script>
+    function Like() {
+        var warning = document.getElementById("warning").value;
+        var loginalert = document.getElementById("loginalert");
+        var likebutton = document.getElementById("likebutton");
+        if (warning == "show") {
+            loginalert.style.display = "block";
+            likebutton.type = "button";
+        } else {
+            loginalert.style.display = "none";
+            likebutton.type = "submit";
+        }
+    } 
+    </script>
+    <p>Comments:</p>
+    {% if comment_list.first() == None %}
+        <p>Chưa có bình luận. Đăng bình luận đầu tiên cho bức tranh này bạn nhé.</p>
+    {% endif %}
+    {% for comment in comment_list %}
+        <p><a href="{{ url_for('profile', artist=comment.who_username) }}">{{ comment.who_fullname }}</a>: {{ comment.comment }}</p>
+    {% endfor %}
+    <hr>
+
+    <p id="loginalert" style="display:none">Vui lòng đăng nhập để like và comment</p>
+    <p id="emptyalert" style="display:none">Bạn chưa viết gì nên không có gì để đăng</p>
+
+    <p>Write comment:</p>
+    <form action="" method="post" id="comment">
+        <textarea name="comment" id="cmtid" cols="70" rows="5"></textarea>
+    </form>
+    <button id="cmtbutton" type="button" form="comment" onclick="Cmt()">Post</button>
 
     <script>
     function Cmt() {

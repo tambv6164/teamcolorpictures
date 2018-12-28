@@ -11,11 +11,23 @@
     <title>Room of Fame</title>
 </head>
 <body>
-    <a href="{{ url_for('home') }}">Homepage</a>
-    <a href="{{ url_for('top100pics') }}">Top 100 Pics</a>
-    <a href="{{ url_for('top100artists') }}">Top 100 Artists</a>
-    <a href="{{ url_for('full_category') }}">Start Coloring</a>
-
+    <form action="{{ url_for('home') }}" style="display:inline;">
+        <input type="submit" value="Homepage">
+    </form>
+    <form action="{{ url_for('search') }}" style="display:inline;">
+        <input type="submit" value="Search">
+    </form>
+    <form action="{{ url_for('top100pics') }}" style="display:inline;">
+        <input type="submit" value="Top 100 Pictures">
+    </form>
+    <form action="{{ url_for('top100artists') }}" style="display:inline;">
+        <input type="submit" value="Top 100 Artists">
+    </form>
+    <form action="{{ url_for('full_category') }}" style="display:inline;">
+        <input type="submit" value="Start Coloring">
+    </form>
+    <hr>
+    
     <h2>Room of Fame</h2>
     <hr>
     <p>{{ notice }}</p>
