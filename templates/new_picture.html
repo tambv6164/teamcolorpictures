@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <link href="https://fonts.googleapis.com/css?family=Ubuntu" rel="stylesheet">
     <link rel="stylesheet" href="../static/colorpictures.css" type="text/css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
@@ -12,65 +11,60 @@
     <title>New Pictures</title>
 </head>
 <body>
-    <section class="buttons">
-        <div class="container">
-            <a href="{{ url_for('home') }}" class="btn btn-3">Homepage</a>
-            <a href="{{ url_for('full_category') }}" class="btn btn-3">Category</a>
+    <a href="{{ url_for('home') }}">Homepage</a>
+    <a href="{{ url_for('full_category') }}">Category</a>
 
-            {% if 'token' in session %}
-                <a href="{{ url_for('profile', artist=session['token']) }}" class="btn btn-3">My Arts</a>
-                <a href="{{ url_for('logout') }}" class="btn btn-3">Log out</a>
-            {% else %}
-                <a href="{{ url_for('login') }}" class="btn btn-3">Log in</a>
-                <a href="{{ url_for('signup') }}" class="btn btn-3">Sign up</a>
-            {% endif %}
-        
-            <hr>
+    {% if 'token' in session %}
+        <a href="{{ url_for('profile', artist=session['token']) }}">My Arts</a>
+        <a href="{{ url_for('logout') }}">Log out</a>
+    {% else %}
+        <a href="{{ url_for('login') }}">Log in</a>
+        <a href="{{ url_for('signup') }}">Sign up</a>
+    {% endif %}
 
-            <div style="display: flex; justify-content: space-around">
+    <hr>
+
+    <div style="display: flex; justify-content: space-around">
+        <div>
+            <canvas id="canvas" width="567" height="794"></canvas>
+        </div>
+        <div style="justify-content: center">
+            <div>
+                <p>Pick your color first: </p>
+                <input id="colorPicker" type="color" name="favcolor" value="#ff0000">
+            </div>
+            <div>
+                <button onclick="clearCanvas()" id="resetcanvas">Reset</button>
+            </div>
+            <div>
                 <div>
-                    <canvas id="canvas" width="567" height="794"></canvas>
+                    <button onclick="displayForm()">Save</button>
                 </div>
-                <div style="justify-content: center">
-                    <div>
-                        <p style="color:aliceblue">Pick your color first: </p>
-                        <input id="colorPicker" type="color" name="favcolor" value="#ff0000">
-                    </div>
-                    <div>
-                        <button onclick="clearCanvas()" class="btn btn-3" id="resetcanvas">Reset</button>
-                    </div>
-                    <div>
-                        <div>
-                            <button class="btn btn-3" onclick="displayForm()">Save</button>
-                        </div>
-                        <div style="display:none" id="loginwarning">
-                            <p style="color:white">Bạn chưa đăng nhập!</p>
-                            <a href="{{ url_for('login') }}" target="_blank" class="btn btn-3">Log in</a></button>
-                        </div>
-                        <form style="display:none" action="" method="post" id="submitform">
-                            <input style="display:none" type="text" id="inputlink" name="piclink">
-                            <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
-                            <input style="display:none" type="text" id="inputpicartist" name="picartist">
-                            <div>
-                                <p style="color:white">Name your art:</p>
-                            </div>
-                            <div class="dang_nhap">
-                                <input class="someinput" type="text" placeholder="Enter name" id="inputname" name="picname">
-                            </div>
-                            <p id="setnamewarning" style="display:none; color:white">Bạn chưa đặt tên!</p>
-                            <div>
-                                <button id="saveworking" class="btn btn-3" type="button" onclick="saveWorking()">Save as Working Art</button>
-                            </div>
-                            <div>
-                                <button id="savefinished" class="btn btn-3" type="button" onclick="saveFinished()">Save as Finished Art</button>
-                            </div>
-                            
-                        </form>
-                    </div>
+                <div style="display:none" id="loginwarning">
+                    <p>Bạn chưa đăng nhập!</p>
+                    <a href="{{ url_for('login') }}" target="_blank">Log in</a></button>
                 </div>
+                <form style="display:none" action="" method="post" id="submitform">
+                    <input style="display:none" type="text" id="inputlink" name="piclink">
+                    <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
+                    <input style="display:none" type="text" id="inputpicartist" name="picartist">
+                    <div>
+                        <p>Name your art:</p>
+                    </div>
+                    <div class="dang_nhap">
+                        <input class="someinput" type="text" placeholder="Enter name" id="inputname" name="picname">
+                    </div>
+                    <p id="setnamewarning" style="display:none">Bạn chưa đặt tên!</p>
+                    <div>
+                        <button id="saveworking" type="button" onclick="saveWorking()">Save as Working Art</button>
+                    </div>
+                    <div>
+                        <button id="savefinished" type="button" onclick="saveFinished()">Save as Finished Art</button>
+                    </div>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
     <hr>
 
     <input id="token" style="display:none" type="text" value="{{ token }}">

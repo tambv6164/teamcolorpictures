@@ -145,13 +145,13 @@ def top100artists():
         top100artists.append(topartist)
     return render_template('top100artists.html', notice=notice, top100artists=top100artists)
 
-@app.route('/roomoffame') # Hiển thị tất cả những bức ảnh finished để cộng đồng vào xem và like
-def roomoffame():
+@app.route('/room_of_fame') # Hiển thị tất cả những bức ảnh finished để cộng đồng vào xem và like
+def room_of_fame():
     notice = ''
     piclist = Savepicture.objects(picstatus='finished').order_by('piclikes')
     if len(piclist) == 0:
         notice = 'Danh sách trống'
-    return render_template('roomoffame.html', notice=notice, piclist=piclist)
+    return render_template('room_of_fame.html', notice=notice, piclist=piclist)
 
 @app.route('/view/<picid>', methods=['GET', 'POST']) # Hiển thị 1 bức tranh đã hoàn thành để like và comment theo id của bức tranh đó
 def view(picid):
@@ -321,33 +321,77 @@ def keep_continue(picid):
     if 'token' not in session:
         return render_template('login.html', warning=warning)
     else:
-        token = session['token']
-        pic = Savepicture.objects(id=picid).first()
-        piclinkb64 = pic.piclink
-        if request.method == 'GET':
-            return render_template('keep_continue.html', pic=pic, piclinkb64=piclinkb64, token=token)
-        elif request.method == 'POST':
-            form = request.form
-            picname = form['picname']
-            piclink = form['piclink']
-            picstatus = form['picstatus']
-            # Update:
-            if picname != '':
-                pic.update(set__picname=picname)
-            working_arts = User.objects(username=token).first().working_arts
-            finished_arts = User.objects(username=token).first().finished_arts
-            if picstatus == 'working':
-                pic.update(set__piclink=piclink)
-            elif picstatus == 'finished':
-                pic.update(set__piclink=piclink, set__picstatus=picstatus)
-                User.objects(username=token).first().update(set__finished_arts=finished_arts+1)
-                User.objects(username=token).first().update(set__working_arts=working_arts-1)
-            return redirect(url_for('saved', picid=picid))
+        if session['token'] != Savepicture.objects(id=picid).first().picartist:
+            return render_template('not_allow.html')
+        else:
+            token = session['token']
+            pic = Savepicture.objects(id=picid).first()
+            piclinkb64 = pic.piclink
+            if request.method == 'GET':
+                return render_template('keep_continue.html', pic=pic, piclinkb64=piclinkb64, token=token)
+            elif request.method == 'POST':
+                form = request.form
+                picname = form['picname']
+                piclink = form['piclink']
+                picstatus = form['picstatus']
+                # Update:
+                if picname != '':
+                    pic.update(set__picname=picname)
+                working_arts = User.objects(username=token).first().working_arts
+                finished_arts = User.objects(username=token).first().finished_arts
+                if picstatus == 'working':
+                    pic.update(set__piclink=piclink)
+                elif picstatus == 'finished':
+                    pic.update(set__piclink=piclink, set__picstatus=picstatus)
+                    User.objects(username=token).first().update(set__finished_arts=finished_arts+1)
+                    User.objects(username=token).first().update(set__working_arts=working_arts-1)
+                return redirect(url_for('saved', picid=picid))
 
 @app.route("/saved/<picid>") # Hiển thị trang lưu ảnh thành công
 def saved(picid):
-    pic = Savepicture.objects(id=picid).first()
-    return render_template('saved.html', pic=pic)
+    warning = 'Bạn chưa đăng nhập!'
+    if 'token' not in session:
+        return render_template('login.html', warning=warning)
+    else:
+        if session['token'] != Savepicture.objects(id=picid).first().picartist:
+            return render_template('not_allow.html')
+        else:
+            pic = Savepicture.objects(id=picid).first()
+            return render_template('saved.html', pic=pic)
+
+@app.route("/profile/<artist>/change_infor", methods = ['GET', 'POST']) # Hiển thị trang thay đổi thông tin người dùng
+def change_infor(artist):
+    warning = 'Bạn chưa đăng nhập!'
+    if 'token' not in session:
+        return render_template('login.html', warning=warning)
+    else:
+        if session['token'] != artist:
+            return render_template('not_allow.html')
+        else:
+            artist_infor = User.objects(username=artist).first()
+            notice = ''
+            if request.method == 'GET':
+                return render_template('change_infor.html', fullname=artist_infor.fullname, password=artist_infor.password, notice=notice)
+            elif request.method == 'POST':
+                form = request.form
+                new_fullname = form['fullname']
+                new_username = form['username']
+                new_password = form['password']
+                if new_fullname != '':
+                    artist_infor.update(set__fullname=new_fullname)
+                if new_username != '':
+                    artist = new_username
+                    artist_infor.update(set__username=new_username)
+                if new_password != '':
+                    artist_infor.update(set__password=new_password)
+                artist_infor = User.objects(username=artist).first()
+                if new_fullname != '' or new_username != '' or new_password != '':
+                    notice = 'Bạn đã thay đổi thông tin thành công!'
+                return render_template('change_infor.html', fullname=artist_infor.fullname, password=artist_infor.password, notice=notice)
+
+@app.route("/notallow") # Hiển thị khi người dùng truy cập 1 trang không được phép
+def not_allow():
+    return render_template('not_allow.html')
 
 if __name__ == '__main__':
   app.run(debug=True)

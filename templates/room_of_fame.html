@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../static/colorpictures.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    
+    <title>Room of Fame</title>
+</head>
+<body>
+    <a href="{{ url_for('home') }}">Homepage</a>
+    <a href="{{ url_for('top100pics') }}">Top 100 Pics</a>
+    <a href="{{ url_for('top100artists') }}">Top 100 Artists</a>
+    <a href="{{ url_for('full_category') }}">Start Coloring</a>
+
+    <h2>Room of Fame</h2>
+    <hr>
+    <p>{{ notice }}</p>
+
+    <div class="img">
+        {% for pic in piclist %}
+            <div class="abc">
+                <h2>{{ pic.picname }}</h2>
+                <div>
+                    <a href="{{ url_for('view', picid=pic.id) }}">
+                        <img src="{{ pic.piclink }}" alt="" width="20%" height="20%">
+                    </a>
+                </div>
+                <div>
+                    <p>Artist: <a style="text-decoration: none" href="{{ url_for('profile', artist=pic.picartist) }}"> {{ pic.picartistfullname }}</a></p>
+                </div>
+                <p>Like: {{ pic.piclikes }}, Comment: {{ pic.piccomments }}</p>
+                <hr>
+            </div>
+        {% endfor %}
+    </div>
+
+</body>
+</html>
