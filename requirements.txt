@@ -1,9 +1,0 @@
-flask
-flask-restful
-flask-socketio
-mongoengine
-eventlet
-gunicorn
-addict
-shortuuid
-requests
