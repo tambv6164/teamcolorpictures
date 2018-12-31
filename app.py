@@ -1,4 +1,6 @@
 from flask import Flask, request, render_template, session, redirect, url_for, json, jsonify
+# import Q để query nhiều điều kiện cùng lúc
+from mongoengine.queryset.visitor import Q
 # import các Class
 from models.user import User
 from models.rawpicture import Rawpicture
@@ -395,10 +397,53 @@ def change_infor(artist):
 def not_allow():
     return render_template('not_allow.html')
 
-@app.route("/search") # Trang tìm kiếm
+@app.route("/search", methods = ['GET', 'POST']) # Trang tìm kiếm
 def search():
-    
-    return render_template('search.html')
+    if request.method == 'GET':
+        return render_template('search.html')
+    elif request.method == 'POST':
+        form = request.form
+        searchword = form['searchword']
+        field1 = form.get('field1') # form checkbox dùng form.get['inputname'] thay vì form['inputname']
+        field2 = form.get('field2') # kết quả trả về là none hoặc value của checkbox
+        field3 = form.get('field3')
+        raw_list = []
+        finished_list = []
+        artist_list = []
+        warn1 = warn2 = warn3 = ''
+        display1 = display2 = display3 = 'no'
+        s_list = []
+        if searchword != '':
+            s_list = searchword.replace('-', ' ').split()
+            for s in s_list:
+                r_list = Rawpicture.objects(Q(picname__icontains=s) | Q(category__icontains=s))
+                for r in r_list:
+                    if r not in raw_list:
+                        raw_list.append(r)
+                f_list = Savepicture.objects(picstatus='finished', picname__icontains=s)
+                for f in f_list:
+                    if f not in finished_list:
+                        finished_list.append(f)
+                a_list = User.objects(Q(username__icontains=s) | Q(fullname__icontains=s))
+                for a in a_list:
+                    if a not in artist_list:
+                        artist_list.append(a)     
+        if len(raw_list) == 0:
+            warn1 = 'No raw picture found!'
+        if len(finished_list) == 0:
+            warn2 = 'No finished picture found!'
+        if len(artist_list) == 0:
+            warn3 = 'No artist found!'
+        if field1 is not None:
+            display1 = 'yes'
+        if field2 is not None:
+            display2 = 'yes'
+        if field3 is not None:
+            display3 = 'yes'
+        if (field1 is None) and (field2 is None) and (field3 is None):
+            display1 = display2 = display3 = 'yes'
+        return render_template('search.html', raw_list=raw_list, finished_list=finished_list, artist_list=artist_list, warn1=warn1, warn2=warn2, warn3=warn3, display1=display1, display2=display2, display3=display3)
+
 
 if __name__ == '__main__':
   app.run(debug=True)

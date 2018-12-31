@@ -1,6 +1,9 @@
 from mongoengine import Document, StringField, IntField, DateTimeField
 
 class Comment(Document):
+    meta = {
+        "strict": False
+    }
     comment = StringField() # comment là gì
     who_fullname = StringField() # tên đầy đủ người comment
     who_username = StringField() # username
