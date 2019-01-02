@@ -42,7 +42,7 @@
                     </a>
                 </div>
                 <div>
-                    <p>Artist: <a style="text-decoration: none" href="{{ url_for('profile', artist=pic.picartist) }}"> {{ pic.picartistfullname }}</a></p>
+                    <p>Artist: <a href="{{ url_for('profile', artist=pic.picartist) }}" style="text-decoration: none; color:rgb(163, 68, 0);"> {{ pic.picartistfullname }}</a></p>
                 </div>
                 <p>Like: {{ pic.piclikes }}, Comment: {{ pic.piccomments }}</p>
                 <hr>

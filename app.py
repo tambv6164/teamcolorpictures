@@ -172,11 +172,14 @@ def view(picid):
     warning = 'hide'
     likebutton = 'Like'
     display = 'no'
+    token = ''
     if 'token' not in session:
         warning = 'show'
+        token = ''
         display = 'no'
     else:
         warning = 'hide'
+        token = session['token']
         if session['token'] == artist.username:
             display = 'yes'
         else: 
@@ -188,9 +191,10 @@ def view(picid):
                 likebutton = 'Like'
             else:
                 likebutton = 'Dislike'
-        return render_template("view.html", display=display, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning)
+        return render_template("view.html", display=display, token=token, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning)
     elif request.method == 'POST':
         form = request.form
+        user = User.objects(username=session['token']).first()
         like_check = Like.objects(who_username=session['token'], picid=picid).first()
         # Xử lý đổi tên:
         if 'picname' in form:
@@ -205,10 +209,19 @@ def view(picid):
             else:
                 likebutton = 'Dislike'
             comment = form['comment']
-            user = User.objects(username=session['token']).first()
             new_comment = Comment(comment=comment, who_fullname=user.fullname, who_username=user.username, picid=picid)
             pic.update(set__piccomments=pic.piccomments + 1)
             new_comment.save()
+        # Xóa comment:
+        for comment in comment_list:
+            c = 'c' + str(comment.id)
+            if c in form:
+                c_id = form[c]
+                comt = Comment.objects(id=c_id).first()
+                pic = Savepicture.objects(id=comt.picid).first()
+                number_of_comt = pic.piccomments
+                comt.delete()
+                pic.update(set__piccomments=number_of_comt - 1)
         # Xử lý form like:
         if 'like' in form:
             if  like_check is None:
@@ -217,7 +230,7 @@ def view(picid):
                 pic.update(set__piclikes=pic.piclikes + 1)
                 artist.update(set__totallikes=artist.totallikes + 1)
                 # Lưu like vào data:
-                new_like = Like(who_username=session['token'], picid=picid)
+                new_like = Like(who_fullname=user.fullname, who_username=session['token'], picid=picid)
                 new_like.save()
                 likebutton = 'Dislike' # chuyển thành nút dislike
             else:
@@ -228,7 +241,8 @@ def view(picid):
                 # Xóa like khỏi database
                 like_check.delete()
                 likebutton == 'Like' # chuyển thành nút like
-        return render_template('view.html', display=display, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, warning=warning, likebutton=likebutton)
+        comment_list = Comment.objects(picid=picid)
+        return render_template('view.html', display=display, token=token, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, warning=warning, likebutton=likebutton)
 
 @app.route('/category') # Hiển thị trang Category tổng
 def full_category():
@@ -394,6 +408,8 @@ def change_infor(artist):
         else:
             artist_infor = User.objects(username=artist).first()
             pic_list = Savepicture.objects(picartist=artist)
+            like_list = Like.objects(who_username=artist)
+            comment_list = Comment.objects(who_username=artist)
             notice = ''
             if request.method == 'GET':
                 return render_template('change_infor.html', fullname=artist_infor.fullname, password=artist_infor.password, notice=notice)
@@ -406,11 +422,19 @@ def change_infor(artist):
                     artist_infor.update(set__fullname=new_fullname)
                     for pic in pic_list:
                         pic.update(set__picartistfullname=new_fullname)
+                    for like in like_list:
+                        like.update(set__who_fullname=new_fullname)
+                    for comment in comment_list:
+                        comment.update(set__who_fullname=new_fullname)
                 if new_username != '':
                     artist = new_username
                     artist_infor.update(set__username=new_username)
                     for pic in pic_list:
                         pic.update(set__picartist=new_username)
+                    for like in like_list:
+                        like.update(set__who_username=new_username)
+                    for comment in comment_list:
+                        comment.update(set__who_username=new_username)
                 if new_password != '':
                     artist_infor.update(set__password=new_password)
                 artist_infor = User.objects(username=artist).first()
@@ -471,7 +495,6 @@ def search():
         if (field1 is None) and (field2 is None) and (field3 is None):
             display1 = display2 = display3 = 'yes'
         return render_template('search.html', searchword=searchword, raw_list=raw_list, finished_list=finished_list, artist_list=artist_list, warn1=warn1, warn2=warn2, warn3=warn3, display=display, display1=display1, display2=display2, display3=display3)
-
 
 if __name__ == '__main__':
   app.run(debug=True)

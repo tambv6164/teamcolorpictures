@@ -46,6 +46,7 @@
         </div>
         <button type="submit" form="namebox">Save</button>
     </form>
+    
     <script>
         function displayNamebox() {
             var x = document.getElementById("namebox");
@@ -56,6 +57,7 @@
             }
         }
     </script>
+
     <img src="{{ pic.piclink }}" alt="">
     <div>
         <form action="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" method="get">
@@ -63,7 +65,7 @@
         </form>
     </div>
     <hr>
-    <p>Artist: <a href="{{ url_for('profile', artist=artist.username) }}">{{ artist.fullname }}</a></p>
+    <p>Artist: <a href="{{ url_for('profile', artist=artist.username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ artist.fullname }}</a></p>
     <p>Like: {{ piclikes }}</p>
 
     <input id="warning" type="text" style="display:none" value="{{ warning }}">
@@ -72,6 +74,7 @@
     </form>
     <button id="likebutton" type="button" form="like" onclick="Like()">{{ likebutton }}</button>
     <hr>
+
     <script>
     function Like() {
         var warning = document.getElementById("warning").value;
@@ -86,17 +89,26 @@
         }
     } 
     </script>
+
     <p>Comments:</p>
     {% if comment_list.first() == None %}
         <p>Chưa có bình luận. Đăng bình luận đầu tiên cho bức tranh này bạn nhé.</p>
     {% endif %}
     {% for comment in comment_list %}
-        <p><a href="{{ url_for('profile', artist=comment.who_username) }}">{{ comment.who_fullname }}</a>: {{ comment.comment }}</p>
+        <div>
+            <span><a href="{{ url_for('profile', artist=comment.who_username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ comment.who_fullname }}</a>: {{ comment.comment }}</span>
+            {% if display == 'yes' or comment.who_username == token %}
+                <form style="display:none" action="" method="post" id="c{{ comment.id }}">
+                    <input style="display:none" type="text" name="c{{ comment.id }}" value="{{ comment.id }}">
+                </form>
+                <button style="display:inline-block;" type="submit" form="c{{ comment.id }}">Delete</button>
+            {% endif %}
+        </div>
     {% endfor %}
     <hr>
 
-    <p id="loginalert" style="display:none">Vui lòng đăng nhập để like và comment</p>
-    <p id="emptyalert" style="display:none">Bạn chưa viết gì nên không có gì để đăng</p>
+    <p id="loginalert" style="display:none">Vui lòng đăng nhập để like và comment!</p>
+    <p id="emptyalert" style="display:none">Bạn chưa viết gì nên không có gì để đăng!</p>
 
     <p>Write comment:</p>
     <form action="" method="post" id="comment">

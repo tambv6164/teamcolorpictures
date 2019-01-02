@@ -61,7 +61,7 @@
                 <hr>
                 {% if display1 == 'yes' %}
                     {% for r in raw_list %}
-                    <a href="{{ url_for('new_picture', picid = r.id) }}" target="_blank" rel="noopener noreferrer">
+                    <a href="{{ url_for('new_picture', picid = r.id) }}" target="_blank" style="text-decoration: none; color:rgb(109, 78, 0);">
                         <p>{{ r.picname }}</p>
                         <img src="{{ r.piclink }}" alt="" width="40%" height="40%">
                     </a>
@@ -74,7 +74,7 @@
                 <hr>
                 {% if display2 == 'yes' %}
                     {% for f in finished_list %}
-                    <a href="{{ url_for('view', picid = f.id) }}" target="_blank" rel="noopener noreferrer">
+                    <a href="{{ url_for('view', picid = f.id) }}" target="_blank" style="text-decoration: none; color:rgb(0, 93, 0);">
                         <p>{{ f.picname }}</p>
                         <img src="{{ f.piclink }}" alt="" width="40%" height="40%">
                     </a>
@@ -87,7 +87,7 @@
                 <hr>
                 {% if display3 == 'yes' %}
                     {% for a in artist_list %}
-                    <a href="{{ url_for('profile', artist=a.username) }}" target="_blank" rel="noopener noreferrer">
+                    <a href="{{ url_for('profile', artist=a.username) }}" target="_blank" style="text-decoration: none; color:rgb(163, 68, 0);">
                         <p>{{ a.fullname }}</p>
                     </a>
                     {% endfor %}
