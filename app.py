@@ -1,4 +1,5 @@
 from flask import Flask, request, render_template, session, redirect, url_for, json, jsonify
+from flask_session import Session # sử dụng session này để lưu session vào server, cho phép lưu được độ dài lớn hơn, vì session flask chỉ tối đa là 4093 ký tự
 # import Q để query nhiều điều kiện cùng lúc
 from mongoengine.queryset.visitor import Q
 # import các Class
@@ -24,6 +25,9 @@ def base64encode(url):
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'teamcolorpictures'
+app.config['SESSION_TYPE'] = 'filesystem'
+
+Session(app)
 
 @app.route('/') # Hiển thị trang chủ
 def home():
@@ -97,6 +101,9 @@ def login():
 def logout():
     if 'token' in session:
         del session['token']
+    if 'picid' in session:
+        del session['picid']
+    # session.clear() # xóa toàn bộ session
     return redirect(url_for('home'))
 
 @app.route('/top100pics') # Hiển thị 100 Pics đc nhiều like nhất
@@ -292,30 +299,45 @@ def new_picture(picid):
     pic = Rawpicture.objects(id=picid).first()
     piclinkb64 = base64encode(pic.piclink)
     token = ''
-    if 'token' in session:
-        token = session['token']
     if request.method == 'GET':
-        return render_template('new_picture.html', piclinkb64=piclinkb64, token=token)
+        if 'token' in session:
+            token = session['token']
+        if 'picid' in session:
+            if ("'" + picid + "'") in session['picid']:
+                unsavelink = session['picid'].replace("'" + picid + "'",'')
+                del session['picid']
+                return render_template('new_picture.html', piclinkb64=unsavelink, resetlinkb64=piclinkb64, token=token)
+            else: 
+                return render_template('new_picture.html', piclinkb64=piclinkb64, resetlinkb64=piclinkb64, token=token)
+        else:
+            return render_template('new_picture.html', piclinkb64=piclinkb64, resetlinkb64=piclinkb64, token=token)
     elif request.method == 'POST':
         form = request.form
-        picname = form['picname']
-        piclink = form['piclink']
-        picstatus = form['picstatus']
-        picartist = token
-        picartistfullname = User.objects(username=token).first().fullname
-        newlink = Savepicture(piclink=piclink, picname=picname, picstatus=picstatus, picartist=picartist, picartistfullname=picartistfullname, picrawid=picid)
-        newlink.save()
-        newid = Savepicture.objects(piclink=piclink).first().id
-
-        # Update database của user tương ứng:
-        working_arts = User.objects(username=token).first().working_arts
-        finished_arts = User.objects(username=token).first().finished_arts
-        if picstatus == 'working':
-            User.objects(username=token).first().update(set__working_arts=working_arts+1)
-        elif picstatus == 'finished':
-            User.objects(username=token).first().update(set__finished_arts=finished_arts+1)
-        return redirect(url_for('saved', picid=newid))
-
+        # nếu người dùng chưa đăng nhập:
+        if 'token' not in session:
+            unsavelink = form['unsavelink']
+            session['picid'] = "'" + picid + "'" + unsavelink # thêm dấu nháy bọc quanh picid để phòng trường hợp trong chuỗi base64 có 1 đoạn ký tự trùng với picid
+            return redirect(url_for('login'))
+        # nếu người dùng đã đăng nhập:
+        if 'token' in session:
+            token = session['token']
+            picname = form['picname']
+            piclink = form['piclink']
+            picstatus = form['picstatus']
+            picartist = token
+            picartistfullname = User.objects(username=token).first().fullname
+            newlink = Savepicture(piclink=piclink, picname=picname, picstatus=picstatus, picartist=picartist, picartistfullname=picartistfullname, picrawid=picid)
+            newlink.save()
+            newid = Savepicture.objects(piclink=piclink).first().id
+            # Update database của user tương ứng:
+            working_arts = User.objects(username=token).first().working_arts
+            finished_arts = User.objects(username=token).first().finished_arts
+            if picstatus == 'working':
+                User.objects(username=token).first().update(set__working_arts=working_arts+1)
+            elif picstatus == 'finished':
+                User.objects(username=token).first().update(set__finished_arts=finished_arts+1)
+            return redirect(url_for('saved', picid=newid))
+        
 @app.route('/keep_continue/<picid>', methods=['GET', 'POST']) # Trang vẽ tiếp 1 bức đang vẽ dở
 def keep_continue(picid):
     token = ''
@@ -371,6 +393,7 @@ def change_infor(artist):
             return render_template('not_allow.html')
         else:
             artist_infor = User.objects(username=artist).first()
+            pic_list = Savepicture.objects(picartist=artist)
             notice = ''
             if request.method == 'GET':
                 return render_template('change_infor.html', fullname=artist_infor.fullname, password=artist_infor.password, notice=notice)
@@ -381,9 +404,13 @@ def change_infor(artist):
                 new_password = form['password']
                 if new_fullname != '':
                     artist_infor.update(set__fullname=new_fullname)
+                    for pic in pic_list:
+                        pic.update(set__picartistfullname=new_fullname)
                 if new_username != '':
                     artist = new_username
                     artist_infor.update(set__username=new_username)
+                    for pic in pic_list:
+                        pic.update(set__picartist=new_username)
                 if new_password != '':
                     artist_infor.update(set__password=new_password)
                 artist_infor = User.objects(username=artist).first()
@@ -405,15 +432,16 @@ def search():
         form = request.form
         searchword = form['searchword']
         field1 = form.get('field1') # form checkbox dùng form.get['inputname'] thay vì form['inputname']
-        field2 = form.get('field2') # kết quả trả về là none hoặc value của checkbox
+        field2 = form.get('field2') # kết quả trả về là none hoặc value của checkbox. nếu đặt name các checkbox giống nhau thì trả về 1 list value (?)
         field3 = form.get('field3')
         raw_list = []
         finished_list = []
         artist_list = []
         warn1 = warn2 = warn3 = ''
-        display1 = display2 = display3 = 'no'
+        display = display1 = display2 = display3 = 'no'
         s_list = []
         if searchword != '':
+            display = 'yes'
             s_list = searchword.replace('-', ' ').split()
             for s in s_list:
                 r_list = Rawpicture.objects(Q(picname__icontains=s) | Q(category__icontains=s))
@@ -442,7 +470,7 @@ def search():
             display3 = 'yes'
         if (field1 is None) and (field2 is None) and (field3 is None):
             display1 = display2 = display3 = 'yes'
-        return render_template('search.html', raw_list=raw_list, finished_list=finished_list, artist_list=artist_list, warn1=warn1, warn2=warn2, warn3=warn3, display1=display1, display2=display2, display3=display3)
+        return render_template('search.html', searchword=searchword, raw_list=raw_list, finished_list=finished_list, artist_list=artist_list, warn1=warn1, warn2=warn2, warn3=warn3, display=display, display1=display1, display2=display2, display3=display3)
 
 
 if __name__ == '__main__':

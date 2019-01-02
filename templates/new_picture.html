@@ -52,8 +52,9 @@
                 </div>
                 <div style="display:none" id="loginwarning">
                     <p>Bạn chưa đăng nhập!</p>
-                    <form action="{{ url_for('login') }}" target="_blank">
-                        <input type="submit" value="Log in">
+                    <form action="" target="_blank" method="POST">
+                        <input style="display:none" type="text" id="unsavelinkid" name="unsavelink">
+                        <button type="submit" onclick="Unsave()">Log in</button>
                     </form>
                 </div>
                 <form style="display:none" action="" method="post" id="submitform">
@@ -81,8 +82,12 @@
 
     <input id="token" style="display:none" type="text" value="{{ token }}">
     <input id="linkB64" style="display:none" type="text" value="{{ piclinkb64 }}">
+    <input id="resetlinkB64" style="display:none" type="text" value="{{ resetlinkb64 }}">
     <script>
         imageLinkB64 = document.getElementById('linkB64').value;
+    </script>
+    <script>
+        resetLinkB64 = document.getElementById('resetlinkB64').value;
     </script>
     <script>
         function displayForm() {
@@ -97,6 +102,14 @@
             y.style.display = "none";
           }
         }
+    </script>
+    <script>
+    function Unsave() {
+        var canvas = document.getElementById('canvas');
+        var context = canvas.getContext("2d");
+        var dataURL = canvas.toDataURL();
+        document.getElementById('unsavelinkid').value = dataURL;
+    }
     </script>
     <script>
         function saveWorking() {
@@ -142,7 +155,7 @@
     </script>
     <script>
         document.getElementById('resetcanvas').onclick = function clearCanvas() {
-            drawImageFromWebUrl(imageLinkB64)
+            drawImageFromWebUrl(resetLinkB64)
         }
     </script>
     <script src="../static/test.js"></script> 

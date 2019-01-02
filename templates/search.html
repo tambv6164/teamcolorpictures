@@ -44,54 +44,58 @@
             </div>
     </form>
     <button id="find" type="button" form="searchform" onclick="buttonSubmit()">Find</button>
-    <hr>
-    <h2>Result:</h2>
-    <p id="warning" style="display:none">You searched for nothing!</p>
-
-    <div style="width: 100%;">
-        <div style="width: 33.3%; float: left;">
-            <h4>Raw Pictures</h4>
-            <hr>
-            {% if display1 == 'yes' %}
-                {% for r in raw_list %}
-                <a href="{{ url_for('new_picture', picid = r.id) }}" target="_blank" rel="noopener noreferrer">
-                    <p>{{ r.picname }}</p>
-                    <img src="{{ r.piclink }}" alt="" width="40%" height="40%">
-                </a>
-                <hr>
-                {% endfor %}
-                <p>{{ warn1 }}</p>
-            {% endif %}
-        </div>
-        <div style="width: 33.3%; float: left;">
-            <h4>Finished Arts</h4>
-            <hr>
-            {% if display2 == 'yes' %}
-                {% for f in finished_list %}
-                <a href="{{ url_for('view', picid = f.id) }}" target="_blank" rel="noopener noreferrer">
-                    <p>{{ f.picname }}</p>
-                    <img src="{{ f.piclink }}" alt="" width="40%" height="40%">
-                </a>
-                <hr>
-                {% endfor %}
-                <p>{{ warn2 }}</p>
-            {% endif %}
-        </div>
-        <div style="width: 33%.3; float: left;">
-            <h4>Artists</h4>
-            <hr>
-            {% if display3 == 'yes' %}
-                {% for a in artist_list %}
-                <a href="{{ url_for('profile', artist=a.username) }}" target="_blank" rel="noopener noreferrer">
-                    <p>{{ a.fullname }}</p>
-                </a>
-                <hr>
-                {% endfor %}
-                <p>{{ warn3 }}</p>
-            {% endif %}
-        </div>
+    
+    <div id="warning" style="display:none">
+        <hr>
+        <h4>Result:</h4>
+        <p>You searched for nothing!</p>
     </div>
-
+    
+    {% if display == 'yes' %}
+    <hr>
+    <h4>Result for: {{ searchword }}</h4>
+        <div style="width: 100%;">
+            <!-- Tạo 3 cột. lưu ý tổng 3 div phải là 100%, nếu không sẽ có 1 khoảng trống giữa 2 cột -->
+            <div style="width: 33%; float: left;">
+                <h4>Raw Pictures</h4>
+                <hr>
+                {% if display1 == 'yes' %}
+                    {% for r in raw_list %}
+                    <a href="{{ url_for('new_picture', picid = r.id) }}" target="_blank" rel="noopener noreferrer">
+                        <p>{{ r.picname }}</p>
+                        <img src="{{ r.piclink }}" alt="" width="40%" height="40%">
+                    </a>
+                    {% endfor %}
+                    <p>{{ warn1 }}</p>
+                {% endif %}
+            </div>
+            <div style="width: 34%; display: inline-block;">
+                <h4>Finished Arts</h4>
+                <hr>
+                {% if display2 == 'yes' %}
+                    {% for f in finished_list %}
+                    <a href="{{ url_for('view', picid = f.id) }}" target="_blank" rel="noopener noreferrer">
+                        <p>{{ f.picname }}</p>
+                        <img src="{{ f.piclink }}" alt="" width="40%" height="40%">
+                    </a>
+                    {% endfor %}
+                    <p>{{ warn2 }}</p>
+                {% endif %}
+            </div>
+            <div style="width: 33%; float: right;">
+                <h4>Artists</h4>
+                <hr>
+                {% if display3 == 'yes' %}
+                    {% for a in artist_list %}
+                    <a href="{{ url_for('profile', artist=a.username) }}" target="_blank" rel="noopener noreferrer">
+                        <p>{{ a.fullname }}</p>
+                    </a>
+                    {% endfor %}
+                    <p>{{ warn3 }}</p>
+                {% endif %}
+            </div>
+        </div>
+    {% endif %}
     <script>
     function buttonSubmit() {
         var word = document.getElementById('word').value;
@@ -106,5 +110,6 @@
         }
     }
     </script>
+
 </body>
 </html>

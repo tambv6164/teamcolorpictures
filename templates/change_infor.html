@@ -53,8 +53,9 @@
     </form>
     <button onclick="displayOldpass()">Change</button>
     <div style="display:none" id="box">
-        <input type="password" id="typeoldpass">
-        <button type="button" form="change_infor" onclick="checkOldpass()" id="submitbutton">Submit</button>
+        <label for="">Please type your old password to submit:</label>
+        <input style="display:block;" type="password" id="typeoldpass">
+        <button style="display:block;" type="button" form="change_infor" onclick="checkOldpass()" id="submitbutton">Submit</button>
     </div>
     <p style="display:none" id="warning1">Bạn chưa nhập password cũ!</p>
     <p style="display:none" id="warning2">Bạn đã nhập sai password cũ!</p>
