@@ -1,6 +1,7 @@
 flask
 flask-restful
 flask-socketio
+flask_session
 mongoengine
 eventlet
 gunicorn
