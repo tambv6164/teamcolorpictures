@@ -68,8 +68,8 @@ function floodFill(x, y, ctx) {
         floodFill(x-1, y+1, ctx);
         floodFill(x-1, y-1, ctx);
     }
-
 }
+
 // Draw a base64 image because this is a fiddle, and if we try with an image from URL we'll get tainted canvas error
 // Read more about here : http://ourcodeworld.com/articles/read/182/the-canvas-has-been-tainted-by-cross-origin-data-and-tainted-canvases-may-not-be-exported
 drawImageFromWebUrl(imageLinkB64);
@@ -87,6 +87,7 @@ canvas.addEventListener("click",function(e){
 },false);
 
 let colorPicker = document.getElementById('colorPicker');
+
 colorPicker.addEventListener('change', () => {
     context.selectColor = true;
     context.fillColorRGB = hexToRgb(colorPicker.value);

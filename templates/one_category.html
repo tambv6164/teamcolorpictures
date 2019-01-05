@@ -51,6 +51,9 @@
                 <form action="{{ url_for('new_picture', picid=pic.id) }}" method="get">
                     <input type="submit" value="Choose">
                 </form>
+                <div>
+                    <button>Add to Color Later List</button>
+                </div>
                 <hr>
             </div>
         {% endfor %}

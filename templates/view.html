@@ -64,6 +64,9 @@
             <input type="submit" value="Color this raw picture">
         </form>
     </div>
+    <div>
+        <button>Add to My Favorite</button>
+    </div>
     <hr>
     <p>Artist: <a href="{{ url_for('profile', artist=artist.username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ artist.fullname }}</a></p>
     <p>Like: {{ piclikes }}</p>
