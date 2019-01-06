@@ -35,7 +35,7 @@
     <div class="img">
         {% for pic in piclist %}
             <div class="abc">
-                <a href="{{ url_for('view', picid=pic.picid) }}" style="text-decoration: none; color:rgb(163, 68, 0);">
+                <a href="{{ url_for('view', picid=pic.id) }}" style="text-decoration: none; color:rgb(163, 68, 0);">
                     <h2>{{ pic.picname }}</h2>
                 </a>
                 <div>
