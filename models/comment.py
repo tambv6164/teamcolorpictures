@@ -1,4 +1,5 @@
 from mongoengine import Document, StringField, IntField, DateTimeField
+import datetime
 
 class Comment(Document):
     meta = {
@@ -8,4 +9,4 @@ class Comment(Document):
     who_fullname = StringField() # tên đầy đủ người comment
     who_username = StringField() # username
     picid = StringField() # comment của bức tranh nào (dùng id của bức tranh để định danh)
-    # whencomment = DateTimeField() # thời gian comment
+    whencomment = DateTimeField(default=datetime.datetime.now()) # thời gian comment
