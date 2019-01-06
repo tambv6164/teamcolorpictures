@@ -100,6 +100,7 @@
     {% for comment in comment_list %}
         <div>
             <span><a href="{{ url_for('profile', artist=comment.who_username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ comment.who_fullname }}</a>: {{ comment.comment }}</span>
+            <span>({{ comment.whencomment }})</span>
             {% if display == 'yes' or comment.who_username == token %}
                 <form style="display:none" action="" method="post" id="c{{ comment.id }}">
                     <input style="display:none" type="text" name="c{{ comment.id }}" value="{{ comment.id }}">
