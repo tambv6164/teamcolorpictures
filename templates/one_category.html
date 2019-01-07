@@ -51,9 +51,12 @@
                 <form action="{{ url_for('new_picture', picid=pic.id) }}" method="get">
                     <input type="submit" value="Choose">
                 </form>
-                <div>
-                    <button>Add to Color Later List</button>
-                </div>
+                {% if 'token' in session %}
+                    <form action="" method="post" id="a{{ pic.id }}">
+                        <input style="display:none" type="text" name="a{{ pic.id }}" value="{{ pic.id }}">
+                        <input type="submit" name="lb{{ pic.id }}" value="lb{{ pic.id }}">
+                    </form>
+                {% endif %}
                 <hr>
             </div>
         {% endfor %}

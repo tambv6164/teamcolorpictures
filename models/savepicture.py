@@ -5,7 +5,7 @@ class Savepicture(Document):
         "strict": False
     }
     picname = StringField(default='noname') # Tên bức tranh
-    picstatus = StringField(default='unsave') # working or finished
+    picstatus = StringField(default='unsave') # working or finished or colorlater
     picartist = StringField(default='noartist') 
     picartistfullname = StringField(default='noartist')
     piclikes = IntField(default=0) 

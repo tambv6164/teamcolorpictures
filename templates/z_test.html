@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <button onclick="finish()">Finished Arts</button>
+    <button onclick="working()">Working Arts</button>
+    <button onclick="colorlater()">Color Later List</button>
+    <button onclick="myfav()">My Favorites</button>
+
+    <script>
+    function finish() {
+        let finished_list = document.getElementById('finished_list');
+        let working_list = document.getElementById('working_list');
+        if (finished_list.style.display === "none") {
+        finished_list.style.display = 'block';
+        working_list.style.display = 'none';
+        }
+    }
+    function working() {
+        let finished_list = document.getElementById('finished_list');
+        let working_list = document.getElementById('working_list');
+        if (working_list.style.display === "none") {
+        finished_list.style.display = 'none';
+        working_list.style.display = 'block';
+        }
+    }
+    
+    </script>
+    <div id="finished_list" style="display:none">
+        <p>Finished List</p>
+    </div>
+    <div id="working_list" style="display:none">
+        <p>Working List</p>
+    </div>
+    <div id="colorlater_list" style="display:none">
+        <p>Color Later</p>
+    </div>
+    <div id="my_favorite" style="display:none">
+        <p>My Favorite</p>
+    </div>
+</body>
+</html>

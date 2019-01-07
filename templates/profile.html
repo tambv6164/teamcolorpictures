@@ -21,6 +21,9 @@
         <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
             <input type="submit" value="My Arts">
         </form>
+        <form action="{{ url_for('change_infor', artist=artist_infor.username) }}" method="get" style="display:inline;">
+            <input type="submit" value="Chage My Infor">
+        </form>
         <form action="{{ url_for('logout') }}" style="display:inline;">
             <input type="submit" value="Log out">
         </form>
@@ -36,47 +39,97 @@
 
     <h2>{{ artist_infor.fullname }}</h2>
     {% if display == 'yes' %}
-        <button>Finished Arts</button>
-        <button>Working Arts</button>
-        <button>My Favorites</button>
-        <button>Color Later List</button>
-        <span>(On struction ...)</span>
-        <div>
-            <form action="{{ url_for('change_infor', artist=artist_infor.username) }}" method="get">
-                <input type="submit" value="Chage My Infor">
-            </form>
-        </div>
+        <button onclick="finish()">Finished Arts</button>
+        <button onclick="working()">Working Arts</button>
+        <button onclick="colorlater()">Color Later List</button>
+        <button onclick="myfav()">My Favorites</button>
     {% endif %}
-    <hr>
-    <div>Finished Arts: {{ finished_arts }}</div>
-    <div>Total Likes: {{ totallikes }}</div>
+
+    <script>
+    function finish() {
+        var finished_list = document.getElementById('finished_list');
+        var working_list = document.getElementById('working_list');
+        var colorlater_list = document.getElementById('colorlater_list');
+        var my_favorite = document.getElementById('my_favorite');
+        if (finished_list.style.display === "none") {
+        finished_list.style.display = 'block';
+        working_list.style.display = 'none';
+        colorlater_list.style.display = 'none';
+        my_favorite.style.display = 'none';
+        }
+    }
+    function working() {
+        var finished_list = document.getElementById('finished_list');
+        var working_list = document.getElementById('working_list');
+        var colorlater_list = document.getElementById('colorlater_list');
+        var my_favorite = document.getElementById('my_favorite');
+        if (working_list.style.display === "none") {
+        finished_list.style.display = 'none';
+        working_list.style.display = 'block';
+        colorlater_list.style.display = 'none';
+        my_favorite.style.display = 'none';
+        }
+    }
+    function colorlater() {
+        var finished_list = document.getElementById('finished_list');
+        var working_list = document.getElementById('working_list');
+        var colorlater_list = document.getElementById('colorlater_list');
+        var my_favorite = document.getElementById('my_favorite');
+        if (colorlater_list.style.display === "none") {
+        finished_list.style.display = 'none';
+        working_list.style.display = 'none';
+        colorlater_list.style.display = 'block';
+        my_favorite.style.display = 'none';
+        }
+    }
+    function myfav() {
+        var finished_list = document.getElementById('finished_list');
+        var working_list = document.getElementById('working_list');
+        var colorlater_list = document.getElementById('colorlater_list');
+        var my_favorite = document.getElementById('my_favorite');
+        if (my_favorite.style.display === "none") {
+        finished_list.style.display = 'none';
+        working_list.style.display = 'none';
+        colorlater_list.style.display = 'none';
+        my_favorite.style.display = 'block';
+        }
+    }
+    </script>
     <hr>
 
-    <div class="img">
-    {% for fpic in finished_list %}
-        <div class="abc">
-            <a href="{{ url_for('view', picid=fpic.id) }}" style="text-decoration:none; color:brown; display: block">{{ fpic.picname }}</a>
-            <a href="{{ url_for('view', picid=fpic.id) }}">
-                <img src="{{ fpic.piclink }}" alt="" width="20%" height="20%">
-            </a>
-            <p>Like: {{ fpic.piclikes }}, Comment: {{ fpic.piccomments }}</p>
+    <div id="finished_list" style="display:block">
+        <h2>Finished Arts</h2>
+        <div>Numbers: {{ finished_arts }}, Total Likes: {{ totallikes }}</div>
+        <hr>
+        <div class="img">
+        {% for fpic in finished_list %}
+            <div class="abc">
+                <a href="{{ url_for('view', picid=fpic.id) }}" style="text-decoration:none; color:brown; display: block">{{ fpic.picname }}</a>
+                <a href="{{ url_for('view', picid=fpic.id) }}">
+                    <img src="{{ fpic.piclink }}" alt="" width="20%" height="20%">
+                </a>
+                <p>Like: {{ fpic.piclikes }}, Comment: {{ fpic.piccomments }}</p>
 
-            {% if display == 'yes' %}
-            <form action="" method="post" id="df{{ fpic.id }}">
-                <input style="display:none" type="text" name="df{{ fpic.id }}" value="{{ fpic.id }}">
-            </form>
-            <button type="submit" form="df{{ fpic.id }}">Delete</button>
-            {% endif %}
+                {% if display == 'yes' %}
+                <form action="" method="post" id="df{{ fpic.id }}">
+                    <input style="display:none" type="text" name="df{{ fpic.id }}" value="{{ fpic.id }}">
+                </form>
+                <button type="submit" form="df{{ fpic.id }}">Delete</button>
+                {% endif %}
+            </div>
+        {% endfor %}
         </div>
-    {% endfor %}
+        <hr>
+        <form action="{{ url_for('full_category') }}" method="get">
+            <input type="submit" value="Start new art">
+        </form>
     </div>
-    <hr>
 
-    {% if display == 'yes' %}
+    <div id="working_list" style="display:none">
         <h2>Working arts</h2>
+        <div>Numbers: {{ working_arts }}</div>
         <hr>
-        <div>Working Arts: {{ working_arts }}</div>
-        <hr>
+        <div class="img">
         {% for wpic in working_list %}
             <div class="abc">
                 <a href="{{ url_for('keep_continue', picid=wpic.id) }}" style="text-decoration:none; color:brown; display: block">{{ wpic.picname }}</a>
@@ -104,10 +157,49 @@
                 </div>
             </div>
         {% endfor %}
+        </div>
         <hr>
         <form action="{{ url_for('full_category') }}" method="get">
             <input type="submit" value="Start new art">
         </form>
-    {% endif %}
+    </div>
+
+    <div id="colorlater_list" style="display:none">
+        <h2>Color Later List</h2>
+        <div class="img">
+        {% for c in colorlater_list %}
+            <div class="abc">
+                <a href="{{ url_for('new_picture', picid=c.picrawid) }}" style="text-decoration:none; color:brown; display: block">{{ c.picname }}</a>
+                <div>
+                    <a href="{{ url_for('new_picture', picid=c.picrawid) }}">
+                        <img src="{{ c.piclink }}" alt="">
+                    </a>
+                </div>
+                <form action="{{ url_for('new_picture', picid=c.picrawid) }}" method="get">
+                    <input type="submit" value="Color this">
+                </form>
+                <div>
+                    <form action="" method="post" id="c{{ c.id }}">
+                        <input style="display:none" type="text" name="c{{ c.id }}" value="{{ c.id }}">
+                    </form>
+                    <button type="submit" form="c{{ c.id }}">Delete</button>
+                </div>
+            </div>
+        {% endfor %}
+        </div>
+        <hr>
+        <form action="{{ url_for('full_category') }}" method="get">
+            <input type="submit" value="Start new art">
+        </form>
+    </div>
+
+    <div id="my_favorite" style="display:none">
+        <h2>My Favorite Arts</h2>
+        <p>This is my favorite list</p>
+        <hr>
+        <form action="{{ url_for('full_category') }}" method="get">
+            <input type="submit" value="Start new art">
+        </form>
+    </div>
 </body>
 </html>

@@ -257,11 +257,27 @@ def full_category():
         category_list.append(category)
     return render_template('category.html', random_pic=random_pic, category_list=category_list)
 
-@app.route('/category/<category>') # Hiển thị 1 trang category cụ thể
+@app.route('/category/<category>', methods = ['GET', 'POST']) # Hiển thị 1 trang category cụ thể
 def one_category(category):
     pic_list = Rawpicture.objects(category__icontains=category)
     cap_category = category.replace('-',' ').title()
-    return render_template('one_category.html', pic_list=pic_list, category=cap_category)
+    if request.method == 'GET':
+        return render_template('one_category.html', pic_list=pic_list, category=cap_category)
+    if request.method == 'POST':
+        form = request.form
+        for pic in pic_list:
+            a = 'a' + str(pic.id)
+            if a in form:
+                a_id = form[a]
+                colorlater_check = Savepicture.objects(picartist=session['token'], picstatus='colorlater', picrawid=a_id).first()
+                if colorlater_check is None:
+                    a_pic = Rawpicture.objects(id=a_id).first()
+                    artist = User.objects(username=session['token']).first()
+                    new_later = Savepicture(picname=a_pic.picname, picstatus='colorlater', picartist=session['token'], picartistfullname=artist.fullname, picrawid=a_id, piclink=a_pic.piclink)
+                    new_later.save()
+                else:
+                    colorlater_check.delete()
+        return render_template('one_category.html', pic_list=pic_list, category=cap_category)
 
 @app.route('/profile/<artist>', methods=['GET', 'POST']) # Hiển thị profile
 def profile(artist):
@@ -271,12 +287,13 @@ def profile(artist):
     totallikes = artist_infor.totallikes
     finished_list = Savepicture.objects(picartist=artist, picstatus='finished') # .order_by('-piclikes')
     working_list = Savepicture.objects(picartist=artist, picstatus='working')
+    colorlater_list = Savepicture.objects(picartist=artist, picstatus='colorlater')
     display = 'no'
     if 'token' in session:
         if session['token'] == artist:
             display = 'yes'
     if request.method == 'GET':
-        return render_template('profile.html', display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list)
+        return render_template('profile.html', display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list, colorlater_list=colorlater_list)
     elif request.method == 'POST':
         form = request.form
         for fpic in finished_list:
@@ -303,10 +320,17 @@ def profile(artist):
                 Savepicture.objects(id=w_picid).first().delete()
                 working_arts = artist_infor.working_arts - 1
                 artist_infor.update(set__working_arts=artist_infor.working_arts - 1)
-        
+        for c in colorlater_list:
+            cl = 'c' + str(c.id)
+            if cl in form:
+                c_id = form[cl]
+                pic = Savepicture.objects(id=c_id).first()
+                pic.delete()
+
         finished_list = Savepicture.objects(picartist=artist, picstatus='finished') # .order_by('-piclikes')
         working_list = Savepicture.objects(picartist=artist, picstatus='working')
-        return render_template('profile.html', display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list)
+        colorlater_list = Savepicture.objects(picartist=artist, picstatus='colorlater')
+        return render_template('profile.html', display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list, colorlater_list=colorlater_list)
 
 @app.route('/new_picture/<picid>', methods=['GET', 'POST']) # Hiển thị trang vẽ tranh của 1 bức tranh theo id của bức tranh đó
 def new_picture(picid):
