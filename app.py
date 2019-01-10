@@ -261,8 +261,14 @@ def full_category():
 def one_category(category):
     pic_list = Rawpicture.objects(category__icontains=category)
     cap_category = category.replace('-',' ').title()
+    button_list = []
+    later_list = []
+    if 'token' in session:
+        later_list = Savepicture.objects(picstatus='colorlater', picartist=session['token'])
+        for l in later_list:
+            button_list.append(l.picrawid)
     if request.method == 'GET':
-        return render_template('one_category.html', pic_list=pic_list, category=cap_category)
+        return render_template('one_category.html', pic_list=pic_list, category=cap_category, button_list=button_list)
     if request.method == 'POST':
         form = request.form
         for pic in pic_list:
@@ -275,9 +281,11 @@ def one_category(category):
                     artist = User.objects(username=session['token']).first()
                     new_later = Savepicture(picname=a_pic.picname, picstatus='colorlater', picartist=session['token'], picartistfullname=artist.fullname, picrawid=a_id, piclink=a_pic.piclink)
                     new_later.save()
+                    button_list.append(a_id)
                 else:
                     colorlater_check.delete()
-        return render_template('one_category.html', pic_list=pic_list, category=cap_category)
+                    button_list.remove(a_id)
+        return render_template('one_category.html', pic_list=pic_list, category=cap_category, button_list=button_list)
 
 @app.route('/profile/<artist>', methods=['GET', 'POST']) # Hiển thị profile
 def profile(artist):
