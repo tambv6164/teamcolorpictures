@@ -8,6 +8,7 @@ from models.rawpicture import Rawpicture
 from models.savepicture import Savepicture
 from models.comment import Comment
 from models.like import Like
+from models.mylistpicture import Mylistpicture
 # import một số hàm chức năng sẽ dùng
 from random import choice
 import base64
@@ -173,6 +174,7 @@ def view(picid):
     likebutton = 'Like'
     display = 'no'
     token = ''
+    addbutton = 'Add to My favorite'
     if 'token' not in session:
         warning = 'show'
         token = ''
@@ -187,11 +189,16 @@ def view(picid):
     if request.method == 'GET':
         if 'token' in session:
             like_check = Like.objects(who_username=session['token'], picid=picid).first()
+            f_check = Mylistpicture.objects(user=session['token'], art_id=picid, art_type='favorite').first()
             if  like_check is None :
                 likebutton = 'Like'
             else:
                 likebutton = 'Dislike'
-        return render_template("view.html", display=display, token=token, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning)
+            if f_check is None:
+                addbutton = 'Add to My favorite'
+            else:
+                addbutton = 'Delete from My favorite'
+        return render_template("view.html", display=display, token=token, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning, addbutton=addbutton)
     elif request.method == 'POST':
         form = request.form
         user = User.objects(username=session['token']).first()
@@ -241,8 +248,18 @@ def view(picid):
                 # Xóa like khỏi database
                 like_check.delete()
                 likebutton == 'Like' # chuyển thành nút like
+        # Lưu ảnh vào album yêu thích:
+        f_check = Mylistpicture.objects(user=session['token'], art_id=picid, art_type='favorite').first()
+        if 'favorite' in form:
+            if f_check is None:
+                new_favorite = Mylistpicture(user=session['token'], art_id=picid, art_type='favorite')
+                new_favorite.save()
+                addbutton = 'Delete from My favorite'
+            else:
+                f_check.delete()
+                addbutton = 'Add to My favorite'
         comment_list = Comment.objects(picid=picid)
-        return render_template('view.html', display=display, token=token, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, warning=warning, likebutton=likebutton)
+        return render_template('view.html', display=display, token=token, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, warning=warning, likebutton=likebutton, addbutton=addbutton)
 
 @app.route('/category') # Hiển thị trang Category tổng
 def full_category():
@@ -264,9 +281,10 @@ def one_category(category):
     button_list = []
     later_list = []
     if 'token' in session:
-        later_list = Savepicture.objects(picstatus='colorlater', picartist=session['token'])
+        later_list = Mylistpicture.objects(user=session['token'], art_type='colorlater')
         for l in later_list:
-            button_list.append(l.picrawid)
+            a = Rawpicture.objects(id=l.art_id).first()
+            button_list.append(a.id)
     if request.method == 'GET':
         return render_template('one_category.html', pic_list=pic_list, category=cap_category, button_list=button_list)
     if request.method == 'POST':
@@ -275,16 +293,15 @@ def one_category(category):
             a = 'a' + str(pic.id)
             if a in form:
                 a_id = form[a]
-                colorlater_check = Savepicture.objects(picartist=session['token'], picstatus='colorlater', picrawid=a_id).first()
+                colorlater_check = Mylistpicture.objects(user=session['token'], art_id=a_id, art_type='colorlater').first()
+                a_pic = Rawpicture.objects(id=a_id).first()
                 if colorlater_check is None:
-                    a_pic = Rawpicture.objects(id=a_id).first()
-                    artist = User.objects(username=session['token']).first()
-                    new_later = Savepicture(picname=a_pic.picname, picstatus='colorlater', picartist=session['token'], picartistfullname=artist.fullname, picrawid=a_id, piclink=a_pic.piclink)
+                    new_later = Mylistpicture(user=session['token'], art_id=a_pic.id, art_type='colorlater')
                     new_later.save()
-                    button_list.append(a_id)
+                    button_list.append(a_pic.id)
                 else:
                     colorlater_check.delete()
-                    button_list.remove(a_id)
+                    button_list.remove(a_pic.id)
         return render_template('one_category.html', pic_list=pic_list, category=cap_category, button_list=button_list)
 
 @app.route('/profile/<artist>', methods=['GET', 'POST']) # Hiển thị profile
@@ -295,13 +312,14 @@ def profile(artist):
     totallikes = artist_infor.totallikes
     finished_list = Savepicture.objects(picartist=artist, picstatus='finished') # .order_by('-piclikes')
     working_list = Savepicture.objects(picartist=artist, picstatus='working')
-    colorlater_list = Savepicture.objects(picartist=artist, picstatus='colorlater')
+    colorlater_list = Mylistpicture.objects(user=artist, art_type='colorlater')
+    favorite_list = Mylistpicture.objects(user=artist, art_type='favorite')
     display = 'no'
     if 'token' in session:
         if session['token'] == artist:
             display = 'yes'
     if request.method == 'GET':
-        return render_template('profile.html', display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list, colorlater_list=colorlater_list)
+        return render_template('profile.html', display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list, colorlater_list=colorlater_list, favorite_list=favorite_list)
     elif request.method == 'POST':
         form = request.form
         for fpic in finished_list:
@@ -328,17 +346,12 @@ def profile(artist):
                 Savepicture.objects(id=w_picid).first().delete()
                 working_arts = artist_infor.working_arts - 1
                 artist_infor.update(set__working_arts=artist_infor.working_arts - 1)
-        for c in colorlater_list:
-            cl = 'c' + str(c.id)
-            if cl in form:
-                c_id = form[cl]
-                pic = Savepicture.objects(id=c_id).first()
-                pic.delete()
 
         finished_list = Savepicture.objects(picartist=artist, picstatus='finished') # .order_by('-piclikes')
         working_list = Savepicture.objects(picartist=artist, picstatus='working')
-        colorlater_list = Savepicture.objects(picartist=artist, picstatus='colorlater')
-        return render_template('profile.html', display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list, colorlater_list=colorlater_list)
+        colorlater_list = Mylistpicture.objects(user=artist, art_type='colorlater')
+        favorite_list = Mylistpicture.objects(user=artist, art_type='favorite')
+        return render_template('profile.html', display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list, colorlater_list=colorlater_list, favorite_list=favorite_list)
 
 @app.route('/new_picture/<picid>', methods=['GET', 'POST']) # Hiển thị trang vẽ tranh của 1 bức tranh theo id của bức tranh đó
 def new_picture(picid):

@@ -64,9 +64,14 @@
             <input type="submit" value="Color this raw picture">
         </form>
     </div>
-    <div>
-        <button>Add to My Favorite</button>
-    </div>
+
+    {% if 'token' in session %}
+        <form action="" method="post" id="mf">
+            <input style="display:none;" name="favorite">
+        </form>
+        <button type="submit" form="mf">{{ addbutton }}</button>
+    {% endif %}
+
     <hr>
     <p>Artist: <a href="{{ url_for('profile', artist=artist.username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ artist.fullname }}</a></p>
     <p>Like: {{ piclikes }}</p>
