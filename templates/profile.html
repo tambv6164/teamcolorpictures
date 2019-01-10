@@ -111,18 +111,20 @@
                 <p>Like: {{ fpic.piclikes }}, Comment: {{ fpic.piccomments }}</p>
 
                 {% if display == 'yes' %}
-                <form action="" method="post" id="df{{ fpic.id }}">
-                    <input style="display:none" type="text" name="df{{ fpic.id }}" value="{{ fpic.id }}">
-                </form>
-                <button type="submit" form="df{{ fpic.id }}">Delete</button>
+                    <form action="" method="post" id="df{{ fpic.id }}">
+                        <input style="display:none" type="text" name="df{{ fpic.id }}" value="{{ fpic.id }}">
+                    </form>
+                    <button type="submit" form="df{{ fpic.id }}">Delete</button>
                 {% endif %}
             </div>
         {% endfor %}
         </div>
         <hr>
-        <form action="{{ url_for('full_category') }}" method="get">
-            <input type="submit" value="Start new art">
-        </form>
+        {% if display == 'yes' %}
+            <form action="{{ url_for('full_category') }}" method="get">
+                <input type="submit" value="Start new art">
+            </form>
+        {% endif %}
     </div>
 
     <div id="working_list" style="display:none">
@@ -170,7 +172,7 @@
         {% for c in colorlater_list %}
             <div class="abc">
                 <a href="{{ url_for('new_picture', picid=c.art_id) }}" style="text-decoration:none; color:brown; display: block" target="_blank">ID : {{ c.id }}</a>
-                <form action="{{ url_for('new_picture', picid=c.art_id) }}" method="get">
+                <form action="{{ url_for('new_picture', picid=c.art_id) }}" method="get" target="_blank">
                     <input type="submit" value="Color this">
                 </form>
                 <!-- <div>

@@ -174,7 +174,7 @@ def view(picid):
     likebutton = 'Like'
     display = 'no'
     token = ''
-    addbutton = 'Add to My favorite'
+    addbutton = 'Add to My Favorite'
     if 'token' not in session:
         warning = 'show'
         token = ''
@@ -197,7 +197,7 @@ def view(picid):
             if f_check is None:
                 addbutton = 'Add to My favorite'
             else:
-                addbutton = 'Delete from My favorite'
+                addbutton = 'Delete from My Favorite'
         return render_template("view.html", display=display, token=token, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning, addbutton=addbutton)
     elif request.method == 'POST':
         form = request.form
@@ -296,7 +296,7 @@ def one_category(category):
                 colorlater_check = Mylistpicture.objects(user=session['token'], art_id=a_id, art_type='colorlater').first()
                 a_pic = Rawpicture.objects(id=a_id).first()
                 if colorlater_check is None:
-                    new_later = Mylistpicture(user=session['token'], art_id=a_pic.id, art_type='colorlater')
+                    new_later = Mylistpicture(user=session['token'], art_id=a_id, art_type='colorlater')
                     new_later.save()
                     button_list.append(a_pic.id)
                 else:
