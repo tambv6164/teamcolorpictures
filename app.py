@@ -572,5 +572,9 @@ def search():
             display1 = display2 = display3 = 'yes'
         return render_template('search.html', searchword=searchword, raw_list=raw_list, finished_list=finished_list, artist_list=artist_list, warn1=warn1, warn2=warn2, warn3=warn3, display=display, display1=display1, display2=display2, display3=display3)
 
+@app.route("/update") # Trang thông tin update thay đổi của trang web
+def update():
+    return render_template("update.html")
+
 if __name__ == '__main__':
   app.run(debug=True)

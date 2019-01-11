@@ -40,22 +40,22 @@
 
     <form action="" method="POST" id="change_infor">
         <div>
-            <label for="">New fullname:</label>
+            <label style="display:inline-block; width:120px;" for="">New fullname:</label>
             <input type="text" name="fullname">
         </div>
         <div>
-            <label for="">New username:</label>
+            <label style="display:inline-block; width:120px;" for="">New username:</label>
             <input type="text" name="username">
         </div>
         <div>
-            <label for="">New password:</label>
+            <label style="display:inline-block; width:120px;" for="">New password:</label>
             <input type="password" name="password">
         </div>
     </form>
     <button onclick="displayOldpass()">Change</button>
     <div style="display:none" id="box">
         <label for="">Please type your old password to submit:</label>
-        <input style="display:block;" type="password" id="typeoldpass">
+        <input type="password" id="typeoldpass">
         <button style="display:block;" type="button" form="change_infor" onclick="checkOldpass()" id="submitbutton">Submit</button>
     </div>
     <p style="display:none" id="warning1">Bạn chưa nhập password cũ!</p>
