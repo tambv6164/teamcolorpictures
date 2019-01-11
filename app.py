@@ -197,7 +197,7 @@ def view(picid):
             if f_check is None:
                 addbutton = 'Add to My favorite'
             else:
-                addbutton = 'Delete from My Favorite'
+                addbutton = 'Remove from My Favorite'
         return render_template("view.html", display=display, token=token, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning, addbutton=addbutton)
     elif request.method == 'POST':
         form = request.form
@@ -312,14 +312,24 @@ def profile(artist):
     totallikes = artist_infor.totallikes
     finished_list = Savepicture.objects(picartist=artist, picstatus='finished') # .order_by('-piclikes')
     working_list = Savepicture.objects(picartist=artist, picstatus='working')
-    colorlater_list = Mylistpicture.objects(user=artist, art_type='colorlater')
-    favorite_list = Mylistpicture.objects(user=artist, art_type='favorite')
+    colorlaters = Mylistpicture.objects(user=artist, art_type='colorlater')
+    colorlater_list = []
+    for c in colorlaters:
+        pic = Rawpicture.objects(id=c.art_id).first()
+        colorlater_list.append(pic)
+    c_length = len(colorlater_list)
+    favorites = Mylistpicture.objects(user=artist, art_type='favorite')
+    favorite_list = []
+    for m in favorites:
+        pic = Savepicture.objects(id=m.art_id).first()
+        favorite_list.append(pic)
+    m_length = len(favorite_list)
     display = 'no'
     if 'token' in session:
         if session['token'] == artist:
             display = 'yes'
     if request.method == 'GET':
-        return render_template('profile.html', display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list, colorlater_list=colorlater_list, favorite_list=favorite_list)
+        return render_template('profile.html', m_length=m_length, c_length=c_length, display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list, colorlater_list=colorlater_list, favorite_list=favorite_list)
     elif request.method == 'POST':
         form = request.form
         for fpic in finished_list:
@@ -346,12 +356,33 @@ def profile(artist):
                 Savepicture.objects(id=w_picid).first().delete()
                 working_arts = artist_infor.working_arts - 1
                 artist_infor.update(set__working_arts=artist_infor.working_arts - 1)
-
+        for pic in colorlater_list:
+            c = 'c' + str(pic.id)
+            if c in form:
+                c_id = form[c]
+                art = Mylistpicture.objects(art_id=c_id).first()
+                art.delete()
+        for pic in favorite_list:
+            m = 'm' + str(pic.id)
+            if m in form:
+                m_id = form[m]
+                art = Mylistpicture.objects(art_id=m_id).first()
+                art.delete()
         finished_list = Savepicture.objects(picartist=artist, picstatus='finished') # .order_by('-piclikes')
         working_list = Savepicture.objects(picartist=artist, picstatus='working')
-        colorlater_list = Mylistpicture.objects(user=artist, art_type='colorlater')
-        favorite_list = Mylistpicture.objects(user=artist, art_type='favorite')
-        return render_template('profile.html', display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list, colorlater_list=colorlater_list, favorite_list=favorite_list)
+        colorlaters = Mylistpicture.objects(user=artist, art_type='colorlater')
+        colorlater_list = []
+        for c in colorlaters:
+            pic = Rawpicture.objects(id=c.art_id).first()
+            colorlater_list.append(pic)
+        c_length = len(colorlater_list)
+        favorites = Mylistpicture.objects(user=artist, art_type='favorite')
+        favorite_list = []
+        for m in favorites:
+            pic = Savepicture.objects(id=m.art_id).first()
+            favorite_list.append(pic)
+        m_length = len(favorite_list)
+        return render_template('profile.html', m_length=m_length, c_length=c_length, display=display, artist_infor=artist_infor, working_arts=working_arts, finished_arts=finished_arts, totallikes=totallikes, finished_list=finished_list, working_list=working_list, colorlater_list=colorlater_list, favorite_list=favorite_list)
 
 @app.route('/new_picture/<picid>', methods=['GET', 'POST']) # Hiển thị trang vẽ tranh của 1 bức tranh theo id của bức tranh đó
 def new_picture(picid):

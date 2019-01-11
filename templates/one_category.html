@@ -55,7 +55,7 @@
                     <form action="" method="post" id="a{{ pic.id }}">
                         <input style="display:none" type="text" name="a{{ pic.id }}" value="{{ pic.id }}">
                         {% if pic.id in button_list %}
-                            <input type="submit" value="Delete from Color Later List">
+                            <input type="submit" value="Remove from Color Later List">
                         {% else %}
                             <input type="submit" value="Color this later">
                         {% endif %}

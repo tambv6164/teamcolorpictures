@@ -167,20 +167,27 @@
     </div>
 
     <div id="colorlater_list" style="display:none">
-        <h2>Color Later List (on construction ...)</h2>
+        <h2>Color Later List</h2>
+        <div>Numbers: {{ c_length }}</div>
+        <hr>
         <div class="img">
         {% for c in colorlater_list %}
             <div class="abc">
-                <a href="{{ url_for('new_picture', picid=c.art_id) }}" style="text-decoration:none; color:brown; display: block" target="_blank">ID : {{ c.id }}</a>
-                <form action="{{ url_for('new_picture', picid=c.art_id) }}" method="get" target="_blank">
+                <a href="{{ url_for('new_picture', picid=c.id) }}" style="text-decoration:none; color:brown; display: block" target="_blank">{{ c.picname }}</a>
+                <div>
+                    <a href="{{ url_for('new_picture', picid=c.id) }}" target="_blank">
+                        <img src="{{ c.piclink }}" alt="" width="20%" height="20%">
+                    </a>
+                </div>
+                <form action="{{ url_for('new_picture', picid=c.id) }}" method="get" target="_blank">
                     <input type="submit" value="Color this">
                 </form>
-                <!-- <div>
+                <div>
                     <form action="" method="post" id="c{{ c.id }}">
                         <input style="display:none" type="text" name="c{{ c.id }}" value="{{ c.id }}">
                     </form>
-                    <button type="submit" form="c{{ c.id }}">Delete</button>
-                </div> -->
+                    <button type="submit" form="c{{ c.id }}">Remove</button>
+                </div>
             </div>
         {% endfor %}
         </div>
@@ -191,17 +198,24 @@
     </div>
 
     <div id="my_favorite" style="display:none">
-        <h2>My Favorite Arts (on construction ...)</h2>
+        <h2>My Favorite Arts</h2>
+        <div>Numbers: {{ m_length }}</div>
+        <hr>
         <div class="img">
         {% for m in favorite_list %}
             <div class="abc">
-                <a href="{{ url_for('view', picid=m.art_id) }}" style="text-decoration:none; color:brown; display: block" target="_blank">ID : {{ m.id }}</a>
-                <!-- <div>
+                <a href="{{ url_for('view', picid=m.id) }}" style="text-decoration:none; color:brown; display: block" target="_blank">{{ m.picname }}</a>
+                <div>
+                    <a href="{{ url_for('view', picid=m.id) }}" target="_blank">
+                        <img src="{{ m.piclink }}" alt="" width="20%" height="20%">
+                    </a>
+                </div>
+                <div>
                     <form action="" method="post" id="m{{ m.id }}">
                         <input style="display:none" type="text" name="m{{ m.id }}" value="{{ m.id }}">
                     </form>
-                    <button type="submit" form="m{{ m.id }}">Delete</button>
-                </div> -->
+                    <button type="submit" form="m{{ m.id }}">Remove</button>
+                </div>
             </div>
         {% endfor %}
         </div>
