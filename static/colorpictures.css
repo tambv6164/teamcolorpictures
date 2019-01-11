@@ -1,3 +1,7 @@
+body {
+    font-family: 'Nunito', sans-serif;
+    background-color: rgb(198, 240, 216);
+}
 .abc{
 display: Inline-block;
 width: 20%;
@@ -5,10 +9,24 @@ width: 20%;
 .abc img{
 width: 100%;
 }
-.abcd{
-display: Inline-block;
-width: 30%;
+button, input[type=submit] {
+    border-radius: 15px;
+    border: 1px solid black;
+    background: none;
+    padding: 5px 10px;
+    font-size: 16px;
+    margin: 5px;
 }
-.abcd img{
-width: 100%;
+input[type=text], input[type=password], input[type=color] {
+    border-radius: 15px;
+    border: 1px solid black;
+    background: none;
+    padding: 10px;
+    font-size: 16px;
+    margin: 5px;
+}
+input::placeholder {
+    color: gray;
+    font-family: 'Nunito', sans-serif;
+    font-size: 16px;
 }

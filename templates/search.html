@@ -4,7 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link rel="stylesheet" href="../static/colorpictures.css" type="text/css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+    <title>Search {{ searchword }}</title>
 </head>
 <body>
     <form action="{{ url_for('home') }}" style="display:inline;">
@@ -47,13 +52,13 @@
     
     <div id="warning" style="display:none">
         <hr>
-        <h4>Result:</h4>
+        <h2>Result:</h2>
         <p>You searched for nothing!</p>
     </div>
     
     {% if display == 'yes' %}
     <hr>
-    <h4>Result for: {{ searchword }}</h4>
+    <h2>Result for: {{ searchword }}</h2>
         <div style="width: 100%;">
             <!-- Tạo 3 cột. lưu ý tổng 3 div phải là 100%, nếu không sẽ có 1 khoảng trống giữa 2 cột -->
             <div style="width: 33%; float: left;">
