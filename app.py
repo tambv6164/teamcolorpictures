@@ -49,7 +49,7 @@ def signup():
         # # Khi nào cần thì bật lại vì trên database vẫn để email với giá trị default.
         # e = form['email']
         new_user = User(fullname=f.strip(), username=u.strip(), password=p.strip()) #, email=e)
-        user_check = User.objects(username=u).first()        
+        user_check = User.objects(username=u.strip()).first()        
         # email_check = User.objects(email=e).first()
         warning = ''
         if f.strip() == '' or u.strip() == '' or p.strip() == '': #or e == '':
@@ -211,8 +211,10 @@ def view(picid):
                 picname = newname.strip()
                 pic.update(set__picname=newname.strip())
                 changename_warning = 'Thay đổi tên thành công!'
-            else:
-                changename_warning = 'Bạn đã không thay đổi tên hoặc tên mới không hợp lệ!'
+            elif newname == '':
+                changename_warning = 'Bạn đã không thay đổi tên!'
+            else: # newname.strip() == ''
+                changename_warning = 'Tên mới không hợp lệ!'
         # Xử lý form comment:
         if 'comment' in form:
             if  like_check is None :
@@ -526,7 +528,7 @@ def change_infor(artist):
                     notice = 'Username và password không được chứa dấu cách!'
                 return render_template('change_infor.html', fullname=artist_infor.fullname, password=artist_infor.password, notice=notice)
 
-@app.route("/notallow") # Hiển thị khi người dùng truy cập 1 trang không được phép
+@app.route("/not_allow") # Hiển thị khi người dùng truy cập 1 trang không được phép
 def not_allow():
     return render_template('not_allow.html')
 
