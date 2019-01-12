@@ -215,6 +215,10 @@
                     </a>
                 </div>
                 <div>
+                    <p>Artist: <a href="{{ url_for('profile', artist=m.picartist) }}" style="text-decoration: none; color:rgb(163, 68, 0);"> {{ m.picartistfullname }}</a></p>
+                </div>
+                <p>Like: {{ m.piclikes }}, Comment: {{ m.piccomments }}</p>
+                <div>
                     <form action="" method="post" id="m{{ m.id }}">
                         <input style="display:none" type="text" name="m{{ m.id }}" value="{{ m.id }}">
                     </form>

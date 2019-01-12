@@ -19,6 +19,7 @@ button, input[type=submit] {
     padding: 5px 10px;
     font-size: 16px;
     margin: 5px;
+    font-family: 'Nunito', sans-serif;
 }
 input[type=text], input[type=password], input[type=color], textarea {
     border-radius: 15px;
@@ -27,6 +28,7 @@ input[type=text], input[type=password], input[type=color], textarea {
     padding: 10px;
     font-size: 16px;
     margin: 5px;
+    font-family: 'Nunito', sans-serif;
 }
 input::placeholder {
     color: gray;
