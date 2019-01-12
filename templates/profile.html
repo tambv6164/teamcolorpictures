@@ -121,7 +121,6 @@
             </div>
         {% endfor %}
         </div>
-        <hr>
         {% if display == 'yes' %}
             <form action="{{ url_for('full_category') }}" method="get">
                 <input type="submit" value="Start new art">
@@ -163,7 +162,6 @@
             </div>
         {% endfor %}
         </div>
-        <hr>
         <form action="{{ url_for('full_category') }}" method="get">
             <input type="submit" value="Start new art">
         </form>
@@ -195,7 +193,6 @@
             </div>
         {% endfor %}
         </div>
-        <hr>
         <form action="{{ url_for('full_category') }}" method="get">
             <input type="submit" value="Start new art">
         </form>
@@ -215,7 +212,7 @@
                     </a>
                 </div>
                 <div>
-                    <p>Artist: <a href="{{ url_for('profile', artist=m.picartist) }}" style="text-decoration: none; color:rgb(163, 68, 0);"> {{ m.picartistfullname }}</a></p>
+                    <p>Artist: <a href="{{ url_for('profile', artist=m.picartist) }}" style="text-decoration: none; color:rgb(163, 68, 0);" target="_blank"> {{ m.picartistfullname }}</a></p>
                 </div>
                 <p>Like: {{ m.piclikes }}, Comment: {{ m.piccomments }}</p>
                 <div>
@@ -228,7 +225,6 @@
             </div>
         {% endfor %}
         </div>
-        <hr>
         <form action="{{ url_for('full_category') }}" method="get">
             <input type="submit" value="Start new art">
         </form>
