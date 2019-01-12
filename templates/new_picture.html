@@ -138,7 +138,7 @@
             var name = document.getElementById("inputname").value;
             var warning = document.getElementById("setnamewarning");
             var savebutton = document.getElementById("savefinished");
-            if (name == "") {
+            if (name == "" || name.trim() == "") {
             warning.style.display = "block";
             savebutton.type = "button";
             } else {

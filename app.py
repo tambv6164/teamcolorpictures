@@ -48,12 +48,12 @@ def signup():
         # # Tạm bỏ email cùng các phần liên quan bên dưới. 
         # # Khi nào cần thì bật lại vì trên database vẫn để email với giá trị default.
         # e = form['email']
-        new_user = User(fullname=f, username=u, password=p) #, email=e)
+        new_user = User(fullname=f.strip(), username=u.strip(), password=p.strip()) #, email=e)
         user_check = User.objects(username=u).first()        
         # email_check = User.objects(email=e).first()
         warning = ''
-        if f == '' or u == '' or p == '': #or e == '':
-            warning = 'Vui lòng nhập đầy đủ thông tin!'
+        if f.strip() == '' or u.strip() == '' or p.strip() == '': #or e == '':
+            warning = 'Thông tin không hợp lệ!'
         elif ' ' in u or ' ' in p:
             warning = 'Username hoặc password không được chứa dấu cách!'
         # Check xem có tồn tại username hoặc email đó chưa:
@@ -174,6 +174,7 @@ def view(picid):
     likebutton = 'Like'
     display = 'no'
     token = ''
+    changename_warning = ''
     addbutton = 'Add to My Favorite'
     if 'token' not in session:
         warning = 'show'
@@ -198,7 +199,7 @@ def view(picid):
                 addbutton = 'Add to My favorite'
             else:
                 addbutton = 'Remove from My Favorite'
-        return render_template("view.html", display=display, token=token, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning, addbutton=addbutton)
+        return render_template("view.html", changename_warning=changename_warning,  display=display, token=token, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, likebutton=likebutton, warning=warning, addbutton=addbutton)
     elif request.method == 'POST':
         form = request.form
         user = User.objects(username=session['token']).first()
@@ -206,9 +207,12 @@ def view(picid):
         # Xử lý đổi tên:
         if 'picname' in form:
             newname = form['picname']
-            if newname != '':
-                picname = newname
-                pic.update(set__picname=newname)
+            if newname.strip() != '':
+                picname = newname.strip()
+                pic.update(set__picname=newname.strip())
+                changename_warning = 'Thay đổi tên thành công!'
+            else:
+                changename_warning = 'Bạn đã không thay đổi tên hoặc tên mới không hợp lệ!'
         # Xử lý form comment:
         if 'comment' in form:
             if  like_check is None :
@@ -259,7 +263,7 @@ def view(picid):
                 f_check.delete()
                 addbutton = 'Add to My favorite'
         comment_list = Comment.objects(picid=picid)
-        return render_template('view.html', display=display, token=token, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, warning=warning, likebutton=likebutton, addbutton=addbutton)
+        return render_template('view.html', changename_warning=changename_warning, display=display, token=token, pic=pic, picname=picname, piclikes=piclikes, artist=artist, comment_list=comment_list, warning=warning, likebutton=likebutton, addbutton=addbutton)
 
 @app.route('/category') # Hiển thị trang Category tổng
 def full_category():
@@ -416,7 +420,7 @@ def new_picture(picid):
             picstatus = form['picstatus']
             picartist = token
             picartistfullname = User.objects(username=token).first().fullname
-            newlink = Savepicture(piclink=piclink, picname=picname, picstatus=picstatus, picartist=picartist, picartistfullname=picartistfullname, picrawid=picid)
+            newlink = Savepicture(piclink=piclink, picname=picname.strip(), picstatus=picstatus, picartist=picartist, picartistfullname=picartistfullname, picrawid=picid)
             newlink.save()
             newid = Savepicture.objects(piclink=piclink).first().id
             # Update database của user tương ứng:
@@ -449,8 +453,8 @@ def keep_continue(picid):
                 piclink = form['piclink']
                 picstatus = form['picstatus']
                 # Update:
-                if picname != '':
-                    pic.update(set__picname=picname)
+                if picname.strip() != '':
+                    pic.update(set__picname=picname.strip())
                 working_arts = User.objects(username=token).first().working_arts
                 finished_arts = User.objects(username=token).first().finished_arts
                 if picstatus == 'working':
@@ -494,30 +498,32 @@ def change_infor(artist):
                 new_fullname = form['fullname']
                 new_username = form['username']
                 new_password = form['password']
-                if new_fullname != '':
-                    artist_infor.update(set__fullname=new_fullname)
+                if new_fullname.strip() != '':
+                    artist_infor.update(set__fullname=new_fullname.strip())
                     for pic in pic_list:
-                        pic.update(set__picartistfullname=new_fullname)
+                        pic.update(set__picartistfullname=new_fullname.strip())
                     for like in like_list:
-                        like.update(set__who_fullname=new_fullname)
+                        like.update(set__who_fullname=new_fullname.strip())
                     for comment in comment_list:
-                        comment.update(set__who_fullname=new_fullname)
-                if new_username != '':
+                        comment.update(set__who_fullname=new_fullname.strip())
+                if (new_username.strip() != '') and (' ' not in new_username):
                     artist = new_username
-                    artist_infor.update(set__username=new_username)
+                    artist_infor.update(set__username=new_username.strip())
                     for pic in pic_list:
-                        pic.update(set__picartist=new_username)
+                        pic.update(set__picartist=new_username.strip())
                     for like in like_list:
-                        like.update(set__who_username=new_username)
+                        like.update(set__who_username=new_username.strip())
                     for comment in comment_list:
-                        comment.update(set__who_username=new_username)
-                if new_password != '':
-                    artist_infor.update(set__password=new_password)
+                        comment.update(set__who_username=new_username.strip())
+                if (new_password.strip() != '') and (' ' not in new_username):
+                    artist_infor.update(set__password=new_password.strip())
                 artist_infor = User.objects(username=artist).first()
-                if new_fullname != '' or new_username != '' or new_password != '':
+                if new_fullname.strip() != '' or ((new_username.strip() != '') and (' ' not in new_username)) or ((new_password.strip() != '') and (' ' not in new_username)):
                     notice = 'Bạn đã thay đổi thông tin thành công!'
-                if new_fullname == '' and new_username == '' and new_password == '':
-                    notice = 'Bạn đã không thay đổi thông tin gì!'
+                if new_fullname.strip() == '' and new_username.strip() == '' and new_password.strip() == '':
+                    notice = 'Bạn đã không thay đổi thông tin gì hoặc thông tin không hợp lệ!'
+                if ' ' in new_username or ' ' in new_password:
+                    notice = 'Username và password không được chứa dấu cách!'
                 return render_template('change_infor.html', fullname=artist_infor.fullname, password=artist_infor.password, notice=notice)
 
 @app.route("/notallow") # Hiển thị khi người dùng truy cập 1 trang không được phép

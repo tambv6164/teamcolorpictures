@@ -1,6 +1,9 @@
 body {
     font-family: 'Nunito', sans-serif;
-    background-color: rgb(222, 247, 233);
+    background-color: rgb(233, 247, 239);
+}
+hr {
+    border-top: 1px solid rgb(42, 155, 91);
 }
 .abc{
 display: Inline-block;
@@ -11,16 +14,16 @@ width: 100%;
 }
 button, input[type=submit] {
     border-radius: 15px;
-    border: 1px solid black;
-    background: none;
+    border: 1px solid rgb(42, 155, 91);
+    background: white;
     padding: 5px 10px;
     font-size: 16px;
     margin: 5px;
 }
-input[type=text], input[type=password], input[type=color] {
+input[type=text], input[type=password], input[type=color], textarea {
     border-radius: 15px;
-    border: 1px solid black;
-    background: none;
+    border: 1px solid rgb(42, 155, 91);
+    background: white;
     padding: 10px;
     font-size: 16px;
     margin: 5px;
