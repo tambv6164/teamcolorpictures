@@ -119,16 +119,17 @@
             var warning1 = document.getElementById("setnamewarning1");
             var warning2 = document.getElementById("setnamewarning2");
             var savebutton = document.getElementById("saveworking");
-            if (name == "") {
+            if (name === "") {
             warning1.style.display = "block";
             warning2.style.display = "none";
             savebutton.type = "button";
-            } else if (name.trim() == "") {
+            } else if (name.trim() === "") {
             warning1.style.display = "none";
             warning2.style.display = "block";
             savebutton.type = "button";
             } else {
-            warning.style.display = "none";
+            warning1.style.display = "none";
+            warning2.style.display = "none";
             savebutton.type = "submit";
             var token = document.getElementById("token").value;
             var canvas = document.getElementById('canvas');
@@ -146,16 +147,17 @@
             var warning1 = document.getElementById("setnamewarning1");
             var warning2 = document.getElementById("setnamewarning2");
             var savebutton = document.getElementById("savefinished");
-            if (name == "") {
+            if (name === "") {
             warning1.style.display = "block";
             warning2.style.display = "none";
             savebutton.type = "button";
-            } else if (name.trim() == "") {
+            } else if (name.trim() === "") {
             warning1.style.display = "none";
             warning2.style.display = "block";
             savebutton.type = "button";
             } else {
-            warning.style.display = "none";
+            warning1.style.display = "none";
+            warning2.style.display = "none";
             savebutton.type = "submit";
             var token = document.getElementById("token").value;
             var canvas = document.getElementById('canvas');
