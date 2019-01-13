@@ -1,6 +1,13 @@
+html {
+    height: 100%;
+    width: 100%;
+}
 body {
     font-family: 'Nunito', sans-serif;
     background-color: rgb(233, 247, 239);
+    height: 100%;
+    width: 100%;
+    display: flex;
 }
 hr {
     border-top: 1px solid rgb(42, 155, 91);
@@ -34,9 +41,4 @@ input::placeholder {
     color: gray;
     font-family: 'Nunito', sans-serif;
     font-size: 16px;
-}
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
 }
