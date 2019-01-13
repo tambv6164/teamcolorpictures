@@ -7,7 +7,6 @@ body {
     background-color: rgb(233, 247, 239);
     height: 100%;
     width: 100%;
-    display: flex;
 }
 hr {
     border-top: 1px solid rgb(42, 155, 91);
