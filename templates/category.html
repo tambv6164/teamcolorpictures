@@ -12,50 +12,56 @@
     <title>Category</title>
 </head>
 <body>
-    <form action="{{ url_for('home') }}" style="display:inline;">
-        <input type="submit" value="Homepage">
-    </form>
-    <form action="{{ url_for('search') }}" style="display:inline;">
-        <input type="submit" value="Search">
-    </form>
-    {% if 'token' in session %}
-        <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
-            <input type="submit" value="My Arts">
-        </form>
-        <form action="{{ url_for('logout') }}" style="display:inline;">
-            <input type="submit" value="Log out">
-        </form>
-    {% else %}
-        <form action="{{ url_for('login') }}" style="display:inline;">
-            <input type="submit" value="Log in">
-        </form>
-        <form action="{{ url_for('signup') }}" style="display:inline;">
-            <input type="submit" value="Sign up">
-        </form>
-    {% endif %}
-    <hr>
-    
-    <h2>Category</h2>
-    <div class="img">
-        <div class="abc">
-            <form action="{{ url_for('new_picture', picid=random_pic.id) }}" method="get">
-                <input type="submit" value="Random pic">
+    <div style="display:flex; flex-direction: column; align-items: center;">
+        <div>
+            <form action="{{ url_for('home') }}" style="display:inline;">
+                <input type="submit" value="Homepage">
             </form>
-            <a href="{{ url_for('new_picture', picid=random_pic.id) }}">
-                <img src="{{ random_pic.piclink }}" alt="" width="20%" height="20%">
-            </a>
-        </div>
-        {% for c in category_list %}
-        <div class="abc">
-            <form action="{{ url_for('one_category', category=c.category) }}" method="get">
-                <input type="submit" value="{{ c.name }}">
+            <form action="{{ url_for('search') }}" style="display:inline;">
+                <input type="submit" value="Search">
             </form>
-            <a href="{{ url_for('one_category', category=c.category) }}">
-                <img src="{{ c.label }}" alt="" width="20%" height="20%">
-            </a>
+            {% if 'token' in session %}
+                <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+                    <input type="submit" value="My Arts">
+                </form>
+                <form action="{{ url_for('logout') }}" style="display:inline;">
+                    <input type="submit" value="Log out">
+                </form>
+            {% else %}
+                <form action="{{ url_for('login') }}" style="display:inline;">
+                    <input type="submit" value="Log in">
+                </form>
+                <form action="{{ url_for('signup') }}" style="display:inline;">
+                    <input type="submit" value="Sign up">
+                </form>
+            {% endif %}
+            <hr>
         </div>
-        {% endfor %}
+        <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div>
+                <h2>Category</h2>
+            </div>
+            <div class="img">
+                <div class="abc">
+                    <form action="{{ url_for('new_picture', picid=random_pic.id) }}" method="get">
+                        <input type="submit" value="Random pic">
+                    </form>
+                    <!-- <a href="{{ url_for('new_picture', picid=random_pic.id) }}">
+                        <img src="{{ random_pic.piclink }}" alt="" width="20%" height="20%">
+                    </a> -->
+                </div>
+                {% for c in category_list %}
+                <div class="abc">
+                    <form action="{{ url_for('one_category', category=c.category) }}" method="get">
+                        <input type="submit" value="{{ c.name }}">
+                    </form>
+                    <!-- <a href="{{ url_for('one_category', category=c.category) }}">
+                        <img src="{{ c.label }}" alt="" width="20%" height="20%">
+                    </a> -->
+                </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
-
 </body>
 </html>
