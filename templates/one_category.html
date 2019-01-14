@@ -12,60 +12,63 @@
     <title>{{ category }}</title>
 </head>
 <body>
-    <form action="{{ url_for('home') }}" style="display:inline;">
-        <input type="submit" value="Homepage">
-    </form>
-    <form action="{{ url_for('search') }}" style="display:inline;">
-        <input type="submit" value="Search">
-    </form>
-    <form action="{{ url_for('full_category') }}" style="display:inline;">
-        <input type="submit" value="Category">
-    </form>
-    {% if 'token' in session %}
-        <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
-            <input type="submit" value="My Arts">
-        </form>
-        <form action="{{ url_for('logout') }}" style="display:inline;">
-            <input type="submit" value="Log out">
-        </form>
-    {% else %}
-        <form action="{{ url_for('login') }}" style="display:inline;">
-            <input type="submit" value="Log in">
-        </form>
-        <form action="{{ url_for('signup') }}" style="display:inline;">
-            <input type="submit" value="Sign up">
-        </form>
-    {% endif %}
-    <hr>
-
-    <h2>{{ category }}</h2>
-
-    <hr>
-    <div class="img">
-        {% for pic in pic_list %}
-            <div class="abc">
-                <div>
-                    <a href="{{ url_for('new_picture', picid=pic.id) }}">
-                        <img src="{{ pic.piclink }}" alt="">
-                    </a>
-                </div>
-                <form action="{{ url_for('new_picture', picid=pic.id) }}" method="get">
-                    <input type="submit" value="Choose">
+    <div style="display:flex; flex-direction: column; align-items: center;">
+        <div>
+            <form action="{{ url_for('home') }}" style="display:inline;">
+                <input type="submit" value="Homepage">
+            </form>
+            <form action="{{ url_for('search') }}" style="display:inline;">
+                <input type="submit" value="Search">
+            </form>
+            <form action="{{ url_for('full_category') }}" style="display:inline;">
+                <input type="submit" value="Category">
+            </form>
+            {% if 'token' in session %}
+                <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+                    <input type="submit" value="My Arts">
                 </form>
-                {% if 'token' in session %}
-                    <form action="" method="post" id="a{{ pic.id }}">
-                        <input style="display:none" type="text" name="a{{ pic.id }}" value="{{ pic.id }}">
-                        {% if pic.id in button_list %}
-                            <input type="submit" value="Remove from Color Later List">
-                        {% else %}
-                            <input type="submit" value="Color this later">
-                        {% endif %}
+                <form action="{{ url_for('logout') }}" style="display:inline;">
+                    <input type="submit" value="Log out">
+                </form>
+            {% else %}
+                <form action="{{ url_for('login') }}" style="display:inline;">
+                    <input type="submit" value="Log in">
+                </form>
+                <form action="{{ url_for('signup') }}" style="display:inline;">
+                    <input type="submit" value="Sign up">
+                </form>
+            {% endif %}
+            <hr>
+        </div>
+        <div>
+            <h2>{{ category }}</h2>
+            <hr>
+        </div>
+        <div class="img">
+            {% for pic in pic_list %}
+                <div class="abc">
+                    <div>
+                        <a href="{{ url_for('new_picture', picid=pic.id) }}">
+                            <img src="{{ pic.piclink }}" alt="">
+                        </a>
+                    </div>
+                    <form action="{{ url_for('new_picture', picid=pic.id) }}" method="get">
+                        <input type="submit" value="Choose">
                     </form>
-                {% endif %}
-                <hr>
-            </div>
-        {% endfor %}
+                    {% if 'token' in session %}
+                        <form action="" method="post" id="a{{ pic.id }}">
+                            <input style="display:none" type="text" name="a{{ pic.id }}" value="{{ pic.id }}">
+                            {% if pic.id in button_list %}
+                                <input type="submit" value="Remove from Color Later List">
+                            {% else %}
+                                <input type="submit" value="Color this later">
+                            {% endif %}
+                        </form>
+                    {% endif %}
+                    <hr>
+                </div>
+            {% endfor %}
+        </div>
     </div>
-
 </body>
 </html>
