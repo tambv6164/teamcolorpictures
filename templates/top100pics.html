@@ -39,7 +39,7 @@
             <div>
                 <p>{{ notice }}</p>
             </div>
-            <div>
+            <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
                 {% for pic in top100pics %}
                 <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
                     <div>
@@ -52,7 +52,7 @@
                     </div>
                     <div>
                         <a href="{{ url_for('view', picid=pic.picid) }}">
-                            <img src="{{ pic.piclink }}" alt="" width="20%" height="20%">
+                            <img src="{{ pic.piclink }}" alt="" width="40%" height="40%">
                         </a>
                     </div>
                     <div>
