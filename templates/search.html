@@ -12,43 +12,53 @@
     <title>Search {{ searchword }}</title>
 </head>
 <body>
-    <form action="{{ url_for('home') }}" style="display:inline;">
-        <input type="submit" value="Homepage">
-    </form>
-    <form action="{{ url_for('full_category') }}" style="display:inline;">
-        <input type="submit" value="Category">
-    </form>
-    {% if 'token' in session %}
-        <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
-            <input type="submit" value="My Arts">
-        </form>
-        <form action="{{ url_for('logout') }}" style="display:inline;">
-            <input type="submit" value="Log out">
-        </form>
-    {% else %}
-        <form action="{{ url_for('login') }}" style="display:inline;">
-            <input type="submit" value="Log in">
-        </form>
-        <form action="{{ url_for('signup') }}" style="display:inline;">
-            <input type="submit" value="Sign up">
-        </form>
-    {% endif %}
-    <hr>
-    
-    <h2>Search</h2>
-
-    <form action="" method="post" id="searchform">
+    <div style="display:flex; flex-direction: column; align-items: center;">
         <div>
-            <input id="word" name="searchword" type="text" size="70" placeholder="e.g. aladdin, ben 10 ..." onfocus="this.placeholder=''" onblur="this.placeholder='e.g. aladdin, ben 10 ...'">
+            <form action="{{ url_for('home') }}" style="display:inline;">
+                <input type="submit" value="Homepage">
+            </form>
+            <form action="{{ url_for('full_category') }}" style="display:inline;">
+                <input type="submit" value="Category">
+            </form>
+            {% if 'token' in session %}
+                <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+                    <input type="submit" value="My Arts">
+                </form>
+                <form action="{{ url_for('logout') }}" style="display:inline;">
+                    <input type="submit" value="Log out">
+                </form>
+            {% else %}
+                <form action="{{ url_for('login') }}" style="display:inline;">
+                    <input type="submit" value="Log in">
+                </form>
+                <form action="{{ url_for('signup') }}" style="display:inline;">
+                    <input type="submit" value="Sign up">
+                </form>
+            {% endif %}
+            <hr>
         </div>
-        <div>
-            <label for="">Select field: </label>
-            <input name="field1" type="checkbox" value="raw_picture"> Raw Pictures
-            <input name="field2" type="checkbox" value="finished_art"> Finished Art
-            <input name="field3" type="checkbox" value="artist"> Artist
+        <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div>
+                <h2>Search</h2>
             </div>
-    </form>
-    <button id="find" type="button" form="searchform" onclick="buttonSubmit()">Find</button>
+            <div>
+                <form action="" method="post" id="searchform">
+                    <div>
+                        <input id="word" name="searchword" type="text" size="70" placeholder="e.g. aladdin, ben 10 ..." onfocus="this.placeholder=''" onblur="this.placeholder='e.g. aladdin, ben 10 ...'">
+                    </div>
+                </form>
+            </div>
+            <div>
+                <label form="searchform" for="">Select field: </label>
+                <input form="searchform" name="field1" type="checkbox" value="raw_picture"> Raw Pictures
+                <input form="searchform" name="field2" type="checkbox" value="finished_art"> Finished Art
+                <input form="searchform" name="field3" type="checkbox" value="artist"> Artist
+            </div>
+            <div>
+                <button id="find" type="button" form="searchform" onclick="buttonSubmit()">Find</button>
+            </div>
+        </div>
+    </div>
     
     <div id="warning" style="display:none">
         <hr>
