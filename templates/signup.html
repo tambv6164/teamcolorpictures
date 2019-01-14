@@ -12,33 +12,41 @@
     <title>Color Pictures</title>
 </head>
 <body>
-    <form action="{{ url_for('home') }}" style="display:inline;">
-        <input type="submit" value="Homepage">
-    </form>
-    <form action="{{ url_for('full_category') }}" style="display:inline;">
-        <input type="submit" value="Start Coloring">
-    </form>
-    <form action="{{ url_for('login') }}" style="display:inline;">
-        <input type="submit" value="Log in">
-    </form>
-    <hr>
-    
-    <h2>Sign up</h2>
-    <p>{{ warning }}</p>
-
-    <form method="POST">
+    <div style="display:flex; flex-direction: column; align-items: center;">
         <div>
-            <input type="text" size="30" placeholder="fullname" name="fullname" onfocus="this.placeholder=''" onblur="this.placeholder='fullname'">
+            <form action="{{ url_for('home') }}" style="display:inline;">
+                <input type="submit" value="Homepage">
+            </form>
+            <form action="{{ url_for('full_category') }}" style="display:inline;">
+                <input type="submit" value="Start Coloring">
+            </form>
+            <form action="{{ url_for('login') }}" style="display:inline;">
+                <input type="submit" value="Log in">
+            </form>
+            <hr>
         </div>
-        <div>
-            <input type="text" size="30" placeholder="username (không chứa dấu cách)" name="username" onfocus="this.placeholder=''" onblur="this.placeholder='username (không chứa dấu cách)'">
+        <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div>
+                <h2>Sign up</h2>
+                <p>{{ warning }}</p>
+            </div>
+            <div>
+                <form method="POST" id="signup">
+                    <div>
+                        <input type="text" size="30" placeholder="fullname" name="fullname" onfocus="this.placeholder=''" onblur="this.placeholder='fullname'">
+                    </div>
+                    <div>
+                        <input type="text" size="30" placeholder="username (không chứa dấu cách)" name="username" onfocus="this.placeholder=''" onblur="this.placeholder='username (không chứa dấu cách)'">
+                    </div>
+                    <div>
+                        <input type="password" size="30" placeholder="password (không chứa dấu cách)" name='password' onfocus="this.placeholder=''" onblur="this.placeholder='password (không chứa dấu cách)'">
+                    </div>
+                </form>
+            </div>
+            <div>
+                <button type="submit" form="signup">Sign up</button>
+            </div>
         </div>
-        <div>
-            <input type="password" size="30" placeholder="password (không chứa dấu cách)" name='password' onfocus="this.placeholder=''" onblur="this.placeholder='password (không chứa dấu cách)'">
-        </div>
-        <div>
-            <button>Sign up</button>
-        </div>
-    </form>    
+    </div>
 </body>
 </html>
