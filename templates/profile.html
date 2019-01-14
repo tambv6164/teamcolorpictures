@@ -105,135 +105,164 @@
         </script>
         
         <div id="finished_list" style="display:block">
-            <h2>Finished Arts</h2>
-            <div>Numbers: {{ finished_arts }}, Total Likes: {{ totallikes }}</div>
-            <hr>
-            <div class="img">
-            {% for fpic in finished_list %}
-                <div class="abc">
-                    <a href="{{ url_for('view', picid=fpic.id) }}" style="text-decoration:none; color:brown; display: block" target="_blank">{{ fpic.picname }}</a>
-                    <a href="{{ url_for('view', picid=fpic.id) }}" target="_blank">
-                        <img src="{{ fpic.piclink }}" alt="" width="20%" height="20%">
-                    </a>
-                    <p>Like: {{ fpic.piclikes }}, Comment: {{ fpic.piccomments }}</p>
-
-                    {% if display == 'yes' %}
-                        <form action="" method="post" id="df{{ fpic.id }}">
-                            <input style="display:none" type="text" name="df{{ fpic.id }}" value="{{ fpic.id }}">
-                        </form>
-                        <button type="submit" form="df{{ fpic.id }}">Delete</button>
-                    {% endif %}
+            <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div>
+                    <h2>Finished Arts</h2>
+                </div>
+                <div>
+                    <div>Numbers: {{ finished_arts }}, Total Likes: {{ totallikes }}</div>
                     <hr>
                 </div>
-            {% endfor %}
+                <div class="img">
+                {% for fpic in finished_list %}
+                    <div class="abc">
+                        <a href="{{ url_for('view', picid=fpic.id) }}" style="text-decoration:none; color:brown; display: block" target="_blank">{{ fpic.picname }}</a>
+                        <a href="{{ url_for('view', picid=fpic.id) }}" target="_blank">
+                            <img src="{{ fpic.piclink }}" alt="" width="20%" height="20%">
+                        </a>
+                        <p>Like: {{ fpic.piclikes }}, Comment: {{ fpic.piccomments }}</p>
+                        {% if display == 'yes' %}
+                            <form action="" method="post" id="df{{ fpic.id }}">
+                                <input style="display:none" type="text" name="df{{ fpic.id }}" value="{{ fpic.id }}">
+                            </form>
+                            <button type="submit" form="df{{ fpic.id }}">Delete</button>
+                        {% endif %}
+                        <hr>
+                    </div>
+                {% endfor %}
+                </div>
+                {% if display == 'yes' %}
+                    <form action="{{ url_for('full_category') }}" method="get">
+                        <input type="submit" value="Start new art">
+                    </form>
+                {% endif %}
             </div>
-            {% if display == 'yes' %}
-                <form action="{{ url_for('full_category') }}" method="get">
-                    <input type="submit" value="Start new art">
-                </form>
-            {% endif %}
         </div>
 
         <div id="working_list" style="display:none">
-            <h2>Working Arts</h2>
-            <div>Numbers: {{ working_arts }}</div>
-            <hr>
-            <div class="img">
-            {% for wpic in working_list %}
-                <div class="abc">
-                    <a href="{{ url_for('keep_continue', picid=wpic.id) }}" style="text-decoration:none; color:brown; display: block" target="_blank">{{ wpic.picname }}</a>
-                    <div>
-                        <a href="{{ url_for('keep_continue', picid=wpic.id) }}" target="_blank">
-                            <img src="{{ wpic.piclink }}" alt="" width="20%" height="20%">
-                        </a>
-                    </div>
-                    <div>
-                        <form action="{{ url_for('keep_continue', picid=wpic.id) }}" method="get" target="_blank">
-                            <input type="submit" value="Continue">
-                        </form>
-                    </div>
-                    <div>
-                        <form action="" method="post" id="up{{ wpic.id }}">
-                            <input style="display:none" type="text" name="up{{ wpic.id }}" value="{{ wpic.id }}">
-                        </form>
-                        <button type="submit" form="up{{ wpic.id }}">Finish</button>
-                    </div>
-                    <div>
-                        <form action="" method="post" id="dw{{ wpic.id }}">
-                            <input style="display:none" type="text" name="dw{{ wpic.id }}" value="{{ wpic.id }}">
-                        </form>
-                        <button type="submit" form="dw{{ wpic.id }}">Delete</button>
-                    </div>
+            <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div>
+                    <h2>Working Arts</h2>
+                </div>
+                <div>
+                    <div>Numbers: {{ working_arts }}</div>
                     <hr>
                 </div>
-            {% endfor %}
+                <div class="img">
+                    {% for wpic in working_list %}
+                        <div class="abc">
+                            <a href="{{ url_for('keep_continue', picid=wpic.id) }}" style="text-decoration:none; color:brown; display: block" target="_blank">{{ wpic.picname }}</a>
+                            <div>
+                                <a href="{{ url_for('keep_continue', picid=wpic.id) }}" target="_blank">
+                                    <img src="{{ wpic.piclink }}" alt="" width="20%" height="20%">
+                                </a>
+                            </div>
+                            <div>
+                                <form action="{{ url_for('keep_continue', picid=wpic.id) }}" method="get" target="_blank">
+                                    <input type="submit" value="Continue">
+                                </form>
+                            </div>
+                            <div>
+                                <form action="" method="post" id="up{{ wpic.id }}">
+                                    <input style="display:none" type="text" name="up{{ wpic.id }}" value="{{ wpic.id }}">
+                                </form>
+                                <button type="submit" form="up{{ wpic.id }}">Finish</button>
+                            </div>
+                            <div>
+                                <form action="" method="post" id="dw{{ wpic.id }}">
+                                    <input style="display:none" type="text" name="dw{{ wpic.id }}" value="{{ wpic.id }}">
+                                </form>
+                                <button type="submit" form="dw{{ wpic.id }}">Delete</button>
+                            </div>
+                            <hr>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <form action="{{ url_for('full_category') }}" method="get">
+                        <input type="submit" value="Start new art">
+                    </form>
+                </div>
             </div>
-            <form action="{{ url_for('full_category') }}" method="get">
-                <input type="submit" value="Start new art">
-            </form>
         </div>
 
         <div id="colorlater_list" style="display:none">
-            <h2>Color Later List</h2>
-            <div>Numbers: {{ c_length }}</div>
-            <hr>
-            <div class="img">
-            {% for c in colorlater_list %}
-                <div class="abc">
-                    <a href="{{ url_for('new_picture', picid=c.id) }}" style="text-decoration:none; color:brown; display: block" target="_blank">{{ c.picname }}</a>
-                    <div>
-                        <a href="{{ url_for('new_picture', picid=c.id) }}" target="_blank">
-                            <img src="{{ c.piclink }}" alt="" width="20%" height="20%">
-                        </a>
-                    </div>
-                    <form action="{{ url_for('new_picture', picid=c.id) }}" method="get" target="_blank">
-                        <input type="submit" value="Color this">
-                    </form>
-                    <div>
-                        <form action="" method="post" id="c{{ c.id }}">
-                            <input style="display:none" type="text" name="c{{ c.id }}" value="{{ c.id }}">
-                        </form>
-                        <button type="submit" form="c{{ c.id }}">Remove</button>
-                    </div>
+            <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div>
+                    <h2>Color Later List</h2>
+                </div>
+                <div>
+                    <div>Numbers: {{ c_length }}</div>
                     <hr>
                 </div>
-            {% endfor %}
+                <div class="img">
+                    {% for c in colorlater_list %}
+                        <div class="abc">
+                            <a href="{{ url_for('new_picture', picid=c.id) }}" style="text-decoration:none; color:brown; display: block" target="_blank">{{ c.picname }}</a>
+                            <div>
+                                <a href="{{ url_for('new_picture', picid=c.id) }}" target="_blank">
+                                    <img src="{{ c.piclink }}" alt="" width="20%" height="20%">
+                                </a>
+                            </div>
+                            <form action="{{ url_for('new_picture', picid=c.id) }}" method="get" target="_blank">
+                                <input type="submit" value="Color this">
+                            </form>
+                            <div>
+                                <form action="" method="post" id="c{{ c.id }}">
+                                    <input style="display:none" type="text" name="c{{ c.id }}" value="{{ c.id }}">
+                                </form>
+                                <button type="submit" form="c{{ c.id }}">Remove</button>
+                            </div>
+                            <hr>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <form action="{{ url_for('full_category') }}" method="get">
+                        <input type="submit" value="Start new art">
+                    </form>
+                </div>
             </div>
-            <form action="{{ url_for('full_category') }}" method="get">
-                <input type="submit" value="Start new art">
-            </form>
         </div>
 
         <div id="my_favorite" style="display:none">
-            <h2>My Favorite Arts</h2>
-            <div>Numbers: {{ m_length }}</div>
-            <hr>
-            <div class="img">
-            {% for m in favorite_list %}
-                <div class="abc">
-                    <a href="{{ url_for('view', picid=m.id) }}" style="text-decoration:none; color:brown; display: block" target="_blank">{{ m.picname }}</a>
-                    <div>
-                        <a href="{{ url_for('view', picid=m.id) }}" target="_blank">
-                            <img src="{{ m.piclink }}" alt="" width="20%" height="20%">
-                        </a>
-                    </div>
-                    <div>
-                        <p>Artist: <a href="{{ url_for('profile', artist=m.picartist) }}" style="text-decoration: none; color:rgb(163, 68, 0);" target="_blank"> {{ m.picartistfullname }}</a></p>
-                    </div>
-                    <p>Like: {{ m.piclikes }}, Comment: {{ m.piccomments }}</p>
-                    <div>
-                        <form action="" method="post" id="m{{ m.id }}">
-                            <input style="display:none" type="text" name="m{{ m.id }}" value="{{ m.id }}">
-                        </form>
-                        <button type="submit" form="m{{ m.id }}">Remove</button>
-                    </div>
+            <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+                <div>
+                    <h2>My Favorite Arts</h2>
+                </div>
+                <div>
+                    <div>Numbers: {{ m_length }}</div>
                     <hr>
                 </div>
-            {% endfor %}
+                <div class="img">
+                    {% for m in favorite_list %}
+                        <div class="abc">
+                            <a href="{{ url_for('view', picid=m.id) }}" style="text-decoration:none; color:brown; display: block" target="_blank">{{ m.picname }}</a>
+                            <div>
+                                <a href="{{ url_for('view', picid=m.id) }}" target="_blank">
+                                    <img src="{{ m.piclink }}" alt="" width="20%" height="20%">
+                                </a>
+                            </div>
+                            <div>
+                                <p>Artist: <a href="{{ url_for('profile', artist=m.picartist) }}" style="text-decoration: none; color:rgb(163, 68, 0);" target="_blank"> {{ m.picartistfullname }}</a></p>
+                            </div>
+                            <p>Like: {{ m.piclikes }}, Comment: {{ m.piccomments }}</p>
+                            <div>
+                                <form action="" method="post" id="m{{ m.id }}">
+                                    <input style="display:none" type="text" name="m{{ m.id }}" value="{{ m.id }}">
+                                </form>
+                                <button type="submit" form="m{{ m.id }}">Remove</button>
+                            </div>
+                            <hr>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <form action="{{ url_for('full_category') }}" method="get">
+                        <input type="submit" value="Start new art">
+                    </form>
+                </div>
             </div>
-            <form action="{{ url_for('full_category') }}" method="get">
-                <input type="submit" value="Start new art">
-            </form>
         </div>
     </div>
 </body>
