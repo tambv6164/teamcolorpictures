@@ -12,28 +12,32 @@
     <title>Color Pictures</title>
 </head>
 <body>
-    <form action="{{ url_for('home') }}" style="display:inline;">
-        <input type="submit" value="Homepage">
-    </form>
-    <form action="{{ url_for('search') }}" style="display:inline;">
-        <input type="submit" value="Search">
-    </form>
-    <form action="{{ url_for('full_category') }}" style="display:inline;">
-        <input type="submit" value="Star Coloring">
-    </form>
-    {% if 'token' in session %}
-        <form action="{{ url_for('logout') }}" style="display:inline;">
-            <input type="submit" value="Log out">
-        </form>
-    {% endif %}
-    <hr>
-    
-    <div>
-        <h2>Xin chào {{ fullname }}!</h2>
-    </div> 
-    <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
-        <input type="submit" value="My Arts">
-    </form>    
-
+    <div style="display:flex; flex-direction: column; align-items: center;">
+        <div>
+            <form action="{{ url_for('home') }}" style="display:inline;">
+                <input type="submit" value="Homepage">
+            </form>
+            <form action="{{ url_for('search') }}" style="display:inline;">
+                <input type="submit" value="Search">
+            </form>
+            <form action="{{ url_for('full_category') }}" style="display:inline;">
+                <input type="submit" value="Star Coloring">
+            </form>
+            {% if 'token' in session %}
+                <form action="{{ url_for('logout') }}" style="display:inline;">
+                    <input type="submit" value="Log out">
+                </form>
+            {% endif %}
+            <hr>
+        </div>
+        <div>
+            <h2>Xin chào {{ fullname }}!</h2>
+        </div>
+        <div>
+            <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+                <input type="submit" value="My Arts">
+            </form>
+        </div>
+    </div>
 </body>
 </html>
