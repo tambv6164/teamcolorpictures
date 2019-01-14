@@ -42,7 +42,7 @@
                 <h2>Category</h2>
             </div>
             <div style="display:flex; width: 700px; flex-wrap: wrap;">
-                <div class="abc">
+                <div>
                     <form action="{{ url_for('new_picture', picid=random_pic.id) }}" method="get">
                         <input type="submit" value="Random pic" style="width: 200px; height: 140px;">
                     </form>
@@ -51,7 +51,7 @@
                     </a> -->
                 </div>
                 {% for c in category_list %}
-                <div class="abc">
+                <div>
                     <form action="{{ url_for('one_category', category=c.category) }}" method="get">
                         <input type="submit" value="{{ c.name }}" style="width: 200px; height: 140px;">
                     </form>
