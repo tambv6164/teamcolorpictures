@@ -41,7 +41,7 @@
             </div>
             <div>
                 {% for pic in top100pics %}
-                    <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+                    <div style="display:flex; flex-direction: column; align-items: center;">
                         <div>
                             <p>{{ pic.picpositionintop100 }}</p>
                         </div>
@@ -51,7 +51,7 @@
                             </a>
                         </div>
                         <div>
-                            <a href="{{ url_for('view', picid=pic.picid) }}" style="display: block; margin:0 auto;">
+                            <a href="{{ url_for('view', picid=pic.picid) }}">
                                 <img src="{{ pic.piclink }}" alt="" style="width:40%; height:40%;">
                             </a>
                         </div>
