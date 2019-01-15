@@ -39,27 +39,29 @@
             <div>
                 <p>{{ notice }}</p>
             </div>
-            {% for pic in top100pics %}
-                <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
-                    <div>
-                        <p>{{ pic.picpositionintop100 }}</p>
+            <div>
+                {% for pic in top100pics %}
+                    <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div>
+                            <p>{{ pic.picpositionintop100 }}</p>
+                        </div>
+                        <div>
+                            <a href="{{ url_for('view', picid=pic.picid) }}" style="text-decoration: none; color:rgb(163, 68, 0);">
+                                <h4>{{ pic.picname }}</h4>
+                            </a>
+                        </div>
+                        <div>
+                            <a href="{{ url_for('view', picid=pic.picid) }}">
+                                <img src="{{ pic.piclink }}" alt="" style="display: block; margin:auto; width:40%; height:40%;">
+                            </a>
+                        </div>
+                        <div>
+                            <p>Artist: <a href="{{ url_for('profile', artist=pic.picartist) }} " style="text-decoration: none; color:rgb(163, 68, 0);">{{ pic.picartistfullname }}</a>, Like: {{ pic.piclikes }}</p>
+                            <hr>
+                        </div>
                     </div>
-                    <div>
-                        <a href="{{ url_for('view', picid=pic.picid) }}" style="text-decoration: none; color:rgb(163, 68, 0);">
-                            <h4>{{ pic.picname }}</h4>
-                        </a>
-                    </div>
-                    <div>
-                        <a href="{{ url_for('view', picid=pic.picid) }}">
-                            <img src="{{ pic.piclink }}" alt="" style="display: block; margin:auto; width:40%; height:40%;">
-                        </a>
-                    </div>
-                    <div>
-                        <p>Artist: <a href="{{ url_for('profile', artist=pic.picartist) }} " style="text-decoration: none; color:rgb(163, 68, 0);">{{ pic.picartistfullname }}</a>, Like: {{ pic.piclikes }}</p>
-                        <hr>
-                    </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
+            </div>
         </div>
     </div>
 </body>
