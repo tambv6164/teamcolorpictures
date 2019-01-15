@@ -49,15 +49,14 @@
                             <h4>{{ pic.picname }}</h4>
                         </a>
                     </div>
-                    <div style="display:flex; align-items: center; justify-content: center;">
+                    <!-- <div style="display:flex; align-items: center; justify-content: center;"> -->
+                    <div>
                         <a href="{{ url_for('view', picid=pic.picid) }}">
-                            <img src="{{ pic.piclink }}" alt="" style="display: block;margin:auto; width:40%; height:40%;">
+                            <img src="{{ pic.piclink }}" alt="" style="display: block; margin:auto; width:40%; height:40%;">
                         </a>
                     </div>
                     <div>
-                        <span>Artist:</span>
-                        <span><a href="{{ url_for('profile', artist=pic.picartist) }} " style="text-decoration: none; color:rgb(163, 68, 0);">{{ pic.picartistfullname }}</a></span>
-                        <span> Like: {{ pic.piclikes }}</span>
+                        <p>Artist: <a href="{{ url_for('profile', artist=pic.picartist) }} " style="text-decoration: none; color:rgb(163, 68, 0);">{{ pic.picartistfullname }}</a>, Like: {{ pic.piclikes }}</p>
                         <hr>
                     </div>
                 {% endfor %}
