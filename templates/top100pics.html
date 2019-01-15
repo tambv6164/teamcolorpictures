@@ -50,9 +50,9 @@
                                 <h4>{{ pic.picname }}</h4>
                             </a>
                         </div>
-                        <div style="display: block; margin:auto; width:40%; height:40%;">
+                        <div style="display: block; margin:auto;">
                             <a href="{{ url_for('view', picid=pic.picid) }}">
-                                <img src="{{ pic.piclink }}" alt="">
+                                <img src="{{ pic.piclink }}" alt="" style="width:40%; height:40%;">
                             </a>
                         </div>
                         <div>
