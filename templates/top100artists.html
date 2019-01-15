@@ -12,38 +12,56 @@
     <title>Top 100 Artists</title>
 </head>
 <body>
-    <form action="{{ url_for('home') }}" style="display:inline;">
-        <input type="submit" value="Homepage">
-    </form>
-    <form action="{{ url_for('search') }}" style="display:inline;">
-        <input type="submit" value="Search">
-    </form>
-    <form action="{{ url_for('top100pics') }}" style="display:inline;">
-        <input type="submit" value="Top 100 Pictures">
-    </form>
-    <form action="{{ url_for('room_of_fame') }}" style="display:inline;">
-        <input type="submit" value="Room of Fame">
-    </form>
-    <form action="{{ url_for('full_category') }}" style="display:inline;">
-        <input type="submit" value="Start Coloring">
-    </form>
-    <hr>
-    
-    <h2>Top 100 Artists</h2>
-    <hr>
-    <p>{{ notice }}</p>
-
-    {% for artist in top100artists %}
-        <p>{{ artist.positionintop100 }}</p>
-        <h4><a href="{{ url_for('profile', artist=artist.username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ artist.fullname }}</a></h4>
-        <p>Total Likes: {{ artist.totallikes }}</p>
-        <p>Best pic:</p>
+    <div style="display:flex; flex-direction: column; align-items: center;">
         <div>
-            <a href="{{ url_for('view', picid=artist.bestpicid) }}">
-                <img src="{{ artist.bestpiclink }}" alt="" width="20%" height="20%">
-            </a>
+            <form action="{{ url_for('home') }}" style="display:inline;">
+                <input type="submit" value="Homepage">
+            </form>
+            <form action="{{ url_for('search') }}" style="display:inline;">
+                <input type="submit" value="Search">
+            </form>
+            <form action="{{ url_for('top100pics') }}" style="display:inline;">
+                <input type="submit" value="Top 100 Pictures">
+            </form>
+            <form action="{{ url_for('room_of_fame') }}" style="display:inline;">
+                <input type="submit" value="Room of Fame">
+            </form>
+            <form action="{{ url_for('full_category') }}" style="display:inline;">
+                <input type="submit" value="Start Coloring">
+            </form>
+            <hr>
         </div>
-        <hr>
-    {% endfor %}
+        <div style="display:flex; flex-direction: column; align-items: center;">
+            <div>
+                <h2>Top 100 Artists</h2>
+                <hr>
+            </div>
+            <div>
+                <p>{{ notice }}</p>
+            </div>
+            <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+                {% for artist in top100artists %}
+                    <div>
+                        <p>{{ artist.positionintop100 }}</p>
+                    </div>
+                    <div>
+                        <h4><a href="{{ url_for('profile', artist=artist.username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ artist.fullname }}</a></h4>
+                    </div>
+                    <div>
+                        <p>Total Likes: {{ artist.totallikes }}</p>
+                    </div>
+                    <div>
+                        <p>Best pic:</p>
+                    </div>    
+                    <div>
+                        <a href="{{ url_for('view', picid=artist.bestpicid) }}">
+                            <img src="{{ artist.bestpiclink }}" alt="" style="display: block; margin:auto; width:40%; height:40%;">
+                        </a>
+                        <hr>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
 </body>
 </html>
