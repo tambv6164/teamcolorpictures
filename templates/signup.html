@@ -38,19 +38,19 @@
                         <input id="fullname" type="text" size="30" placeholder="fullname" name="fullname" onfocus="this.placeholder=''" onblur="this.placeholder='fullname'">
                     </div>
                     <div>
-                        <p style="display:none" id="warning1"></p>
+                        <p id="warning1"></p>
                     </div>
                     <div>
                         <input id="username" type="text" size="30" placeholder="username (không chứa dấu cách)" name="username" onfocus="this.placeholder=''" onblur="this.placeholder='username (không chứa dấu cách)'">
                     </div>
                     <div>
-                        <p style="display:none" id="warning2"></p>
+                        <p id="warning2"></p>
                     </div>
                     <div>
                         <input id="password" type="password" size="30" placeholder="password (không chứa dấu cách)" name='password' onfocus="this.placeholder=''" onblur="this.placeholder='password (không chứa dấu cách)'">
                     </div>
                     <div>
-                        <p style="display:none" id="warning3"></p>
+                        <p id="warning3"></p>
                     </div>
                 </form>
             </div>
@@ -61,42 +61,27 @@
     </div>
 </body>
 <script>
-let fullname = document.getElementById("fullname");
-let username = document.getElementById("username");
-let password = document.getElementById("password");
+let fullname = document.getElementById("fullname").value;
+let username = document.getElementById("username").value;
+let password = document.getElementById("password").value;
 let button = document.getElementById("signupbutton");
 let warning1 = document.getElementById("warning1");
 let warning2 = document.getElementById("warning2");
 let warning3 = document.getElementById("warning3");
 function signUp() {
     if (fullname.trim() == "") {
-        warning1.style.display = "block";
-        warning2.style.display = "none";
-        warning3.style.display = "none";
-        warning1.value = "Ban chua nhap fullname!";
+        warning1.innerHTML = "Ban chua nhap fullname!";
         button.type = "button";
     } else if (username.trim() == "") {
-        warning1.style.display = "none";
-        warning2.style.display = "block";
-        warning3.style.display = "none";
-        warning2.value = "Ban chua nhap username!";
+        warning2.innerHTML = "Ban chua nhap username!";
         button.type = "button";
     } else if (username.includes(" ")) {
-        warning1.style.display = "none";
-        warning2.style.display = "none";
-        warning3.style.display = "none";
-        warning2.value = "Username khong duoc chua dau cach!";
+        warning2.innerHTML = "Username khong duoc chua dau cach!";
         button.type = "button";
     } else if (password.includes(" ")) {
-        warning1.style.display = "none";
-        warning2.style.display = "none";
-        warning3.style.display = "block";
-        warning3.value = "Password khong duoc chua dau cach!";
+        warning3.innerHTML = "Password khong duoc chua dau cach!";
         button.type = "button";
     } else {
-        warning1.style.display = "none";
-        warning2.style.display = "none";
-        warning3.style.display = "none";
         button.type = "submit";
     }
 }
