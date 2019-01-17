@@ -34,8 +34,8 @@ Session(app)
 def home():
     return render_template('homepage.html')
 
-@app.route('/signup', methods=['GET', 'POST']) # Trang đăng ký tài khoản
-def signup():
+# @app.route('/signup', methods=['GET', 'POST']) # Trang đăng ký tài khoản
+# def signup():
     if 'token' in session:
         return render_template('homepage.html')
     if request.method == 'GET':
@@ -58,6 +58,41 @@ def signup():
             warning = 'Username hoặc password không được chứa dấu cách!'
         # Check xem có tồn tại username hoặc email đó chưa:
         elif user_check is not None:
+            warning = 'Username đã tồn tại!'
+        # elif email_check is not None:
+        #     warning = 'Email đã tồn tại'
+        if warning != '':
+            return render_template('signup.html', warning=warning)
+        else:
+            new_user.save()
+            session['token'] = u
+            # Đăng ký xong thì trả về giao diện trang Welcome
+            return render_template('welcome.html', fullname=f, u=u)
+
+@app.route('/signup', methods=['GET', 'POST']) # Trang đăng ký tài khoản
+def signup():
+    if 'token' in session:
+        return render_template('homepage.html')
+    if request.method == 'GET':
+        return render_template("signup.html")
+    else:
+        form = request.form
+        f = form['fullname']
+        u = form['username']
+        p = form['password']
+        # # Tạm bỏ email cùng các phần liên quan bên dưới. 
+        # # Khi nào cần thì bật lại vì trên database vẫn để email với giá trị default.
+        # e = form['email']
+        new_user = User(fullname=f.strip(), username=u.strip(), password=p.strip()) #, email=e)
+        user_check = User.objects(username=u.strip()).first()        
+        # email_check = User.objects(email=e).first()
+        warning = ''
+        # if f.strip() == '' or u.strip() == '' or p.strip() == '': #or e == '':
+        #     warning = 'Thông tin không hợp lệ!'
+        # elif ' ' in u or ' ' in p:
+        #     warning = 'Username hoặc password không được chứa dấu cách!'
+        # # Check xem có tồn tại username hoặc email đó chưa:
+        if user_check is not None:
             warning = 'Username đã tồn tại!'
         # elif email_check is not None:
         #     warning = 'Email đã tồn tại'
