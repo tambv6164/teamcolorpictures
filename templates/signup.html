@@ -63,13 +63,17 @@ let warning1 = document.getElementById("warning1");
 let warning2 = document.getElementById("warning2");
 let warning3 = document.getElementById("warning3");
 function signUp() {
-    if (fullname.trim() == "") {
+    if (fullname.trim() === "") {
         if (warning1.style.display == "none") {
             warning1.style.display = "block";
             warning1.innerHTML = "Ban chua nhap fullname!";
-        } 
+        } else {
+            warning1.style.display = "block";
+        }
     } else {
         if (warning1.style.display == "block") {
+            warning1.style.display = "none";
+        } else {
             warning1.style.display = "none";
         }
     }
