@@ -49,17 +49,6 @@
         <button id="savechange" type="submit" form="namebox">Save</button>
     </form>
 
-    <script>
-        function displayNamebox() {
-            var x = document.getElementById("namebox");
-            if (x.style.display === "none") {
-                x.style.display = "block";
-            } else {
-                x.style.display = "none";
-            }
-        }
-    </script>
-
     <img src="{{ pic.piclink }}" alt="">
     <div>
         <form action="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" method="get">
@@ -84,21 +73,6 @@
     </form>
     <button id="likebutton" type="button" form="like" onclick="Like()">{{ likebutton }}</button>
     <hr>
-
-    <script>
-    function Like() {
-        var warning = document.getElementById("warning").value;
-        var loginalert = document.getElementById("loginalert");
-        var likebutton = document.getElementById("likebutton");
-        if (warning == "show") {
-            loginalert.style.display = "block";
-            likebutton.type = "button";
-        } else {
-            loginalert.style.display = "none";
-            likebutton.type = "submit";
-        }
-    } 
-    </script>
 
     <p>Comments:</p>
     {% if comment_list.first() == None %}
@@ -127,6 +101,30 @@
     </form>
     <button id="cmtbutton" type="button" form="comment" onclick="Cmt()">Post</button>
 
+    <script>
+        function displayNamebox() {
+            var x = document.getElementById("namebox");
+            if (x.style.display === "none") {
+                x.style.display = "block";
+            } else {
+                x.style.display = "none";
+            }
+        }
+    </script>
+    <script>
+    function Like() {
+        var warning = document.getElementById("warning").value;
+        var loginalert = document.getElementById("loginalert");
+        var likebutton = document.getElementById("likebutton");
+        if (warning == "show") {
+            loginalert.style.display = "block";
+            likebutton.type = "button";
+        } else {
+            loginalert.style.display = "none";
+            likebutton.type = "submit";
+        }
+    } 
+    </script>
     <script>
     function Cmt() {
         var warning = document.getElementById("warning").value;

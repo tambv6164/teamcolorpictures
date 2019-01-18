@@ -428,9 +428,8 @@ def new_picture(picid):
 @app.route('/keep_continue/<picid>', methods=['GET', 'POST']) # Trang vẽ tiếp 1 bức đang vẽ dở
 def keep_continue(picid):
     token = ''
-    warning = 'Bạn chưa đăng nhập!'
     if 'token' not in session:
-        return redirect(url_for('login', warning=warning))
+        return redirect(url_for('login'))
     else:
         if session['token'] != Savepicture.objects(id=picid).first().picartist:
             return render_template('not_allow.html')

@@ -12,54 +12,80 @@
     <title>{{ fullname }} | Change Information</title>
 </head>
 <body>
-    <form action="{{ url_for('home') }}" style="display:inline;">
-        <input type="submit" value="Homepage">
-    </form>
-    <form action="{{ url_for('full_category') }}" style="display:inline;">
-        <input type="submit" value="Category">
-    </form>
-    {% if 'token' in session %}
-        <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
-            <input type="submit" value="My Arts">
-        </form>
-        <form action="{{ url_for('logout') }}" style="display:inline;">
-            <input type="submit" value="Log out">
-        </form>
-    {% else %}
-        <form action="{{ url_for('login') }}" style="display:inline;">
-            <input type="submit" value="Log in">
-        </form>
-        <form action="{{ url_for('signup') }}" style="display:inline;">
-            <input type="submit" value="Sign up">
-        </form>
-    {% endif %}
-    <hr>
-
-    <h2>Change Information</h2>
-    <p>{{ notice }}</p>
-
-    <form action="" method="POST" id="change_infor">
+    <div style="display:flex; flex-direction: column; align-items: center;">
         <div>
-            <label style="display:inline-block; width:120px;" for="">New fullname:</label>
-            <input type="text" name="fullname">
+            <form action="{{ url_for('home') }}" style="display:inline;">
+                <input type="submit" value="Homepage">
+            </form>
+            <form action="{{ url_for('full_category') }}" style="display:inline;">
+                <input type="submit" value="Category">
+            </form>
+            {% if 'token' in session %}
+                <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+                    <input type="submit" value="My Arts">
+                </form>
+                <form action="{{ url_for('logout') }}" style="display:inline;">
+                    <input type="submit" value="Log out">
+                </form>
+            {% else %}
+                <form action="{{ url_for('login') }}" style="display:inline;">
+                    <input type="submit" value="Log in">
+                </form>
+                <form action="{{ url_for('signup') }}" style="display:inline;">
+                    <input type="submit" value="Sign up">
+                </form>
+            {% endif %}
+            <hr>
         </div>
-        <div>
-            <label style="display:inline-block; width:120px;" for="">New username:</label>
-            <input type="text" name="username">
+        <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div>
+                <h2>Change Information</h2>
+            </div>
+            <div>
+                <p>{{ notice }}</p>
+            </div>
+            <div>
+                <form action="" method="POST" id="change_infor">
+                    <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div>
+                            <label style="display:inline-block; width:120px;" for="">New fullname:</label>
+                            <input type="text" name="fullname">
+                        </div>
+                        <div>
+                            <label style="display:inline-block; width:120px;" for="">New username:</label>
+                            <input type="text" name="username">
+                        </div>
+                        <div>
+                            <label style="display:inline-block; width:120px;" for="">New password:</label>
+                            <input type="password" name="password">
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div>
+                <button onclick="displayOldpass()">Change</button>
+            </div>
+            <div style="display:none" id="box">
+                <div>
+                    <div>
+                        <label for="">Please type your old password to submit:</label>
+                    </div>
+                    <div>
+                        <input type="password" id="typeoldpass">
+                    </div>
+                    <div>
+                        <button style="display:block;" type="button" form="change_infor" onclick="checkOldpass()" id="submitbutton">Submit</button>
+                    </div>
+                </div>
+            </div>
+            <div>
+                <p style="display:none" id="warning1">Bạn chưa nhập password cũ!</p>
+            </div>
+            <div>
+                <p style="display:none" id="warning2">Bạn đã nhập sai password cũ!</p>
+            </div>
         </div>
-        <div>
-            <label style="display:inline-block; width:120px;" for="">New password:</label>
-            <input type="password" name="password">
-        </div>
-    </form>
-    <button onclick="displayOldpass()">Change</button>
-    <div style="display:none" id="box">
-        <label for="">Please type your old password to submit:</label>
-        <input type="password" id="typeoldpass">
-        <button style="display:block;" type="button" form="change_infor" onclick="checkOldpass()" id="submitbutton">Submit</button>
     </div>
-    <p style="display:none" id="warning1">Bạn chưa nhập password cũ!</p>
-    <p style="display:none" id="warning2">Bạn đã nhập sai password cũ!</p>
 
     <input style="display:none" type="password" id="oldpass" value="{{ password }}">
     
@@ -73,7 +99,6 @@
         }
     }
     </script>
-
     <script>
     function checkOldpass() {
         var oldpass = document.getElementById("oldpass").value;
