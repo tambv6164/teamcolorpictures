@@ -11,56 +11,59 @@
 
     <title>{{ pic.picname }}</title>
 </head>
-<body>
-    <form action="{{ url_for('home') }}" style="display:inline;">
-        <input type="submit" value="Homepage">
-    </form>
-    <form action="{{ url_for('full_category') }}" style="display:inline;">
-        <input type="submit" value="Category">
-    </form>
-    <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
-        <input type="submit" value="My Arts">
-    </form>
-    <form action="{{ url_for('logout') }}" style="display:inline;">
-        <input type="submit" value="Log out">
-    </form>
-    <hr>
-
-    <div style="display: flex; justify-content: space-around">
+<body style="width:100%;">
+    <div style="display:flex; flex-direction: column; align-items: center; width:100%">
         <div>
-            <canvas id="canvas" width="567" height="794"></canvas>
+            <form action="{{ url_for('home') }}" style="display:inline;">
+                <input type="submit" value="Homepage">
+            </form>
+            <form action="{{ url_for('full_category') }}" style="display:inline;">
+                <input type="submit" value="Category">
+            </form>
+            <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+                <input type="submit" value="My Arts">
+            </form>
+            <form action="{{ url_for('logout') }}" style="display:inline;">
+                <input type="submit" value="Log out">
+            </form>
+            <hr>
         </div>
-        <div>
+        <div style="display: flex; justify-content: space-around; width:100%">
             <div>
-                <p>Pick your color first: </p>
-                <input id="colorPicker" type="color" name="favcolor" value="#ff0000">
+                <canvas id="canvas" width="567" height="794"></canvas>
             </div>
-            <div>
-                <button id="resetcanvas" onclick="clearCanvas()">Reset</button>
-            </div>
-            <div>
-                <button onclick="displayNamebox()">Change name</button>
-            </div>
-            <div style="display:none" id="namebox">
-                <input class="someinput" type="text" placeholder="Enter new name" id="newname" name="picname" onfocus="this.placeholder=''" onblur="this.placeholder='Enter new name'">
-            </div>
-            <div>
-                <form action="" method="post" id="submitform">
+            <div style="display:flex; flex-direction: column; align-items: center;">
+                <div>
+                    <p>Pick your color first: </p>
+                </div>
+                <div>
+                    <input id="colorPicker" type="color" name="favcolor" value="#ff0000">
+                </div>
+                <div>
+                    <button id="resetcanvas" onclick="clearCanvas()">Reset</button>
+                </div>
+                <div>
+                    <button onclick="displayNamebox()">Change name</button>
+                </div>
+                <div style="display:none" id="namebox">
+                    <input class="someinput" type="text" placeholder="Enter new name" id="newname" name="picname" onfocus="this.placeholder=''" onblur="this.placeholder='Enter new name'">
+                </div>
+                <form style="display:none" action="" method="post" id="submitform">
                     <input style="display:none" type="text" id="inputname" name="picname">
                     <input style="display:none" type="text" id="inputlink" name="piclink">
                     <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
-                    <div>
-                        <button id="saveworking" type="button" onclick="saveWorking()">Save</button>
-                    </div>
-                    <div>
-                        <button id="savefinished" type="button" onclick="saveFinished()">Finish Art</button>
-                    </div>
-                </form>
-            </div>
-            <div>
-                <form action="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" method="get">
-                    <input type="submit" value="Color this raw picture">
-                </form>
+                </form> 
+                <div>
+                    <button id="saveworking" form="submitform" type="button" onclick="saveWorking()">Save</button>
+                </div>
+                <div>
+                    <button id="savefinished" form="submitform" type="button" onclick="saveFinished()">Finish Art</button>
+                </div>
+                <div>
+                    <form action="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" method="get">
+                        <input type="submit" value="Color this raw picture">
+                    </form>
+                </div>
             </div>
         </div>
     </div>
