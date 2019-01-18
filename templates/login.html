@@ -34,18 +34,51 @@
             </div>
             <div>
                 <form method="POST" id="login">
-                    <div>
-                        <input type="text" size="30" placeholder="username" name=username onfocus="this.placeholder=''" onblur="this.placeholder='username'">
-                    </div>
-                    <div>
-                        <input type="password" size="30" placeholder="password" name=password onfocus="this.placeholder=''" onblur="this.placeholder='password'">
+                    <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div>
+                            <input id="username" type="text" size="30" placeholder="username" name=username onfocus="this.placeholder=''" onblur="this.placeholder='username'">
+                        </div>
+                        <div style="display:none" id="warning1"></div>
+                        <div>
+                            <input id="password" type="password" size="30" placeholder="password" name=password onfocus="this.placeholder=''" onblur="this.placeholder='password'">
+                        </div>
+                        <div style="display:none" id="warning2"></div>
                     </div>
                 </form>
             </div>
             <div>
-                <button type="submit" form="login">Log in</button>
+                <button id="button" type="button" form="login" onclick="logIn()">Log in</button>
             </div>
         </div>
     </div>
 </body>
+<script>
+function logIn() {
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    var button = document.getElementById("button");
+    var warning1 = document.getElementById("warning1");
+    var warning2 = document.getElementById("warning2");
+    var x;
+    if (username.trim() === "") {
+        warning1.style.display = "block";
+        warning1.innerHTML = "Bạn chưa nhập username!";
+        x = 1;
+    } else {
+        warning1.style.display = "none";
+    }
+    if (password === "") {
+        warning2.style.display = "block";
+        warning2.innerHTML = "Bạn chưa nhập password!";
+        x = 1;
+    } else {
+        warning2.style.display = "none";
+    }
+    if (x != 1) {
+        button.type = "submit";
+    } else {
+        button.type = "button";
+    }
+}
+</script>
 </html>

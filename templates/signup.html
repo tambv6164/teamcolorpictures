@@ -34,48 +34,71 @@
             </div>
             <div>
                 <form method="POST" id="signup">
-                    <div>
-                        <input id="fullname" type="text" size="30" placeholder="fullname" name="fullname" onfocus="this.placeholder=''" onblur="this.placeholder='fullname'">
+                    <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
+                        <div>
+                            <input id="fullname" type="text" size="30" placeholder="fullname" name="fullname" onfocus="this.placeholder=''" onblur="this.placeholder='fullname'">
+                        </div>
+                        <div style="display:none" id="warning1"></div>
+                        <div>
+                            <input id="username" type="text" size="30" placeholder="username (không chứa dấu cách)" name="username" onfocus="this.placeholder=''" onblur="this.placeholder='username (không chứa dấu cách)'">
+                        </div>
+                        <div style="display:none" id="warning2"></div>
+                        <div>
+                            <input id="password" type="password" size="30" placeholder="password (không chứa dấu cách)" name='password' onfocus="this.placeholder=''" onblur="this.placeholder='password (không chứa dấu cách)'">
+                        </div>
+                        <div style="display:none" id="warning3"></div>
                     </div>
-                    <div style="display:none" id="warning1"></div>
-                    <div>
-                        <input id="username" type="text" size="30" placeholder="username (không chứa dấu cách)" name="username" onfocus="this.placeholder=''" onblur="this.placeholder='username (không chứa dấu cách)'">
-                    </div>
-                    <div style="display:none" id="warning2"></div>
-                    <div>
-                        <input id="password" type="password" size="30" placeholder="password (không chứa dấu cách)" name='password' onfocus="this.placeholder=''" onblur="this.placeholder='password (không chứa dấu cách)'">
-                    </div>
-                    <div style="display:none" id="warning3"></div>
                 </form>
             </div>
             <div>
-                <button id="signupbutton" type="button" form="signup" onclick="signUp()">Sign up</button>
+                <button id="button" type="button" form="signup" onclick="signUp()">Sign up</button>
             </div>
         </div>
     </div>
 </body>
 <script>
-let fullname = document.getElementById("fullname").value;
-let username = document.getElementById("username").value;
-let password = document.getElementById("password").value;
-let button = document.getElementById("signupbutton");
-let warning1 = document.getElementById("warning1");
-let warning2 = document.getElementById("warning2");
-let warning3 = document.getElementById("warning3");
 function signUp() {
+    var fullname = document.getElementById("fullname").value;
+    var username = document.getElementById("username").value;
+    var password = document.getElementById("password").value;
+    var button = document.getElementById("button");
+    var warning1 = document.getElementById("warning1");
+    var warning2 = document.getElementById("warning2");
+    var warning3 = document.getElementById("warning3");
+    var x;
     if (fullname.trim() === "") {
-        if (warning1.style.display == "none") {
-            warning1.style.display = "block";
-            warning1.innerHTML = "Ban chua nhap fullname!";
-        } else {
-            warning1.style.display = "block";
-        }
+        warning1.style.display = "block";
+        warning1.innerHTML = "Bạn chưa nhập fullname!";
+        x = 1;
     } else {
-        if (warning1.style.display == "block") {
-            warning1.style.display = "none";
-        } else {
-            warning1.style.display = "none";
-        }
+        warning1.style.display = "none";
+    }
+    if (username.trim() === "") {
+        warning2.style.display = "block";
+        warning2.innerHTML = "Bạn chưa nhập username!";
+        x = 1;
+    } else if (username.includes(" ")) {
+        warning2.style.display = "block";
+        warning2.innerHTML = "Username không được chứa dấu cách!";
+        x = 1;
+    } else {
+        warning2.style.display = "none";
+    }
+    if (password === "") {
+        warning3.style.display = "block";
+        warning3.innerHTML = "Bạn chưa nhập password!";
+        x = 1;
+    } else if (password.includes(" ")) {
+        warning3.style.display = "block";
+        warning3.innerHTML = "Password không được chứa dấu cách!";
+        x = 1;
+    } else {
+        warning3.style.display = "none";
+    }
+    if (x != 1) {
+        button.type = "submit";
+    } else {
+        button.type = "button";
     }
 }
 </script>
