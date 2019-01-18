@@ -12,67 +12,86 @@
     <title>{{ picname }}</title>
 </head>
 <body>
-    <form action="{{ url_for('home') }}" style="display:inline;">
-        <input type="submit" value="Homepage">
-    </form>
-    <form action="{{ url_for('full_category') }}" style="display:inline;">
-        <input type="submit" value="Start Coloring">
-    </form>
-    {% if 'token' in session %}
-        <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
-            <input type="submit" value="My Arts">
-        </form>
-        <form action="{{ url_for('logout') }}" style="display:inline;">
-            <input type="submit" value="Log out">
-        </form>
-    {% else %}
-        <form action="{{ url_for('login') }}" style="display:inline;">
-            <input type="submit" value="Log in">
-        </form>
-        <form action="{{ url_for('signup') }}" style="display:inline;">
-            <input type="submit" value="Sign up">
-        </form>
-    {% endif %}
-    <hr>
-
-    <h2>{{ picname }}</h2>
-    {% if display == 'yes' %}
-        <p>{{ changename_warning }}</p>
+    <div style="display:flex; flex-direction: column; align-items: center;">
+        <div>
+            <form action="{{ url_for('home') }}" style="display:inline;">
+                <input type="submit" value="Homepage">
+            </form>
+            <form action="{{ url_for('full_category') }}" style="display:inline;">
+                <input type="submit" value="Start Coloring">
+            </form>
+            {% if 'token' in session %}
+                <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+                    <input type="submit" value="My Arts">
+                </form>
+                <form action="{{ url_for('logout') }}" style="display:inline;">
+                    <input type="submit" value="Log out">
+                </form>
+            {% else %}
+                <form action="{{ url_for('login') }}" style="display:inline;">
+                    <input type="submit" value="Log in">
+                </form>
+                <form action="{{ url_for('signup') }}" style="display:inline;">
+                    <input type="submit" value="Sign up">
+                </form>
+            {% endif %}
+            <hr>
+        </div>
+        <div>
+            <h2>{{ picname }}</h2>
+        </div>
+        {% if display == 'yes' %}
+        <div>
+            <p>{{ changename_warning }}</p>
+        </div>
         <div>
             <button onclick="displayNamebox()">Change name</button>
         </div>
-    {% endif %}
-    <form style="display:none" action="" method="POST" id="namebox">
-        <div>
-            <input id="newname" class="someinput" type="text" placeholder="Enter new name" name="picname" onfocus="this.placeholder=''" onblur="this.placeholder='Enter new name'">
+        {% endif %}
+        <div style="display:flex; flex-direction: column; align-items: center;">
+            <form style="display:none" action="" method="POST" id="namebox">
+                <div>
+                    <input id="newname" class="someinput" type="text" placeholder="Enter new name" name="picname" onfocus="this.placeholder=''" onblur="this.placeholder='Enter new name'">
+                </div>
+                <div>
+                    <button id="savechange" type="submit" form="namebox">Save</button>
+                </div>
+            </form>
         </div>
-        <button id="savechange" type="submit" form="namebox">Save</button>
-    </form>
+        <div>
+            <img src="{{ pic.piclink }}" alt="">
+        </div>
+        <div>
+            <form action="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" method="get">
+                <input type="submit" value="Color this">
+            </form>
+        </div>
+        
+        {% if 'token' in session %}
+            <form action="" method="post" id="mf">
+                <input style="display:none;" name="favorite">
+            </form>
+            <div>
+                <button type="submit" form="mf">{{ addbutton }}</button>
+            </div>
+        {% endif %}
 
-    <img src="{{ pic.piclink }}" alt="">
-    <div>
-        <form action="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" method="get">
-            <input type="submit" value="Color this">
+        <div>
+            <p>Artist: <a href="{{ url_for('profile', artist=artist.username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ artist.fullname }}</a></p>
+        </div>
+        <div>
+            <p>Like: {{ piclikes }}</p>
+        </div>
+
+        <input id="warning" type="text" style="display:none" value="{{ warning }}">
+        <form action="" method="POST" id="like">
+            <input style="display:none" name="like">
         </form>
+        <div>
+            <button id="likebutton" type="button" form="like" onclick="Like()">{{ likebutton }}</button>
+            <hr>
+        </div>
     </div>
-
-    {% if 'token' in session %}
-        <form action="" method="post" id="mf">
-            <input style="display:none;" name="favorite">
-        </form>
-        <button type="submit" form="mf">{{ addbutton }}</button>
-    {% endif %}
-
-    <hr>
-    <p>Artist: <a href="{{ url_for('profile', artist=artist.username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ artist.fullname }}</a></p>
-    <p>Like: {{ piclikes }}</p>
-
-    <input id="warning" type="text" style="display:none" value="{{ warning }}">
-    <form action="" method="POST" id="like">
-        <input style="display:none" name="like">
-    </form>
-    <button id="likebutton" type="button" form="like" onclick="Like()">{{ likebutton }}</button>
-    <hr>
 
     <p>Comments:</p>
     {% if comment_list.first() == None %}
@@ -91,16 +110,16 @@
         </div>
     {% endfor %}
     <hr>
-
     <p id="loginalert" style="display:none">Vui lòng đăng nhập để like và comment!</p>
     <p id="emptyalert" style="display:none">Bạn chưa viết gì nên không có gì để đăng!</p>
-
     <p>Write comment:</p>
-    <form action="" method="post" id="comment">
-        <textarea name="comment" id="cmtid" cols="70" rows="5"></textarea>
-    </form>
-    <button id="cmtbutton" type="button" form="comment" onclick="Cmt()">Post</button>
-
+    <div>
+        <form action="" method="post" id="comment" style="display:inline;">
+            <textarea name="comment" id="cmtid" cols="70" rows="5"></textarea>
+        </form>
+        <button style="display:inline" id="cmtbutton" type="button" form="comment" onclick="Cmt()">Post</button>
+    </div>
+    
     <script>
         function displayNamebox() {
             var x = document.getElementById("namebox");
