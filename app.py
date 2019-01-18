@@ -471,9 +471,8 @@ def saved(picid):
 
 @app.route("/profile/<artist>/change_infor", methods = ['GET', 'POST']) # Hiển thị trang thay đổi thông tin người dùng
 def change_infor(artist):
-    warning = 'Bạn chưa đăng nhập!'
     if 'token' not in session:
-        return render_template('login.html', warning=warning)
+        return redirect(url_for('login'))
     else:
         if session['token'] != artist:
             return render_template('not_allow.html')
