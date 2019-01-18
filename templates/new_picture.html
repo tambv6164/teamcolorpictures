@@ -73,7 +73,12 @@
                             <p>Name your art:</p>
                         </div>
                         <div>
-                            <input class="someinput" type="text" placeholder="Enter name" id="inputname" name="picname" onfocus="this.placeholder=''" onblur="this.placeholder='Enter name'">
+                            <form action="" method="POST" id="theform">
+                                <input class="someinput" type="text" placeholder="Enter name" id="inputname" name="picname" onfocus="this.placeholder=''" onblur="this.placeholder='Enter name'">
+                                <input style="display:none" type="text" id="inputlink" name="piclink">
+                                <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
+                                <input style="display:none" type="text" id="inputpicartist" name="picartist">
+                            </form>
                         </div>
                         <div>
                             <p id="setnamewarning1" style="display:none">Bạn chưa đặt tên!</p>
@@ -81,11 +86,6 @@
                         <div>
                             <p id="setnamewarning2" style="display:none">Tên không hợp lệ!</p>
                         </div>
-                        <form style="display:none" action="" method="POST" id="theform">
-                            <input style="display:none" type="text" id="inputlink" name="piclink">
-                            <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
-                            <input style="display:none" type="text" id="inputpicartist" name="picartist">
-                        </form>
                         <div>
                             <button id="saveworking" type="button" form="theform" onclick="saveWorking()">Save as Working Art</button>
                         </div>
