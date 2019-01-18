@@ -27,7 +27,7 @@ button, input[type=submit] {
     margin: 5px;
     font-family: 'Nunito', sans-serif;
 }
-input[type=text], input[type=password], input[type=color], textarea {
+input[type=text], input[type=password], input[type=color], textarea, #cmtbutton {
     border-radius: 15px;
     border: 1px solid rgb(42, 155, 91);
     background: white;

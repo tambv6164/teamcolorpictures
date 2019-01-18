@@ -92,10 +92,13 @@
             <hr>
         </div>
     </div>
-
-    <p>Comments:</p>
+    <div>
+        <p>Comments:</p>
+    </div>
     {% if comment_list.first() == None %}
-        <p>Chưa có bình luận. Đăng bình luận đầu tiên cho bức tranh này bạn nhé.</p>
+        <div>
+            <p>Chưa có bình luận. Đăng bình luận đầu tiên cho bức tranh này bạn nhé.</p>
+        </div>
     {% endif %}
     {% for comment in comment_list %}
         <div>
@@ -109,13 +112,16 @@
             {% endif %}
         </div>
     {% endfor %}
-    <hr>
-    <p id="loginalert" style="display:none">Vui lòng đăng nhập để like và comment!</p>
-    <p id="emptyalert" style="display:none">Bạn chưa viết gì nên không có gì để đăng!</p>
-    <p>Write comment:</p>
     <div>
-        <form action="" method="post" id="comment" style="display:inline;">
-            <textarea name="comment" id="cmtid" cols="70" rows="5"></textarea>
+        <p id="loginalert" style="display:none">Vui lòng đăng nhập để like và comment!</p>
+    </div>
+    <div>
+        <p id="emptyalert" style="display:none">Bạn chưa viết gì nên không có gì để đăng!</p>
+    </div>
+    <div></div>
+    <div>
+        <form action="" method="post" id="comment">
+            <textarea placeholder="Write your comment here ..." onfocus="this.placeholder=''" onblur="this.placeholder='Write your comment here ...'" style="display:inline;" name="comment" id="cmtid" cols="70" rows="5"></textarea>
         </form>
         <button style="display:inline" id="cmtbutton" type="button" form="comment" onclick="Cmt()">Post</button>
     </div>
