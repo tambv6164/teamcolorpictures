@@ -67,7 +67,7 @@
                         <input style="display:none" type="text" id="unsavelinkid" name="unsavelink">
                     </form>
                 </div>
-                <form style="display:none" action="" method="post">
+                <form style="display:none" action="" method="post" id="theform">
                     <input style="display:none" type="text" id="inputlink" name="piclink">
                     <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
                     <input style="display:none" type="text" id="inputpicartist" name="picartist">
@@ -87,10 +87,10 @@
                             <p id="setnamewarning2" style="display:none">Tên không hợp lệ!</p>
                         </div>
                         <div>
-                            <button id="saveworking" type="button" form="submitform" onclick="saveWorking()">Save as Working Art</button>
+                            <button id="saveworking" type="button" form="theform" onclick="saveWorking()">Save as Working Art</button>
                         </div>
                         <div>
-                            <button id="savefinished" type="button" form="submitform" onclick="saveFinished()">Save as Finished Art</button>
+                            <button id="savefinished" type="button" form="theform" onclick="saveFinished()">Save as Finished Art</button>
                         </div>
                     </div>
                 </div>
