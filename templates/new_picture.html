@@ -37,51 +37,53 @@
             {% endif %}
             <hr>
         </div>
-
         <div style="display: flex; justify-content: space-around;">
             <div>
                 <canvas id="canvas" width="567" height="794"></canvas>
             </div>
-            <div style=" display:flex; flex-direction: column; justify-content: center;">
+            <div style=" display:flex; flex-direction: column; align-items: center; justify-content: center;">
                 <div>
                     <p>Pick your color first: </p>
+                </div>
+                <div>
                     <input id="colorPicker" type="color" name="favcolor" value="#ff0000">
                 </div>
                 <div>
                     <button onclick="clearCanvas()" id="resetcanvas">Reset</button>
                 </div>
                 <div>
-                    <div>
-                        <button onclick="displayForm()">Save</button>
-                    </div>
-                    <div style="display:none" id="loginwarning">
-                        <p>Bạn chưa đăng nhập!</p>
-                        <form action="" target="_blank" method="POST">
-                            <input style="display:none" type="text" id="unsavelinkid" name="unsavelink">
-                            <button type="submit" onclick="Unsave()">Log in</button>
-                        </form>
-                    </div>
-                    <form style="display:none" action="" method="post" id="submitform">
-                        <input style="display:none" type="text" id="inputlink" name="piclink">
-                        <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
-                        <input style="display:none" type="text" id="inputpicartist" name="picartist">
-                        <div>
-                            <p>Name your art:</p>
-                        </div>
-                        <div class="dang_nhap">
-                            <input class="someinput" type="text" placeholder="Enter name" id="inputname" name="picname" onfocus="this.placeholder=''" onblur="this.placeholder='Enter name'">
-                        </div>
-                        <p id="setnamewarning1" style="display:none">Bạn chưa đặt tên!</p>
-                        <p id="setnamewarning2" style="display:none">Tên không hợp lệ!</p>
-                        <div>
-                            <button id="saveworking" type="button" onclick="saveWorking()">Save as Working Art</button>
-                        </div>
-                        <div>
-                            <button id="savefinished" type="button" onclick="saveFinished()">Save as Finished Art</button>
-                        </div>
-                    </form>
+                    <button onclick="displayForm()">Save</button>
                 </div>
-                <hr>
+                <div style="display:none" id="loginwarning">
+                    <p>Bạn chưa đăng nhập!</p>
+                    <form style="display:none" action="" target="_blank" method="POST" id="needlogin">
+                        <input style="display:none" type="text" id="unsavelinkid" name="unsavelink">
+                    </form>
+                    <button type="submit" form="needlogin" onclick="Unsave()">Log in</button>
+                </div>
+                <form style="display:none" action="" method="post" id="submitform">
+                    <input style="display:none" type="text" id="inputlink" name="piclink">
+                    <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
+                    <input style="display:none" type="text" id="inputpicartist" name="picartist">
+                </form>
+                <div>
+                    <p>Name your art:</p>
+                </div>
+                <div>
+                    <input class="someinput" type="text" placeholder="Enter name" id="inputname" name="picname" onfocus="this.placeholder=''" onblur="this.placeholder='Enter name'">
+                </div>
+                <div>
+                    <p id="setnamewarning1" style="display:none">Bạn chưa đặt tên!</p>
+                </div>
+                <div>
+                    <p id="setnamewarning2" style="display:none">Tên không hợp lệ!</p>
+                </div>
+                <div>
+                    <button id="saveworking" type="button" form="submitform" onclick="saveWorking()">Save as Working Art</button>
+                </div>
+                <div>
+                    <button id="savefinished" type="button" form="submitform" onclick="saveFinished()">Save as Finished Art</button>
+                </div>
             </div>
         </div>
     </div>
