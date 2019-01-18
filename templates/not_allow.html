@@ -12,30 +12,34 @@
     <title>Not Allow</title>
 </head>
 <body>
-    <form action="{{ url_for('home') }}" style="display:inline;">
-        <input type="submit" value="Homepage">
-    </form>
-    <form action="{{ url_for('full_category') }}" style="display:inline;">
-        <input type="submit" value="Category">
-    </form>
-    {% if 'token' in session %}
-        <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
-            <input type="submit" value="My Arts">
+    <div style="display:flex; flex-direction: column; align-items: center;">
+        <div>
+        <form action="{{ url_for('home') }}" style="display:inline;">
+            <input type="submit" value="Homepage">
         </form>
-        <form action="{{ url_for('logout') }}" style="display:inline;">
-            <input type="submit" value="Log out">
+        <form action="{{ url_for('full_category') }}" style="display:inline;">
+            <input type="submit" value="Category">
         </form>
-    {% else %}
-        <form action="{{ url_for('login') }}" style="display:inline;">
-            <input type="submit" value="Log in">
-        </form>
-        <form action="{{ url_for('signup') }}" style="display:inline;">
-            <input type="submit" value="Sign up">
-        </form>
-    {% endif %}
-    <hr>
-    
-    <p>Bạn không được quyền truy cập vào trang này!</p>
-    
+        {% if 'token' in session %}
+            <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+                <input type="submit" value="My Arts">
+            </form>
+            <form action="{{ url_for('logout') }}" style="display:inline;">
+                <input type="submit" value="Log out">
+            </form>
+        {% else %}
+            <form action="{{ url_for('login') }}" style="display:inline;">
+                <input type="submit" value="Log in">
+            </form>
+            <form action="{{ url_for('signup') }}" style="display:inline;">
+                <input type="submit" value="Sign up">
+            </form>
+        {% endif %}
+        <hr>
+        </div>
+        <div>
+            <p>Bạn không được quyền truy cập vào trang này!</p>
+        </div>
+    </div>
 </body>
 </html>

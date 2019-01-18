@@ -12,48 +12,58 @@
     <title>{{ pic.picname }}</title>
 </head>
 <body>
-    <form action="{{ url_for('home') }}" style="display:inline;">
-        <input type="submit" value="Homepage">
-    </form>
-    <form action="{{ url_for('full_category') }}" style="display:inline;">
-        <input type="submit" value="Category">
-    </form>
-    {% if 'token' in session %}
-        <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
-            <input type="submit" value="My Arts">
-        </form>
-        <form action="{{ url_for('logout') }}" style="display:inline;">
-            <input type="submit" value="Log out">
-        </form>
-    {% else %}
-        <form action="{{ url_for('login') }}" style="display:inline;">
-            <input type="submit" value="Log in">
-        </form>
-        <form action="{{ url_for('signup') }}" style="display:inline;">
-            <input type="submit" value="Sign up">
-        </form>
-    {% endif %}
-    <hr>
-    
-    <div style="display: flex; justify-content: space-around">
+    <div>
         <div>
-            <img src="{{ pic.piclink }}" alt="">
-        </div>
-        <div>
-            <p>Saved art successfull!</p>
-            {% if pic.picstatus == 'working' %}
-            <form action="{{ url_for('keep_continue', picid=pic.id) }}">
-                <input type="submit" value="Continue">
+            <form action="{{ url_for('home') }}" style="display:inline;">
+                <input type="submit" value="Homepage">
             </form>
+            <form action="{{ url_for('full_category') }}" style="display:inline;">
+                <input type="submit" value="Category">
+            </form>
+            {% if 'token' in session %}
+                <form action="{{ url_for('profile', artist=session['token']) }}" style="display:inline;">
+                    <input type="submit" value="My Arts">
+                </form>
+                <form action="{{ url_for('logout') }}" style="display:inline;">
+                    <input type="submit" value="Log out">
+                </form>
+            {% else %}
+                <form action="{{ url_for('login') }}" style="display:inline;">
+                    <input type="submit" value="Log in">
+                </form>
+                <form action="{{ url_for('signup') }}" style="display:inline;">
+                    <input type="submit" value="Sign up">
+                </form>
             {% endif %}
-            <form action="{{ url_for('profile', artist=session['token']) }}">
-                <input type="submit" value="Go to My Arts">
-            </form>
-            <form action="{{ url_for('full_category') }}">
-                <input type="submit" value="Start New">
-            </form>
+            <hr>
+        </div>
+        <div style="display: flex; justify-content: space-around">
+            <div>
+                <img src="{{ pic.piclink }}" alt="">
+            </div>
+            <div style="display:flex; flex-direction: column; align-items: center;">
+                <div>
+                    <p>Saved art successfull!</p>
+                </div>
+                {% if pic.picstatus == 'working' %}
+                <div>
+                    <form action="{{ url_for('keep_continue', picid=pic.id) }}">
+                        <input type="submit" value="Continue">
+                    </form>
+                </div>
+                {% endif %}
+                <div>
+                    <form action="{{ url_for('profile', artist=session['token']) }}">
+                        <input type="submit" value="Go to My Arts">
+                    </form>
+                </div>
+                <div>
+                    <form action="{{ url_for('full_category') }}">
+                        <input type="submit" value="Start New">
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
-    <hr>
 </body>
 </html>
