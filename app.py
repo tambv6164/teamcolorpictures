@@ -430,7 +430,7 @@ def keep_continue(picid):
     token = ''
     warning = 'Bạn chưa đăng nhập!'
     if 'token' not in session:
-        return render_template('login.html', warning=warning)
+        return redirect(url_for('login', warning=warning))
     else:
         if session['token'] != Savepicture.objects(id=picid).first().picartist:
             return render_template('not_allow.html')
