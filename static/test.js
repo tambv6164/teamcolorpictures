@@ -1,5 +1,5 @@
 let canvas = document.getElementById("canvas");
-let selectColor = false;
+// let selectColor = false;
 let context = {
     selectColor: false,
     fillColorRBG: null,
@@ -41,7 +41,7 @@ function drawImageFromWebUrl(sourceurl){
       let img = new Image();
       img.addEventListener("load", function () {
           // The image can be drawn from any source
-          canvas.getContext("2d").drawImage(img, 0, 0, img.width,    img.height, 0, 0, canvas.width, canvas.height);
+          canvas.getContext("2d").drawImage(img, 0, 0, img.width, img.height, 0, 0, canvas.width, canvas.height);
       });
       img.setAttribute("src", sourceurl);
 }
@@ -52,7 +52,6 @@ function fillColor(obj, x, y, r, g, b, ctx) {
     obj.data[2] = b;
     ctx.putImageData(obj, x, y);
 }
-
 
 function floodFill(x, y, ctx) {
     let p = ctx.getImageData(x, y, 1, 1);
