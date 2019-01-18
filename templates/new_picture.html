@@ -67,11 +67,6 @@
                         <input style="display:none" type="text" id="unsavelinkid" name="unsavelink">
                     </form>
                 </div>
-                <form style="display:none" action="" method="post" id="theform">
-                    <input style="display:none" type="text" id="inputlink" name="piclink">
-                    <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
-                    <input style="display:none" type="text" id="inputpicartist" name="picartist">
-                </form>
                 <div style="display:none" id="submitform">
                     <div style="display: flex; flex-direction: column; align-items: center;">
                         <div>
@@ -86,6 +81,11 @@
                         <div>
                             <p id="setnamewarning2" style="display:none">Tên không hợp lệ!</p>
                         </div>
+                        <form style="display:none" action="" method="POST" id="theform">
+                            <input style="display:none" type="text" id="inputlink" name="piclink">
+                            <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
+                            <input style="display:none" type="text" id="inputpicartist" name="picartist">
+                        </form>
                         <div>
                             <button id="saveworking" type="button" form="theform" onclick="saveWorking()">Save as Working Art</button>
                         </div>
