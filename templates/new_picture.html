@@ -37,7 +37,7 @@
             {% endif %}
             <hr>
         </div>
-        <div style="display: flex; justify-content: space-around;">
+        <div style="display: flex; align-content: flex-start; justify-content: space-around;">
             <div>
                 <canvas id="canvas" width="567" height="794"></canvas>
             </div>
@@ -61,28 +61,30 @@
                     </form>
                     <button type="submit" form="needlogin" onclick="Unsave()">Log in</button>
                 </div>
-                <form style="display:none" action="" method="post" id="submitform">
+                <form style="display:none" action="" method="post">
                     <input style="display:none" type="text" id="inputlink" name="piclink">
                     <input style="display:none" type="text" id="inputpicstatus" name="picstatus">
                     <input style="display:none" type="text" id="inputpicartist" name="picartist">
                 </form>
-                <div>
-                    <p>Name your art:</p>
-                </div>
-                <div>
-                    <input class="someinput" type="text" placeholder="Enter name" id="inputname" name="picname" onfocus="this.placeholder=''" onblur="this.placeholder='Enter name'">
-                </div>
-                <div>
-                    <p id="setnamewarning1" style="display:none">Bạn chưa đặt tên!</p>
-                </div>
-                <div>
-                    <p id="setnamewarning2" style="display:none">Tên không hợp lệ!</p>
-                </div>
-                <div>
-                    <button id="saveworking" type="button" form="submitform" onclick="saveWorking()">Save as Working Art</button>
-                </div>
-                <div>
-                    <button id="savefinished" type="button" form="submitform" onclick="saveFinished()">Save as Finished Art</button>
+                <div id="submitform">
+                    <div>
+                        <p>Name your art:</p>
+                    </div>
+                    <div>
+                        <input class="someinput" type="text" placeholder="Enter name" id="inputname" name="picname" onfocus="this.placeholder=''" onblur="this.placeholder='Enter name'">
+                    </div>
+                    <div>
+                        <p id="setnamewarning1" style="display:none">Bạn chưa đặt tên!</p>
+                    </div>
+                    <div>
+                        <p id="setnamewarning2" style="display:none">Tên không hợp lệ!</p>
+                    </div>
+                    <div>
+                        <button id="saveworking" type="button" form="submitform" onclick="saveWorking()">Save as Working Art</button>
+                    </div>
+                    <div>
+                        <button id="savefinished" type="button" form="submitform" onclick="saveFinished()">Save as Finished Art</button>
+                    </div>
                 </div>
             </div>
         </div>
