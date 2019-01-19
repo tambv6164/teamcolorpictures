@@ -115,11 +115,9 @@
                 <p id="emptyalert" style="display:none">Bạn chưa viết gì nên không có gì để đăng!</p>
             </div>
             <div>
-                <form action="" method="post" id="comment">
-                    <div>
-                        <textarea placeholder="Write your comment here ..." onfocus="this.placeholder=''" onblur="this.placeholder='Write your comment here ...'" style="width:700px; height: 100px;" name="comment" id="cmtid"></textarea>
-                        <input style="width: 100px; height: 100px;" id="cmtbutton" type="button" form="comment" onclick="Cmt()" value="Post">
-                    </div>
+                <form action="" method="post" id="comment" style="display:flex;">
+                    <textarea placeholder="Write your comment here ..." onfocus="this.placeholder=''" onblur="this.placeholder='Write your comment here ...'" style="display:inline-block;width:90%; resize: none;" cols="30" rows="2" name="comment" id="cmtid"></textarea>
+                    <input style=" display: inline-block; width: 10%;" id="cmtbutton" type="button" form="comment" onclick="Cmt()" value="Post">
                 </form>
             </div>
         </div>
