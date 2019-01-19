@@ -97,7 +97,7 @@
                 </div>
             {% endif %}
             {% for comment in comment_list %}
-                <div>
+                <div style="padding: 10px; margin: 5px;">
                     <span><a href="{{ url_for('profile', artist=comment.who_username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ comment.who_fullname }}</a>: {{ comment.comment }}</span>
                     <span>({{ comment.whencomment }})</span>
                     {% if display == 'yes' or comment.who_username == token %}
@@ -116,7 +116,7 @@
             </div>
             <div>
                 <form action="" method="post" id="comment">
-                    <textarea placeholder="Write your comment here ..." onfocus="this.placeholder=''" onblur="this.placeholder='Write your comment here ...'" style="display:inline-block; width:1000px; height: 100px;" name="comment" id="cmtid"></textarea>
+                    <textarea placeholder="Write your comment here ..." onfocus="this.placeholder=''" onblur="this.placeholder='Write your comment here ...'" style="display:inline-block; width:800px; height: 100px;" name="comment" id="cmtid"></textarea>
                 </form>
                 <button style="width: 100px; height: 100px;;" id="cmtbutton" type="button" form="comment" onclick="Cmt()">Post</button>
             </div>
