@@ -21,7 +21,7 @@ width: 100%;
 button, input[type=submit], input[type=button], input[type=text], input[type=password], input[type=color], textarea, #cmtbutton {
     border-radius: 15px;
     border: 1px solid rgb(42, 155, 91);
-    background: white;
+    background-color: white;
     padding: 5px 10px;
     font-size: 16px;
     margin: 5px;
@@ -33,11 +33,11 @@ input::placeholder {
     font-size: 16px;
 }
 .change_background {
-    background: white;
+    background-color: white;
     color: black;
     transition-duration: 0.4s;
 }
 .change_background:hover {
-    background: rgb(42, 155, 91);
+    background-color: rgb(42, 155, 91);
     color: white;
 }
