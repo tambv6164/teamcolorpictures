@@ -46,18 +46,22 @@
         </div>
         <div>
             <button onclick="displayNamebox()">Change name</button>
-        </div>
-        {% endif %}
-        <div style="display:flex; flex-direction: column; align-items: center;">
             <form style="display:none" action="" method="POST" id="namebox">
                 <div>
                     <input id="newname" class="someinput" type="text" placeholder="Enter new name" name="picname" onfocus="this.placeholder=''" onblur="this.placeholder='Enter new name'">
                 </div>
                 <div>
-                    <button id="savechange" type="submit" form="namebox">Save</button>
+                    <button id="savechange" type="button" form="namebox" onclick="newName()">Save</button>
                 </div>
             </form>
         </div>
+        <div>
+            <p style="display:none" id="warning1">Bạn chưa nhập tên mới!</p>
+        </div>
+        <div>
+            <p style="display:none" id="warning2">Tên mới không hợp lệ!</p>
+        </div>
+        {% endif %}
         <div>
             <img src="{{ pic.piclink }}" alt="">
         </div>
@@ -122,11 +126,32 @@
         function displayNamebox() {
             var x = document.getElementById("namebox");
             if (x.style.display === "none") {
-                x.style.display = "block";
+                x.style.display = "inline";
             } else {
                 x.style.display = "none";
             }
         }
+    </script>
+    <script>
+    function newName () {
+        var newname = document.getElementById("newname").value;
+        var warning1 = document.getElementById("warning1");
+        var warning2 = document.getElementById("warning2");
+        var button = document.getElementById("savechange");
+        if (newname == "") {
+            warning1.style.display = "block";
+            warning2.style.display = "none";
+            button.type = "button";
+        } else if (newname.trim() == "") {
+            warning1.style.display = "none";
+            warning2.style.display = "block";
+            button.type = "button";
+        } else {
+            warning1.style.display = "none";
+            warning2.style.display = "none";
+            button.type = "submit";
+        }
+    }
     </script>
     <script>
     function Like() {

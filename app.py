@@ -511,10 +511,6 @@ def change_infor(artist):
                 artist_infor = User.objects(username=artist).first()
                 if new_fullname.strip() != '' or ((new_username.strip() != '') and (' ' not in new_username)) or ((new_password.strip() != '') and (' ' not in new_username)):
                     notice = 'Bạn đã thay đổi thông tin thành công!'
-                if new_fullname.strip() == '' and new_username.strip() == '' and new_password.strip() == '':
-                    notice = 'Bạn đã không thay đổi thông tin gì hoặc thông tin không hợp lệ!'
-                if ' ' in new_username or ' ' in new_password:
-                    notice = 'Username và password không được chứa dấu cách!'
                 return render_template('change_infor.html', fullname=artist_infor.fullname, password=artist_infor.password, notice=notice)
 
 @app.route("/not_allow") # Hiển thị khi người dùng truy cập 1 trang không được phép
