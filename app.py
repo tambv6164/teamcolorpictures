@@ -202,10 +202,6 @@ def view(picid):
                 picname = newname.strip()
                 pic.update(set__picname=newname.strip())
                 changename_warning = 'Thay đổi tên thành công!'
-            elif newname == '':
-                changename_warning = 'Bạn đã không thay đổi tên!'
-            else: # newname.strip() == ''
-                changename_warning = 'Tên mới không hợp lệ!'
         # Xử lý form comment:
         if 'comment' in form:
             if  like_check is None :
