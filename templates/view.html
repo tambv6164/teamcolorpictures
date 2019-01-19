@@ -83,16 +83,16 @@
         </form>
         
         <div style="display:flex; flex-direction: column;">
-            <div style="padding: 10px; margin: 5px;">
+            <div style="padding-left: 10px; margin-left: 5px;">
                 <p><b>Comments:</b></p>
             </div>
             {% if comment_list.first() == None %}
-                <div style="padding: 10px; margin: 5px;">
+                <div style="padding-left: 10px; margin-left: 5px;">
                     <p>Chưa có bình luận. Đăng bình luận đầu tiên cho bức tranh này bạn nhé.</p>
                 </div>
             {% endif %}
             {% for comment in comment_list %}
-                <div style="padding: 10px; margin: 5px;">
+                <div style="padding-left: 10px; margin-left: 5px;">
                     <span><a href="{{ url_for('profile', artist=comment.who_username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ comment.who_fullname }}</a>: {{ comment.comment }}</span>
                     <span>({{ comment.whencomment }})</span>
                     {% if display == 'yes' or comment.who_username == token %}
@@ -103,11 +103,11 @@
                     {% endif %}
                 </div>
             {% endfor %}
-            <div>
-                <p id="loginalert" style="display:none; padding: 10px; margin: 5px;">Vui lòng đăng nhập để like và comment!</p>
+            <div id="loginalert" style="display:none; padding-left: 10px; margin-left: 5px;">
+                <p>Vui lòng đăng nhập để like và comment!</p>
             </div>
-            <div>
-                <p id="emptyalert" style="display:none; padding: 10px; margin: 5px;">Bạn chưa viết gì nên không có gì để đăng!</p>
+            <div id="emptyalert" style="display:none; padding-left: 10px; margin-left: 5px;">
+                <p>Bạn chưa viết gì nên không có gì để đăng!</p>
             </div>
             <div>
                 <form action="" method="post" id="comment" style="display:flex;">
