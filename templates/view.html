@@ -82,12 +82,12 @@
             <input style="display:none" name="like">
         </form>
         
-        <div>
-            <p>Comments:</p>
-        </div>
         <div style="display:flex; flex-direction: column;">
+            <div style="padding: 10px; margin: 5px;">
+                <p><b>Comments:</b></p>
+            </div>
             {% if comment_list.first() == None %}
-                <div>
+                <div style="padding: 10px; margin: 5px;">
                     <p>Chưa có bình luận. Đăng bình luận đầu tiên cho bức tranh này bạn nhé.</p>
                 </div>
             {% endif %}
