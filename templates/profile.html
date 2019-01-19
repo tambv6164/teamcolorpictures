@@ -53,57 +53,6 @@
             <hr>
         </div>
 
-        <script>
-        function finish() {
-            var finished_list = document.getElementById('finished_list');
-            var working_list = document.getElementById('working_list');
-            var colorlater_list = document.getElementById('colorlater_list');
-            var my_favorite = document.getElementById('my_favorite');
-            if (finished_list.style.display === "none") {
-            finished_list.style.display = 'block';
-            working_list.style.display = 'none';
-            colorlater_list.style.display = 'none';
-            my_favorite.style.display = 'none';
-            }
-        }
-        function working() {
-            var finished_list = document.getElementById('finished_list');
-            var working_list = document.getElementById('working_list');
-            var colorlater_list = document.getElementById('colorlater_list');
-            var my_favorite = document.getElementById('my_favorite');
-            if (working_list.style.display === "none") {
-            finished_list.style.display = 'none';
-            working_list.style.display = 'block';
-            colorlater_list.style.display = 'none';
-            my_favorite.style.display = 'none';
-            }
-        }
-        function colorlater() {
-            var finished_list = document.getElementById('finished_list');
-            var working_list = document.getElementById('working_list');
-            var colorlater_list = document.getElementById('colorlater_list');
-            var my_favorite = document.getElementById('my_favorite');
-            if (colorlater_list.style.display === "none") {
-            finished_list.style.display = 'none';
-            working_list.style.display = 'none';
-            colorlater_list.style.display = 'block';
-            my_favorite.style.display = 'none';
-            }
-        }
-        function myfav() {
-            var finished_list = document.getElementById('finished_list');
-            var working_list = document.getElementById('working_list');
-            var colorlater_list = document.getElementById('colorlater_list');
-            var my_favorite = document.getElementById('my_favorite');
-            if (my_favorite.style.display === "none") {
-            finished_list.style.display = 'none';
-            working_list.style.display = 'none';
-            colorlater_list.style.display = 'none';
-            my_favorite.style.display = 'block';
-            }
-        }
-        </script>
-        
         <div id="finished_list" style="display:block">
             <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
                 <div>
@@ -266,4 +215,55 @@
         </div>
     </div>
 </body>
+
+<script>
+    function finish() {
+        var finished_list = document.getElementById('finished_list');
+        var working_list = document.getElementById('working_list');
+        var colorlater_list = document.getElementById('colorlater_list');
+        var my_favorite = document.getElementById('my_favorite');
+        if (finished_list.style.display === "none") {
+        finished_list.style.display = 'block';
+        working_list.style.display = 'none';
+        colorlater_list.style.display = 'none';
+        my_favorite.style.display = 'none';
+        }
+    }
+    function working() {
+        var finished_list = document.getElementById('finished_list');
+        var working_list = document.getElementById('working_list');
+        var colorlater_list = document.getElementById('colorlater_list');
+        var my_favorite = document.getElementById('my_favorite');
+        if (working_list.style.display === "none") {
+        finished_list.style.display = 'none';
+        working_list.style.display = 'block';
+        colorlater_list.style.display = 'none';
+        my_favorite.style.display = 'none';
+        }
+    }
+    function colorlater() {
+        var finished_list = document.getElementById('finished_list');
+        var working_list = document.getElementById('working_list');
+        var colorlater_list = document.getElementById('colorlater_list');
+        var my_favorite = document.getElementById('my_favorite');
+        if (colorlater_list.style.display === "none") {
+        finished_list.style.display = 'none';
+        working_list.style.display = 'none';
+        colorlater_list.style.display = 'block';
+        my_favorite.style.display = 'none';
+        }
+    }
+    function myfav() {
+        var finished_list = document.getElementById('finished_list');
+        var working_list = document.getElementById('working_list');
+        var colorlater_list = document.getElementById('colorlater_list');
+        var my_favorite = document.getElementById('my_favorite');
+        if (my_favorite.style.display === "none") {
+        finished_list.style.display = 'none';
+        working_list.style.display = 'none';
+        colorlater_list.style.display = 'none';
+        my_favorite.style.display = 'block';
+        }
+    }
+</script>
 </html>
