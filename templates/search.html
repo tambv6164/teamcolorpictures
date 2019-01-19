@@ -116,7 +116,7 @@
         var word = document.getElementById('word').value;
         var button = document.getElementById('find');
         var warning = document.getElementById('warning');
-        if (word == "") {
+        if (word.trim() == "") {
             warning.style.display = "block";
             button.type = "button";
         } else {

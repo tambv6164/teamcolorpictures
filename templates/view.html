@@ -77,12 +77,8 @@
         {% endif %}
 
         <div>
-            <p>Artist: <a href="{{ url_for('profile', artist=artist.username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ artist.fullname }}</a></p>
+            <p>Artist: <a href="{{ url_for('profile', artist=artist.username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ artist.fullname }}</a>, Like: {{ piclikes }}</p>
         </div>
-        <div>
-            <p>Like: {{ piclikes }}</p>
-        </div>
-
         <input id="warning" type="text" style="display:none" value="{{ warning }}">
         <form action="" method="POST" id="like">
             <input style="display:none" name="like">
@@ -91,39 +87,38 @@
             <button id="likebutton" type="button" form="like" onclick="Like()">{{ likebutton }}</button>
             <hr>
         </div>
-    </div>
-    <div>
-        <p>Comments:</p>
-    </div>
-    {% if comment_list.first() == None %}
         <div>
-            <p>Chưa có bình luận. Đăng bình luận đầu tiên cho bức tranh này bạn nhé.</p>
+            <p>Comments:</p>
         </div>
-    {% endif %}
-    {% for comment in comment_list %}
+        {% if comment_list.first() == None %}
+            <div>
+                <p>Chưa có bình luận. Đăng bình luận đầu tiên cho bức tranh này bạn nhé.</p>
+            </div>
+        {% endif %}
+        {% for comment in comment_list %}
+            <div>
+                <span><a href="{{ url_for('profile', artist=comment.who_username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ comment.who_fullname }}</a>: {{ comment.comment }}</span>
+                <span>({{ comment.whencomment }})</span>
+                {% if display == 'yes' or comment.who_username == token %}
+                    <form style="display:none" action="" method="post" id="c{{ comment.id }}">
+                        <input style="display:none" type="text" name="c{{ comment.id }}" value="{{ comment.id }}">
+                    </form>
+                    <button style="display:inline-block;" type="submit" form="c{{ comment.id }}">Delete</button>
+                {% endif %}
+            </div>
+        {% endfor %}
         <div>
-            <span><a href="{{ url_for('profile', artist=comment.who_username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ comment.who_fullname }}</a>: {{ comment.comment }}</span>
-            <span>({{ comment.whencomment }})</span>
-            {% if display == 'yes' or comment.who_username == token %}
-                <form style="display:none" action="" method="post" id="c{{ comment.id }}">
-                    <input style="display:none" type="text" name="c{{ comment.id }}" value="{{ comment.id }}">
-                </form>
-                <button style="display:inline-block;" type="submit" form="c{{ comment.id }}">Delete</button>
-            {% endif %}
+            <p id="loginalert" style="display:none">Vui lòng đăng nhập để like và comment!</p>
         </div>
-    {% endfor %}
-    <div>
-        <p id="loginalert" style="display:none">Vui lòng đăng nhập để like và comment!</p>
-    </div>
-    <div>
-        <p id="emptyalert" style="display:none">Bạn chưa viết gì nên không có gì để đăng!</p>
-    </div>
-    <div></div>
-    <div>
-        <form action="" method="post" id="comment">
-            <textarea placeholder="Write your comment here ..." onfocus="this.placeholder=''" onblur="this.placeholder='Write your comment here ...'" style="display:inline;" name="comment" id="cmtid" cols="70" rows="5"></textarea>
-        </form>
-        <button style="display:inline" id="cmtbutton" type="button" form="comment" onclick="Cmt()">Post</button>
+        <div>
+            <p id="emptyalert" style="display:none">Bạn chưa viết gì nên không có gì để đăng!</p>
+        </div>
+        <div>
+            <form action="" method="post" id="comment">
+                <textarea placeholder="Write your comment here ..." onfocus="this.placeholder=''" onblur="this.placeholder='Write your comment here ...'" style="display:inline; width:500px; height: 30px;" name="comment" id="cmtid"></textarea>
+            </form>
+            <button style="width: 30px; height: 30px;;" id="cmtbutton" type="button" form="comment" onclick="Cmt()">Post</button>
+        </div>
     </div>
     
     <script>
