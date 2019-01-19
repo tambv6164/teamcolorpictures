@@ -62,31 +62,26 @@
             <img src="{{ pic.piclink }}" alt="">
         </div>
         <div>
-            <form action="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" method="get">
-                <input type="submit" value="Color this">
+            <button id="likebutton" type="button" form="like" onclick="Like()">{{ likebutton }}</button>
+            <form style="display:none;" action="{{ url_for('new_picture', picid=pic.picrawid) }}" target="_blank" method="get" id="newpic">
             </form>
-        </div>
-        
-        {% if 'token' in session %}
-            <form action="" method="post" id="mf">
-                <input style="display:none;" name="favorite">
-            </form>
-            <div>
+            <button type="submit" form="newpic">Color this</button>
+            {% if 'token' in session %}
+                <form style="display:none;" action="" method="post" id="mf">
+                    <input style="display:none;" name="favorite">
+                </form>
                 <button type="submit" form="mf">{{ addbutton }}</button>
-            </div>
-        {% endif %}
-
+            {% endif %}
+        </div>
         <div>
             <p>Artist: <a href="{{ url_for('profile', artist=artist.username) }}" style="text-decoration: none; color:rgb(163, 68, 0);">{{ artist.fullname }}</a>, Like: {{ piclikes }}</p>
+            <hr>
         </div>
         <input id="warning" type="text" style="display:none" value="{{ warning }}">
         <form action="" method="POST" id="like">
             <input style="display:none" name="like">
         </form>
-        <div>
-            <button id="likebutton" type="button" form="like" onclick="Like()">{{ likebutton }}</button>
-            <hr>
-        </div>
+        
         <div>
             <p>Comments:</p>
         </div>
