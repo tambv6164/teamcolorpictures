@@ -49,15 +49,15 @@
                     <div style="display:flex; flex-direction: column; align-items: center; justify-content: center;">
                         <div>
                             <label style="display:inline-block; width:120px;" for="">New fullname:</label>
-                            <input type="text" name="fullname">
+                            <input type="text" id="fullname" name="fullname">
                         </div>
                         <div>
                             <label style="display:inline-block; width:120px;" for="">New username:</label>
-                            <input type="text" name="username">
+                            <input type="text" id="username" name="username" placeholder="không chứa dấu cách" onfocus="this.placeholder=''" onblur="this.placeholder='không chứa dấu cách'">
                         </div>
                         <div>
                             <label style="display:inline-block; width:120px;" for="">New password:</label>
-                            <input type="password" name="password">
+                            <input type="password" id="password" name="password" placeholder="không chứa dấu cách" onfocus="this.placeholder=''" onblur="this.placeholder='không chứa dấu cách'">
                         </div>
                     </div>
                 </form>
@@ -82,6 +82,12 @@
             <div>
                 <p style="display:none" id="warning2">Bạn đã nhập sai password cũ!</p>
             </div>
+            <div>
+                <p style="display:none" id="warning3">Thông tin thay đổi không hợp lệ!</p>
+            </div>
+            <div>
+                <p style="display:none" id="warning4">Username hoặc password không được chứa dấu cách!</p>
+            </div>
         </div>
     </div>
 
@@ -103,21 +109,41 @@
         var typeoldpass = document.getElementById("typeoldpass").value;
         var warning1 = document.getElementById("warning1");
         var warning2 = document.getElementById("warning2");
+        var warning3 = document.getElementById("warning3");
+        var warning4 = document.getElementById("warning4");
         var submitbutton = document.getElementById("submitbutton");
+        var fullname = document.getElementById("fullname");
+        var username = document.getElementById("username");
+        var password = document.getElementById("password");
         if (typeoldpass == "") {
             warning1.style.display = "block";
             warning2.style.display = "none";
+            warning3.style.display = "none";
+            warning4.style.display = "none";
+            submitbutton.type = "button";
+        } else if (typeoldpass != oldpass) {
+            warning1.style.display = "none";
+            warning2.style.display = "block";
+            warning3.style.display = "none";
+            warning4.style.display = "none";
+            submitbutton.type = "button";
+        } else if (fullname.trim() == "" && username.trim() == "" && password.trim() == "" ) {
+            warning1.style.display = "none";
+            warning2.style.display = "none";
+            warning3.style.display = "block";
+            warning4.style.display = "none";
+            submitbutton.type = "button";
+        } else if (username.includes(" ") || password.includes(" ")) {
+            warning1.style.display = "none";
+            warning2.style.display = "none";
+            warning3.style.display = "none";
+            warning4.style.display = "block";
             submitbutton.type = "button";
         } else {
-            if (typeoldpass != oldpass) {
-                warning1.style.display = "none";
-                warning2.style.display = "block";
-                submitbutton.type = "button";
-            } else {
-                warning1.style.display = "none";
-                warning2.style.display = "none";
-                submitbutton.type = "submit";
-            }
+            warning1.style.display = "none";
+            warning2.style.display = "none";
+            warning3.style.display = "none";
+            submitbutton.type = "submit";
         }
     }
     </script>

@@ -424,7 +424,7 @@ def new_picture(picid):
             elif picstatus == 'finished':
                 User.objects(username=token).first().update(set__finished_arts=finished_arts+1)
             return redirect(url_for('saved', picid=newid))
-        
+
 @app.route('/keep_continue/<picid>', methods=['GET', 'POST']) # Trang vẽ tiếp 1 bức đang vẽ dở
 def keep_continue(picid):
     token = ''
