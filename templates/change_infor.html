@@ -83,7 +83,7 @@
                 <p style="display:none" id="warning2">Bạn đã nhập sai password cũ!</p>
             </div>
             <div>
-                <p style="display:none" id="warning3">Thông tin thay đổi không hợp lệ!</p>
+                <p style="display:none" id="warning3">Bạn đã không thay đổi thông tin gì!</p>
             </div>
             <div>
                 <p style="display:none" id="warning4">Username hoặc password không được chứa dấu cách!</p>
@@ -127,7 +127,7 @@
             warning3.style.display = "none";
             warning4.style.display = "none";
             submitbutton.type = "button";
-        } else if (fullname.trim() == "" && username.trim() == "" && password.trim() == "" ) {
+        } else if (fullname.trim() == "" && username.trim() == "" && password == "" ) {
             warning1.style.display = "none";
             warning2.style.display = "none";
             warning3.style.display = "block";
@@ -143,6 +143,7 @@
             warning1.style.display = "none";
             warning2.style.display = "none";
             warning3.style.display = "none";
+            warning4.style.display = "none";
             submitbutton.type = "submit";
         }
     }
