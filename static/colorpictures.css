@@ -18,20 +18,11 @@ width: 20%;
 .abc img{
 width: 100%;
 }
-button, input[type=submit] {
+button, input[type=submit], input[type=button], input[type=text], input[type=password], input[type=color], textarea, #cmtbutton {
     border-radius: 15px;
     border: 1px solid rgb(42, 155, 91);
     background: white;
     padding: 5px 10px;
-    font-size: 16px;
-    margin: 5px;
-    font-family: 'Nunito', sans-serif;
-}
-input[type=text], input[type=password], input[type=color], textarea, #cmtbutton {
-    border-radius: 15px;
-    border: 1px solid rgb(42, 155, 91);
-    background: white;
-    padding: 10px;
     font-size: 16px;
     margin: 5px;
     font-family: 'Nunito', sans-serif;
