@@ -41,3 +41,12 @@ button:hover, input[type=submit]:hover, input[type=button]:hover {
     background-color: rgb(42, 155, 91);
     color: white;
 }
+.change_background {
+    background-color: white;
+    color: black;
+    transition-duration: 0.4s;
+}
+.change_background:hover {
+    background-image: url(http://www.coloring-book.info/coloring/Aladdin/aladdin-59.jpg);
+    background-size: contain;
+}
