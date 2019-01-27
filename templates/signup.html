@@ -55,9 +55,11 @@
             </div>
         </div>
     </div>
+    <input style="display:none" id="username_list" value="{{ username_list }}">
 </body>
 <script>
 function signUp() {
+    var username_list = document.getElementById('username_list').value;
     var fullname = document.getElementById("fullname").value;
     var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
@@ -81,6 +83,10 @@ function signUp() {
         warning2.style.display = "block";
         warning2.innerHTML = "Username không được chứa dấu cách!";
         x = 1;
+    } else if (username_list.includes(username)) {
+        warning2.style.display = "block";
+        warning2.innerHTML = "Username đã tồn tại!";
+        x = 1;
     } else {
         warning2.style.display = "none";
     }
@@ -95,10 +101,10 @@ function signUp() {
     } else {
         warning3.style.display = "none";
     }
-    if (x != 1) {
-        button.type = "submit";
-    } else {
+    if (x == 1) {
         button.type = "button";
+    } else {
+        button.type = "submit";
     }
 }
 </script>

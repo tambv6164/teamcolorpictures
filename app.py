@@ -13,6 +13,8 @@ from models.mylistpicture import Mylistpicture
 from random import choice
 import base64
 import requests
+# Chuyển đổi dữ liệu từ python sang javascript (JSON = javascript object notation)
+import json
 # Kết nối với database
 import mlab
 mlab.connect()
@@ -36,10 +38,11 @@ def home():
 
 @app.route('/signup', methods=['GET', 'POST']) # Trang đăng ký tài khoản
 def signup():
+    username_list = User.objects().distinct('username')
     if 'token' in session:
         return render_template('homepage.html')
     if request.method == 'GET':
-        return render_template("signup.html")
+        return render_template("signup.html", username_list=username_list)
     else:
         form = request.form
         f = form['fullname']
@@ -49,45 +52,41 @@ def signup():
         # # Khi nào cần thì bật lại vì trên database vẫn để email với giá trị default.
         # e = form['email']
         new_user = User(fullname=f.strip(), username=u.strip(), password=p.strip()) #, email=e)
-        user_check = User.objects(username=u.strip()).first()        
-        # email_check = User.objects(email=e).first()
-        warning = ''
-        if user_check is not None:
-            warning = 'Username đã tồn tại!'
-        # elif email_check is not None:
-        #     warning = 'Email đã tồn tại'
-        if warning != '':
-            return render_template('signup.html', warning=warning)
-        else:
-            new_user.save()
-            session['token'] = u
-            # Đăng ký xong thì trả về giao diện trang Welcome
-            return render_template('welcome.html', fullname=f, u=u)
+        new_user.save()
+        session['token'] = u
+        # Đăng ký xong thì trả về giao diện trang Welcome
+        return render_template('welcome.html', fullname=f, u=u)
 
 @app.route('/login', methods=['GET', 'POST']) # Trang đăng nhập
 def login():
+    user_list = User.objects()
+    user_list_2 = {}
+    for u in user_list:
+        user_list_2[u.username] = u.password
+    users = json.dumps(user_list_2) # chuyển python dictionaty sang JSON object
     if 'token' in session:
         return render_template('homepage.html')
     if request.method == 'GET':
-        return render_template('login.html')
+        return render_template('login.html', users=users)
     else:
         form = request.form
         u = form['username']
         p = form['password']
-        user_check = User.objects(username=u).first()
-        # Check xem có nhập username và password hay không và nhập đúng hay không:
-        warning = ''
-        if user_check is None:
-            warning = 'Username không tồn tại!'
-        else:
-            if p != user_check.password:
-                warning = 'Password sai!'
-        if warning != '':
-            return render_template('login.html', warning=warning)
-        else:
-            session['token'] = u
-            # Đăng nhập đúng thì trả về giao diện trang Welcome
-            return render_template('welcome.html', fullname=User.objects(username=u).first().fullname, u=u) 
+        # phần code bên dưới bị comment vì đã xử được trực tiếp bằng javascript trong html
+        # user_check = User.objects(username=u).first()
+        # # Check xem có nhập username và password hay không và nhập đúng hay không:
+        # warning = ''
+        # if user_check is None:
+        #     warning = 'Username không tồn tại!'
+        # else:
+        #     if p != user_check.password:
+        #         warning = 'Password sai!'
+        # if warning != '':
+        #     return render_template('login.html', warning=warning, users=users)
+        # else:
+        session['token'] = u
+        # Đăng nhập đúng thì trả về giao diện trang Welcome
+        return render_template('welcome.html', fullname=User.objects(username=u).first().fullname, u=u) 
 
 @app.route('/logout') # Đăng xuất
 def logout():

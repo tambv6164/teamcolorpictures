@@ -51,33 +51,37 @@
             </div>
         </div>
     </div>
+    <input style="display:none" id="users" value="{{ users }}">
 </body>
 <script>
 function logIn() {
+    var a = document.getElementById('users').value;
+    var users = JSON.parse(a); // chuyển dữ liệu JSON data thành javascript object
     var username = document.getElementById("username").value;
     var password = document.getElementById("password").value;
     var button = document.getElementById("button");
     var warning1 = document.getElementById("warning1");
     var warning2 = document.getElementById("warning2");
-    var x;
     if (username.trim() === "") {
         warning1.style.display = "block";
+        warning2.style.display = "none";
         warning1.innerHTML = "Bạn chưa nhập username!";
-        x = 1;
+    } else if (!Object.keys(users).includes(username)) {
+        warning1.style.display = "block";
+        warning2.style.display = "none";
+        warning1.innerHTML = "Username không tồn tại!";
     } else {
         warning1.style.display = "none";
-    }
-    if (password === "") {
-        warning2.style.display = "block";
-        warning2.innerHTML = "Bạn chưa nhập password!";
-        x = 1;
-    } else {
-        warning2.style.display = "none";
-    }
-    if (x != 1) {
-        button.type = "submit";
-    } else {
-        button.type = "button";
+        if (password === "") {
+            warning2.style.display = "block";
+            warning2.innerHTML = "Bạn chưa nhập password!";
+        } else if (users[username] != password) {
+            warning2.style.display = "block";
+            warning2.innerHTML = "Password sai!";
+        } else {
+            warning2.style.display = "none";
+            button.type = 'submit';
+        }
     }
 }
 </script>
