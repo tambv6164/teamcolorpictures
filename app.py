@@ -13,8 +13,6 @@ from models.mylistpicture import Mylistpicture
 from random import choice
 import base64
 import requests
-# Chuyển đổi dữ liệu từ python sang javascript (JSON = javascript object notation)
-import json
 # Kết nối với database
 import mlab
 mlab.connect()
